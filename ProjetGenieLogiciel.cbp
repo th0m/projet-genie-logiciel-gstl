@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="ProjetGenieLogiciel" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin\Release\ProjetGenieLogiciel" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-lmingw32 -lSDLmain -lSDL -mwindows -lSDL_Image" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="src\game.cpp" />
+		<Unit filename="src\game.hpp" />
+		<Unit filename="src\limit.cpp" />
+		<Unit filename="src\limit.hpp" />
+		<Unit filename="src\main.cpp" />
+		<Unit filename="src\playercar.cpp" />
+		<Unit filename="src\playercar.hpp" />
+		<Unit filename="src\r1.cpp" />
+		<Unit filename="src\r1.hpp" />
+		<Unit filename="src\race.cpp" />
+		<Unit filename="src\race.hpp" />
+		<Unit filename="src\sand.cpp" />
+		<Unit filename="src\sand.hpp" />
+		<Unit filename="src\shape.cpp" />
+		<Unit filename="src\shape.hpp" />
+		<Unit filename="src\startingfinishline.cpp" />
+		<Unit filename="src\startingfinishline.hpp" />
+		<Unit filename="src\turbo.cpp" />
+		<Unit filename="src\turbo.hpp" />
+		<Unit filename="src\white.cpp" />
+		<Unit filename="src\white.hpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

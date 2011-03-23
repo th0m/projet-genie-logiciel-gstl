@@ -1,0 +1,82 @@
+# depslib dependency file v1.0
+1300749361 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\game.cpp
+	"game.hpp"
+	"r1.hpp"
+	<SDL/SDL_image.h>
+	<stdexcept>
+
+1300356651 d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\game.hpp
+	<SDL/SDL.h>
+	<string>
+
+1300211342 d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\r1.hpp
+	"race.hpp"
+
+1300749529 d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\race.hpp
+	<SDL/SDL.h>
+	<list>
+	"game.hpp"
+	"shape.hpp"
+	"playercar.hpp"
+
+1300749459 d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\shape.hpp
+	<SDL/SDL.h>
+	<string>
+
+1300356233 d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\playercar.hpp
+	"shape.hpp"
+
+1300215735 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\limit.cpp
+	"limit.hpp"
+
+1300215750 d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\limit.hpp
+	"shape.hpp"
+
+1300354627 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\main.cpp
+	<iostream>
+	"game.hpp"
+
+1300380991 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\playercar.cpp
+	"playercar.hpp"
+
+1300380977 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\r1.cpp
+	"r1.hpp"
+	"shape.hpp"
+
+1300749415 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\race.cpp
+	"race.hpp"
+	"sand.hpp"
+	"white.hpp"
+	"turbo.hpp"
+	"startingfinishline.hpp"
+
+1300214722 d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\sand.hpp
+	"shape.hpp"
+
+1300214715 d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\white.hpp
+	"shape.hpp"
+
+1300214846 d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\turbo.hpp
+	"shape.hpp"
+
+1300219760 d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\startingfinishline.hpp
+	"shape.hpp"
+
+1300214719 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\sand.cpp
+	"sand.hpp"
+
+1300749494 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\shape.cpp
+	"shape.hpp"
+	"game.hpp"
+	<stdexcept>
+	<SDL/SDL_image.h>
+
+1300219768 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\startingfinishline.cpp
+	"startingfinishline.hpp"
+
+1300215097 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\turbo.cpp
+	"turbo.hpp"
+
+1300215102 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\white.cpp
+	"white.hpp"
+
