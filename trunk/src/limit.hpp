@@ -6,7 +6,9 @@
 class Limit : public Shape
 {
     public:
-        explicit Limit(Uint32 x, Uint32 y, SDL_Surface *window);
+
+        explicit Limit(Sint32 x, Sint32 y, SDL_Surface *window);
+
 };
 
 #endif

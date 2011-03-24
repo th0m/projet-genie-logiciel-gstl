@@ -7,11 +7,14 @@
 #include "game.hpp"
 #include "shape.hpp"
 #include "playercar.hpp"
+#include "limit.hpp"
 
 class Race
 {
     public:
+
         explicit Race(SDL_Surface *window);
+
         ~Race();
 
         /* # Fonction qui va charge le contenu graphique du niveau */
@@ -23,7 +26,8 @@ class Race
         /* # Fonction qui gere les turbos */
         void useTurbo();
 
-        PlayerCar* getPlayerCar();
+        /* # Foncction qui est capable de faire bouger la voiture du joueur */
+        void movePlayerCar(SDLKey key);
 
     protected:
 
@@ -41,6 +45,9 @@ class Race
 
         /* # Un conteneur qui stock l'ensemble des formes presentes sur l'ecran */
         std::list<Shape*> m_surfaces;
+
+        /* # Un conteneur qui stock l'ensemble des limites */
+        std::list<Limit*> m_limits;
 };
 
 #endif

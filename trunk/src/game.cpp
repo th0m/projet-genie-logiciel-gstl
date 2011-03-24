@@ -63,7 +63,6 @@ void Game::start()
 void Game::eventloop()
 {
     SDL_Event ev = {0};
-    PlayerCar *car = m_r1->getPlayerCar();
 
     while(m_isOk)
     {
@@ -80,16 +79,17 @@ void Game::eventloop()
             {
                 switch(ev.key.keysym.sym)
                 {
+                    case SDLK_DOWN :
+                    case SDLK_UP :
                     case SDLK_RIGHT :
                     case SDLK_LEFT :
                     {
-                        car->move(ev.key.keysym.sym);
-                        m_r1->refresh();
+                        m_r1->movePlayerCar(ev.key.keysym.sym);
                         break;
                     }
+
                     case SDLK_SPACE :
                     {
-                        car->move(ev.key.keysym.sym);
                         m_r1->useTurbo();
                         m_r1->refresh();
                         break;

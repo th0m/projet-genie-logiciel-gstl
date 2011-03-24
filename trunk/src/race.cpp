@@ -3,7 +3,9 @@
 #include "sand.hpp"
 #include "white.hpp"
 #include "turbo.hpp"
+#include "limit.hpp"
 #include "startingfinishline.hpp"
+
 
 Race::Race(SDL_Surface *window)
 : m_window(window), m_nbRows(Game::getNbVerticalSprites()), m_nbLines(Game::getNbHorizontalSprites())
@@ -41,25 +43,25 @@ void Race::refresh()
 {
     Shape *ptr = NULL;
 
+    /* # On efface l'ecran avant de ré-afficher les shapes */
+    SDL_FillRect(m_window, NULL, SDL_MapRGB(m_window->format, 0xff, 0xff, 0xff));
+
     /* # On parcourt l'ensemble des surfaces et nous les actualisons */
     for(std::list<Shape*>::iterator it = m_surfaces.begin(); it != m_surfaces.end(); it++)
     {
-        if(!(*it)->isHidden())
-        {
+        if((*it)->isHidden() == false)
             (*it)->actualize();
-        }
     }
-}
 
-PlayerCar* Race::getPlayerCar()
-{
-    return m_playercar;
+    SDL_Flip(m_window);
+
 }
 
 void Race::load()
 {
     Shape *ptr = NULL;
-    Uint32 x = 0, y = 0, shapeSize = Game::getShapeSize();
+    Sint32 x = 0, y = 0;
+    Uint32 shapeSize = Game::getShapeSize();
 
     for(int i = 0; i < m_nbLines; ++i)
     {
@@ -68,6 +70,13 @@ void Race::load()
         {
             switch(m_map[i][j])
             {
+                case Shape::Limit :
+                {
+                    ptr = new Limit(x, y, m_window);
+                    m_limits.push_back(static_cast<Limit*>(ptr));
+                    break;
+                }
+
                 case Shape::Sand :
                 {
                     ptr = new Sand(x, y, m_window);
@@ -115,9 +124,16 @@ void Race::useTurbo()
         if((*it)->getType() == "turbo" && !(*it)->isHidden())
         {
             (*it)->hide();
-            return;
+            break;
         }
     }
-
 }
 
+void Race::movePlayerCar(SDLKey key)
+{
+    /* # On bouge la voiture */
+    m_playercar->move(key, m_limits);
+
+    /* # On recharge les formes */
+    refresh();
+}
