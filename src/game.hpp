@@ -10,13 +10,21 @@ class R1;
 class Game
 {
     public:
+
         explicit Game();
+
         ~Game();
 
+        /* # Fonction qui démarre le jeu */
         void start();
 
+        /* # Fonction qui permet de récuperer le nombre de sprite à disposer sur l'horizontale */
         static Uint32 getNbHorizontalSprites();
+
+        /* # Fonction qui permet de récuperer le nombre de sprite à disposer sur la verticale */
         static Uint32 getNbVerticalSprites();
+
+        /* # Fonction qui permet de récuperer la taille d'un sprite */
         static Uint32 getShapeSize();
 
     private:

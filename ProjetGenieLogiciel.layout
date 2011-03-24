@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
+	<File name="src\game.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="2256" topLine="79" />
+	</File>
+	<File name="src\limit.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="128" topLine="0" />
+	</File>
 	<File name="src\main.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="200" topLine="0" />
+	</File>
+	<File name="src\playercar.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="146" topLine="0" />
+	</File>
+	<File name="src\race.cpp" open="1" top="1" tabpos="5">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="src\race.hpp" open="1" top="0" tabpos="4">
+		<Cursor position="447" topLine="16" />
+	</File>
+	<File name="src\shape.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="1846" topLine="51" />
 	</File>
 </CodeBlocks_layout_file>

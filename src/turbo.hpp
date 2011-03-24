@@ -6,7 +6,9 @@
 class Turbo : public Shape
 {
     public:
-        explicit Turbo(Uint32 x, Uint32 y, SDL_Surface *window);
+
+        explicit Turbo(Sint32 x, Sint32 y, SDL_Surface *window);
+
 };
 
 #endif

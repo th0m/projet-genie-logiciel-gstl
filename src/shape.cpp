@@ -4,10 +4,10 @@
 #include <stdexcept>
 #include <SDL/SDL_image.h>
 
-Shape::Shape(Uint32 x, Uint32 y, std::string shapeType, SDL_Surface *window)
-: m_isHidden(false), m_x(x), m_y(y), m_img(NULL), m_window(window), type(shapeType)
+Shape::Shape(Sint32 x, Sint32 y, std::string type, SDL_Surface *window)
+: m_type(type), m_isHidden(false), m_x(x), m_y(y), m_img(NULL), m_window(window)
 {
-    std::string path("sprites/" + shapeType);
+    std::string path("sprites/" + m_type);
 
     /* # On charge l'image associe */
     m_img = IMG_Load(path.c_str());
@@ -23,6 +23,8 @@ Shape::Shape(Uint32 x, Uint32 y, std::string shapeType, SDL_Surface *window)
 
     /* # On affiche notre sprite */
     actualize();
+
+    SDL_Flip(m_window);
 }
 
 Shape::~Shape()
@@ -44,10 +46,6 @@ void Shape::actualize()
 
     /* # On "colle" la surface sur notre window */
     SDL_BlitSurface(m_img, NULL, m_window, &pos);
-
-    /* # On met à jour l'ecran */
-    SDL_Flip(m_window);
-
 }
 
 bool Shape::isHidden() const
@@ -80,7 +78,17 @@ void Shape::unhide()
     actualize();
 }
 
+Sint32 Shape::getX() const
+{
+    return m_x;
+}
+
+Sint32 Shape::getY() const
+{
+    return m_y;
+}
+
 std::string Shape::getType() const
 {
-    return type;
+    return m_type;
 }

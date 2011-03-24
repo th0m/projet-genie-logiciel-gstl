@@ -80,3 +80,89 @@
 1300215102 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\white.cpp
 	"white.hpp"
 
+1300984918 source:d:\school\polytech\1a\offroadlike\src\limit.cpp
+	"limit.hpp"
+
+1300984914 d:\school\polytech\1a\offroadlike\src\limit.hpp
+	"shape.hpp"
+
+1300984855 d:\school\polytech\1a\offroadlike\src\shape.hpp
+	<SDL/SDL.h>
+	<string>
+
+1300912654 source:d:\school\polytech\1a\offroadlike\src\main.cpp
+	<iostream>
+	"game.hpp"
+
+1300987596 d:\school\polytech\1a\offroadlike\src\game.hpp
+	<SDL/SDL.h>
+	<string>
+
+1300912654 source:d:\school\polytech\1a\offroadlike\src\r1.cpp
+	"r1.hpp"
+	"shape.hpp"
+
+1300912654 d:\school\polytech\1a\offroadlike\src\r1.hpp
+	"race.hpp"
+
+1300987386 d:\school\polytech\1a\offroadlike\src\race.hpp
+	<SDL/SDL.h>
+	<list>
+	"game.hpp"
+	"shape.hpp"
+	"playercar.hpp"
+	"limit.hpp"
+
+1300990969 d:\school\polytech\1a\offroadlike\src\playercar.hpp
+	<list>
+
+1300990143 source:d:\school\polytech\1a\offroadlike\src\sand.cpp
+	"sand.hpp"
+
+1300984965 d:\school\polytech\1a\offroadlike\src\sand.hpp
+	"shape.hpp"
+
+1300985100 source:d:\school\polytech\1a\offroadlike\src\shape.cpp
+	"shape.hpp"
+	"game.hpp"
+	<stdexcept>
+	<SDL/SDL_image.h>
+
+1300985048 source:d:\school\polytech\1a\offroadlike\src\startingfinishline.cpp
+	"startingfinishline.hpp"
+
+1300985054 d:\school\polytech\1a\offroadlike\src\startingfinishline.hpp
+	"shape.hpp"
+
+1300985066 source:d:\school\polytech\1a\offroadlike\src\turbo.cpp
+	"turbo.hpp"
+
+1300985073 d:\school\polytech\1a\offroadlike\src\turbo.hpp
+	"shape.hpp"
+
+1300984978 source:d:\school\polytech\1a\offroadlike\src\white.cpp
+	"white.hpp"
+
+1300984982 d:\school\polytech\1a\offroadlike\src\white.hpp
+	"shape.hpp"
+
+1300990053 source:d:\school\polytech\1a\offroadlike\src\game.cpp
+	"game.hpp"
+	"r1.hpp"
+	<SDL/SDL_image.h>
+	<stdexcept>
+
+1300990037 source:d:\school\polytech\1a\offroadlike\src\playercar.cpp
+	"playercar.hpp"
+	"game.hpp"
+	<list>
+	"limit.hpp"
+
+1300990043 source:d:\school\polytech\1a\offroadlike\src\race.cpp
+	"race.hpp"
+	"sand.hpp"
+	"white.hpp"
+	"turbo.hpp"
+	"limit.hpp"
+	"startingfinishline.hpp"
+
