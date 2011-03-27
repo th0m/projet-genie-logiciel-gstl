@@ -101,8 +101,8 @@ void Game::eventloop()
 
                     case SDLK_SPACE :
                     {
-                        m_r1->useTurbo();
-                        m_r1->refresh();
+                        m_currentRace->useTurbo();
+                        m_currentRace->refresh();
                         break;
                     }
 
