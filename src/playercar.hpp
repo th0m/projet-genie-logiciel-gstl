@@ -1,7 +1,7 @@
 #ifndef PLAYERCAR_HPP
 #define PLAYERCAR_HPP
 
-#include "shape.hpp"
+#include "limit.hpp"
 #include <list>
 
 
@@ -11,7 +11,7 @@ class PlayerCar : public Shape
 
         explicit PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window);
 
-        void move(SDLKey key, std::list<Shape*> &limit);
+        void move(SDLKey key, std::list<Limit*> &limit);
 
     private:
 

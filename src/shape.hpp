@@ -13,7 +13,7 @@ class Shape
             Sand,
             White,
             Turbo,
-            Limit,
+            Limits,
             StartingFinishLine,
             PlayerCar
         };
