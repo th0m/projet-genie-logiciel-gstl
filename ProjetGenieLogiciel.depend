@@ -80,32 +80,32 @@
 1300215102 source:d:\school\polytech\1a\offroadlike\projetgenielogiciel\src\white.cpp
 	"white.hpp"
 
-1300984918 source:d:\school\polytech\1a\offroadlike\src\limit.cpp
+1300988518 source:d:\school\polytech\1a\offroadlike\src\limit.cpp
 	"limit.hpp"
 
-1300984914 d:\school\polytech\1a\offroadlike\src\limit.hpp
+1300988514 d:\school\polytech\1a\offroadlike\src\limit.hpp
 	"shape.hpp"
 
-1300984855 d:\school\polytech\1a\offroadlike\src\shape.hpp
+1301242419 d:\school\polytech\1a\offroadlike\src\shape.hpp
 	<SDL/SDL.h>
 	<string>
 
-1300912654 source:d:\school\polytech\1a\offroadlike\src\main.cpp
+1301252507 source:d:\school\polytech\1a\offroadlike\src\main.cpp
 	<iostream>
 	"game.hpp"
 
-1300987596 d:\school\polytech\1a\offroadlike\src\game.hpp
+1301252588 d:\school\polytech\1a\offroadlike\src\game.hpp
 	<SDL/SDL.h>
 	<string>
 
-1300912654 source:d:\school\polytech\1a\offroadlike\src\r1.cpp
+1301242476 source:d:\school\polytech\1a\offroadlike\src\r1.cpp
 	"r1.hpp"
 	"shape.hpp"
 
-1300912654 d:\school\polytech\1a\offroadlike\src\r1.hpp
+1300916254 d:\school\polytech\1a\offroadlike\src\r1.hpp
 	"race.hpp"
 
-1300987386 d:\school\polytech\1a\offroadlike\src\race.hpp
+1301242403 d:\school\polytech\1a\offroadlike\src\race.hpp
 	<SDL/SDL.h>
 	<list>
 	"game.hpp"
@@ -113,56 +113,73 @@
 	"playercar.hpp"
 	"limit.hpp"
 
-1300990969 d:\school\polytech\1a\offroadlike\src\playercar.hpp
+1301242466 d:\school\polytech\1a\offroadlike\src\playercar.hpp
+	"limit.hpp"
 	<list>
 
-1300990143 source:d:\school\polytech\1a\offroadlike\src\sand.cpp
+1300993743 source:d:\school\polytech\1a\offroadlike\src\sand.cpp
 	"sand.hpp"
 
-1300984965 d:\school\polytech\1a\offroadlike\src\sand.hpp
+1300988565 d:\school\polytech\1a\offroadlike\src\sand.hpp
 	"shape.hpp"
 
-1300985100 source:d:\school\polytech\1a\offroadlike\src\shape.cpp
+1300988700 source:d:\school\polytech\1a\offroadlike\src\shape.cpp
 	"shape.hpp"
 	"game.hpp"
 	<stdexcept>
 	<SDL/SDL_image.h>
 
-1300985048 source:d:\school\polytech\1a\offroadlike\src\startingfinishline.cpp
+1300988648 source:d:\school\polytech\1a\offroadlike\src\startingfinishline.cpp
 	"startingfinishline.hpp"
 
-1300985054 d:\school\polytech\1a\offroadlike\src\startingfinishline.hpp
+1300988654 d:\school\polytech\1a\offroadlike\src\startingfinishline.hpp
 	"shape.hpp"
 
-1300985066 source:d:\school\polytech\1a\offroadlike\src\turbo.cpp
+1300988666 source:d:\school\polytech\1a\offroadlike\src\turbo.cpp
 	"turbo.hpp"
 
-1300985073 d:\school\polytech\1a\offroadlike\src\turbo.hpp
+1300988673 d:\school\polytech\1a\offroadlike\src\turbo.hpp
 	"shape.hpp"
 
-1300984978 source:d:\school\polytech\1a\offroadlike\src\white.cpp
+1300988578 source:d:\school\polytech\1a\offroadlike\src\white.cpp
 	"white.hpp"
 
-1300984982 d:\school\polytech\1a\offroadlike\src\white.hpp
+1300988582 d:\school\polytech\1a\offroadlike\src\white.hpp
 	"shape.hpp"
 
-1300990053 source:d:\school\polytech\1a\offroadlike\src\game.cpp
+1301252594 source:d:\school\polytech\1a\offroadlike\src\game.cpp
 	"game.hpp"
 	"r1.hpp"
+	"r2.hpp"
+	"r3.hpp"
 	<SDL/SDL_image.h>
 	<stdexcept>
 
-1300990037 source:d:\school\polytech\1a\offroadlike\src\playercar.cpp
+1301242458 source:d:\school\polytech\1a\offroadlike\src\playercar.cpp
 	"playercar.hpp"
 	"game.hpp"
 	<list>
 	"limit.hpp"
 
-1300990043 source:d:\school\polytech\1a\offroadlike\src\race.cpp
+1301251975 source:d:\school\polytech\1a\offroadlike\src\race.cpp
 	"race.hpp"
 	"sand.hpp"
 	"white.hpp"
 	"turbo.hpp"
 	"limit.hpp"
 	"startingfinishline.hpp"
+
+1301251314 d:\school\polytech\1a\offroadlike\src\r2.hpp
+	"race.hpp"
+
+1301252369 source:d:\school\polytech\1a\offroadlike\src\r2.cpp
+	"r2.hpp"
+	"shape.hpp"
+
+1301252696 source:d:\school\polytech\1a\offroadlike\src\r3.cpp
+	"r3.hpp"
+	"shape.hpp"
+
+1301252405 d:\school\polytech\1a\offroadlike\src\r3.hpp
+	"race.hpp"
 

@@ -8,7 +8,7 @@
 
 
 Race::Race(SDL_Surface *window)
-: m_window(window), m_nbRows(Game::getNbVerticalSprites()), m_nbLines(Game::getNbHorizontalSprites())
+: m_window(window), m_nbRows(Game::getNbVerticalSprites()), m_nbLines(Game::getNbHorizontalSprites()), m_playercar(NULL)
 {
     int i = 0;
 
@@ -41,7 +41,8 @@ Race::~Race()
     for(std::list<Shape*>::iterator it = m_surfaces.begin(); it != m_surfaces.end(); ++it)
         delete (*it);
 
-    delete m_playercar;
+    if(m_playercar != NULL)
+        delete m_playercar;
 }
 
 void Race::refresh()
@@ -58,6 +59,7 @@ void Race::refresh()
             (*it)->actualize();
     }
 
+    /* # On affiche maintenant la voiture */
     m_playercar->actualize();
 
     SDL_Flip(m_window);
@@ -109,7 +111,10 @@ void Race::load()
 
                 case Shape::PlayerCar :
                 {
-                    ptr = NULL;
+                    /* # On affiche quand même du sable, etant donne que quand la voiture va bouger nous aurons du blanc */
+                    ptr = new Sand(x, y, m_window);
+
+                    /* # On peut maintenant blitter la voiture par dessus */
                     m_playercar = new PlayerCar(x, y, m_window);
                     break;
                 }

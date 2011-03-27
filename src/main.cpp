@@ -10,6 +10,8 @@ int main(int argc, char* argv[])
     }
     catch(...)
     {
+        fprintf(stdout, "Exception catched, a run-time error occured.\n");
+        return EXIT_FAILURE;
     }
 
     return EXIT_SUCCESS;
