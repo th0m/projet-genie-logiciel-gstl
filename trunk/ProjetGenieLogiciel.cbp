@@ -34,6 +34,10 @@
 		<Unit filename="src\playercar.hpp" />
 		<Unit filename="src\r1.cpp" />
 		<Unit filename="src\r1.hpp" />
+		<Unit filename="src\r2.cpp" />
+		<Unit filename="src\r2.hpp" />
+		<Unit filename="src\r3.cpp" />
+		<Unit filename="src\r3.hpp" />
 		<Unit filename="src\race.cpp" />
 		<Unit filename="src\race.hpp" />
 		<Unit filename="src\sand.cpp" />
