@@ -27,7 +27,7 @@ Game::Game()
     if(m_window == NULL)
     {
         /* # On gère correctement les erreurs qui peuvent se produire */
-        fprintf(stderr, "SDL_SetVideoMode failed with this error : %d.\n", SDL_GetError());
+        fprintf(stderr, "SDL_SetVideoMode failed with this error : %s.\n", SDL_GetError());
 
         /* On oublie pas de quitter proprement avec un appel explicite au destructeur */
         this->~Game();
@@ -94,6 +94,9 @@ void Game::eventloop()
                         m_r1->refresh();
                         break;
                     }
+
+                    default:
+                    break;
                 }
 
                 break;
