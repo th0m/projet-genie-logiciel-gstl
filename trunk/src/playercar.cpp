@@ -29,22 +29,51 @@ PlayerCar::~PlayerCar()
 void PlayerCar::loadAnotherPosition(SDLKey key)
 {
     /* # Ici on est charge de blitter le nouveau sprite de position selon la touche appuye */
-    switch(key)
+
+    switch(m_currentPos)
     {
-        case SDLK_LEFT :
-            m_img = m_left, m_currentPos = Left;
+        case Left :
+            if(key == SDLK_LEFT)
+            {
+                m_img = m_down, m_currentPos = Down;
+            }
+            else
+            {
+                m_img = m_up, m_currentPos = Up;
+            }
         break;
 
-        case SDLK_RIGHT :
-            m_img = m_right, m_currentPos = Right;
+        case Right :
+            if(key == SDLK_LEFT)
+            {
+                m_img = m_up, m_currentPos = Up;
+            }
+            else
+            {
+                m_img = m_down, m_currentPos = Down;
+            }
         break;
 
-        case SDLK_DOWN :
-            m_img = m_down, m_currentPos = Down;
+        case Up :
+            if(key == SDLK_LEFT)
+            {
+                m_img = m_left, m_currentPos = Left;
+            }
+            else
+            {
+                m_img = m_right, m_currentPos = Right;
+            }
         break;
 
-        case SDLK_UP :
-            m_img = m_up, m_currentPos = Up;
+        case Down :
+            if(key == SDLK_LEFT)
+            {
+                m_img = m_right, m_currentPos = Right;
+            }
+            else
+            {
+                m_img = m_left, m_currentPos = Left;
+            }
         break;
 
         default :
@@ -57,42 +86,36 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limit)
     bool isOk = true;
     Sint32 x = m_x, y = m_y;
 
+    /* # Suivant la touche appuyer soit on fait avancer le vehicule (fleche haut) soit on change la position (fleche droite ou gauche) */
     switch(key)
     {
-        case SDLK_LEFT :
-        {
-            if(m_currentPos == Left)
-                x -= m_shapeSize;
-            break;
-        }
-
-        case SDLK_RIGHT :
-        {
-            if(m_currentPos == Right)
-                x += m_shapeSize;
-            break;
-        }
-
         case SDLK_UP :
-        {
+            if(m_currentPos == Left)
+            {
+                x -= m_shapeSize;
+            }
+            if(m_currentPos == Right)
+            {
+                x += m_shapeSize;
+            }
             if(m_currentPos == Up)
+            {
                 y -= m_shapeSize;
-            break;
-        }
-
-        case SDLK_DOWN :
-        {
+            }
             if(m_currentPos == Down)
+            {
                 y += m_shapeSize;
+            }
             break;
-        }
-    }
 
-    /* # Si les composantes sont egales ça veut dire qu'il faut que l'on charge un nouveau sprite de position */
-    if(x == m_x && y == m_y)
-    {
-        loadAnotherPosition(key);
-        return;
+        case SDLK_LEFT :
+        case SDLK_RIGHT :
+            loadAnotherPosition(key);
+            return;
+
+        default :
+            break;
+
     }
 
     /* # On verifie que l'on va pas déplacer le véhicule dans une bordure */
