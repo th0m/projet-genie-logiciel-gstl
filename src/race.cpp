@@ -37,6 +37,11 @@ Race::~Race()
     for(int i = 0; i < m_nbLines; ++i)
         delete[] m_map[i];
     delete [] m_map;
+
+    for(std::list<Shape*>::iterator it = m_surfaces.begin(); it != m_surfaces.end(); ++it)
+        delete (*it);
+
+    delete m_playercar;
 }
 
 void Race::refresh()
@@ -46,15 +51,16 @@ void Race::refresh()
     /* # On efface l'ecran avant de ré-afficher les shapes */
     SDL_FillRect(m_window, NULL, SDL_MapRGB(m_window->format, 0xff, 0xff, 0xff));
 
-    /* # On parcourt l'ensemble des surfaces et nous les actualisons */
+    /* # On parcourt l'ensemble des surfaces et nous les actualisons sauf la voiture, il faut qu'elle soit *au dessus* */
     for(std::list<Shape*>::iterator it = m_surfaces.begin(); it != m_surfaces.end(); it++)
     {
         if((*it)->isHidden() == false)
             (*it)->actualize();
     }
 
-    SDL_Flip(m_window);
+    m_playercar->actualize();
 
+    SDL_Flip(m_window);
 }
 
 void Race::load()
@@ -103,12 +109,14 @@ void Race::load()
 
                 case Shape::PlayerCar :
                 {
-                    ptr = m_playercar = new PlayerCar(x, y, m_window);
+                    ptr = NULL;
+                    m_playercar = new PlayerCar(x, y, m_window);
                     break;
                 }
             }
 
-            m_surfaces.push_back(ptr);
+            if(ptr != NULL)
+                m_surfaces.push_back(ptr);
             x += shapeSize;
         }
 
@@ -132,7 +140,8 @@ void Race::useTurbo()
 void Race::movePlayerCar(SDLKey key)
 {
     /* # On bouge la voiture */
-    m_playercar->move(key, m_limits);
+    /* TODO: Trouver l'origine du bug de std::list<Limit*> dans playercar.hpp */
+    m_playercar->move(key, reinterpret_cast<std::list<Shape*>&>(m_limits));
 
     /* # On recharge les formes */
     refresh();
