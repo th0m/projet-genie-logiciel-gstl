@@ -1,5 +1,7 @@
 #include "game.hpp"
 #include "r1.hpp"
+#include "r2.hpp"
+#include "r3.hpp"
 
 #include <SDL/SDL_image.h>
 #include <stdexcept>
@@ -12,7 +14,7 @@ const std::string Game::m_title = "Projet Genie Logiciel 3A - GSTL";
 
 
 Game::Game()
-: m_r1(NULL), m_isOk(true), m_window(NULL), m_ico(NULL)
+: m_r1(NULL), m_isOk(true), m_window(NULL), m_ico(NULL), m_currentRace(NULL)
 {
     /* # Chargement des composants vidéos de la librairie */
     SDL_Init(SDL_INIT_VIDEO);
@@ -39,14 +41,23 @@ Game::Game()
     /* # On renome la fenetre */
     SDL_WM_SetCaption(m_title.c_str(), NULL);
 
-    /* # On instancie la premiere course */
+    /* # On instancie les courses */
     m_r1 = new R1(m_window);
+
+    m_r2 = new R2(m_window);
+
+    m_r3 = new R3(m_window);
+
+    /* # On commence par la première course */
+    m_currentRace = m_r1;
 }
 
 Game::~Game()
 {
     /* # On detruit les courses */
     delete m_r1;
+    delete m_r2;
+    delete m_r3;
 
     /* # On décharge la librarie proprement à la mort de l'instance du jeux */
     SDL_Quit();
@@ -55,7 +66,7 @@ Game::~Game()
 void Game::start()
 {
     /* # Chargement du niveau */
-    m_r1->load();
+    m_currentRace->load();
 
     eventloop();
 }
@@ -84,7 +95,7 @@ void Game::eventloop()
                     case SDLK_RIGHT :
                     case SDLK_LEFT :
                     {
-                        m_r1->movePlayerCar(ev.key.keysym.sym);
+                        m_currentRace->movePlayerCar(ev.key.keysym.sym);
                         break;
                     }
 
@@ -101,6 +112,9 @@ void Game::eventloop()
 
                 break;
             }
+
+            default:
+            break;
         }
     }
 }

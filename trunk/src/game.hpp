@@ -6,6 +6,9 @@
 
 /* # Pour eviter le probleme des inclusions cycliques : classe A a besoin de la classe B, et la classe B a besoin de la classe A */
 class R1;
+class R2;
+class R3;
+class Race;
 
 class Game
 {
@@ -32,8 +35,17 @@ class Game
         /* # La boucle principale d'evenement */
         void eventloop();
 
-        /* # La premiere course */
+        /* # La course courante */
+        Race *m_currentRace;
+
+        /* # La première course */
         R1 *m_r1;
+
+        /* # La seconde course */
+        R2 *m_r2;
+
+        /* # La dernière course */
+        R3 *m_r3;
 
         /* # Sommes-nous toujours dans la boucle d'evenement ? */
         bool m_isOk;
