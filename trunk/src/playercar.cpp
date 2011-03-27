@@ -9,13 +9,10 @@ PlayerCar::PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window)
 {
 }
 
-void PlayerCar::move(SDLKey key, std::list<Shape*> &limit)
+void PlayerCar::move(SDLKey key, std::list<Limit*> &limit)
 {
     bool isOk = true;
     Sint32 x = m_x, y = m_y;
-
-    fprintf(stdout, "Coord : %d %d\n\n", m_x, m_y);
-
 
     switch(key)
     {
@@ -45,7 +42,7 @@ void PlayerCar::move(SDLKey key, std::list<Shape*> &limit)
     }
 
     /* # On verifie que l'on va pas déplacer le véhicule dans une bordure */
-    for(std::list<Shape*>::iterator it = limit.begin(); it != limit.end(); it++)
+    for(std::list<Limit*>::iterator it = limit.begin(); it != limit.end(); it++)
     {
         if(x == (*it)->getX() && y == (*it)->getY())
         {
@@ -56,6 +53,4 @@ void PlayerCar::move(SDLKey key, std::list<Shape*> &limit)
 
     if(isOk == true)
         m_x = x, m_y = y;
-
-    fprintf(stdout, "New coord : %d %d\n\n", m_x, m_y);
 }

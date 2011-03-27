@@ -8,11 +8,11 @@ R1::R1(SDL_Surface *window)
 
     /* # On place les limites hautes & basses de la piste */
     for(int i = 1; i < m_nbRows - 1; ++i)
-        m_map[1][i] = m_map[m_nbLines - 1][i] = Shape::Limit;
+        m_map[1][i] = m_map[m_nbLines - 1][i] = Shape::Limits;
 
     /* # On place les limites gauches & droites de la piste */
     for(int i = 2; i < m_nbLines - 1; ++i)
-        m_map[i][0] = m_map[i][m_nbRows - 1] = Shape::Limit;
+        m_map[i][0] = m_map[i][m_nbRows - 1] = Shape::Limits;
 
 
     /* # Les quatres bords blanc */
@@ -21,7 +21,7 @@ R1::R1(SDL_Surface *window)
 
     /* # Et maintenant les limites internes ! */
     for(int i = (m_nbRows / 2) - 3; i < m_nbRows - 4; ++i)
-        m_map[m_nbLines / 2][i] = Shape::Limit;
+        m_map[m_nbLines / 2][i] = Shape::Limits;
 
     /* # La ligne d'arrivée/de départ */
     for(int i = m_nbLines / 2 + 1; i < m_nbLines - 1; ++i)

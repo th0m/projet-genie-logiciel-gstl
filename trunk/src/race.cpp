@@ -76,7 +76,7 @@ void Race::load()
         {
             switch(m_map[i][j])
             {
-                case Shape::Limit :
+                case Shape::Limits :
                 {
                     ptr = new Limit(x, y, m_window);
                     m_limits.push_back(static_cast<Limit*>(ptr));
@@ -140,8 +140,7 @@ void Race::useTurbo()
 void Race::movePlayerCar(SDLKey key)
 {
     /* # On bouge la voiture */
-    /* TODO: Trouver l'origine du bug de std::list<Limit*> dans playercar.hpp */
-    m_playercar->move(key, reinterpret_cast<std::list<Shape*>&>(m_limits));
+    m_playercar->move(key, m_limits);
 
     /* # On recharge les formes */
     refresh();
