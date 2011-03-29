@@ -21,6 +21,11 @@ Shape::Shape(Sint32 x, Sint32 y, std::string type, SDL_Surface *window)
         throw std::runtime_error("IMG_Load failed.");
     }
 
+    /* # Si il s'agit d'une voiture on active la transparence */
+    if(m_type == "playercarg")
+        SDL_SetColorKey(m_img, SDL_SRCCOLORKEY, SDL_MapRGB(m_img->format, 0xff, 0xff, 0xff));
+
+
     /* # On affiche notre sprite */
     actualize();
 

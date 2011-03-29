@@ -16,6 +16,9 @@ class PlayerCar : public Shape
         /* # Fonction qui permet de deplacer le vehicule */
         void move(SDLKey key, std::list<Limit*> &limit);
 
+        /* # Fonction qui permet d'activer le mode turbo */
+        void enableTurboMode();
+
     private:
 
         enum CurrentPosition
@@ -28,8 +31,9 @@ class PlayerCar : public Shape
 
         void loadAnotherPosition(SDLKey key);
 
-        /* # Taille des sprites */
-        Uint32 m_shapeSize;
+
+        /* # vitesse du véhicule */
+        Uint32 m_speed;
 
         SDL_Surface *m_up, *m_down, *m_right, *m_left;
 

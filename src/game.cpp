@@ -75,6 +75,9 @@ void Game::eventloop()
 {
     SDL_Event ev = {0};
 
+    /* On active la repetition des touches */
+    SDL_EnableKeyRepeat(100, 5);
+
     while(m_isOk)
     {
         SDL_WaitEvent(&ev);
