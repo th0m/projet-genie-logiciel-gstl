@@ -6,12 +6,18 @@
 
 
 PlayerCar::PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window)
-: Shape(x, y, std::string("playercarg"), window), m_shapeSize(Game::getShapeSize())
+: Shape(x, y, std::string("playercarg"), window), m_speed(5)
 {
     /* # On charge les differentes sprites */
     m_up = IMG_Load("sprites/playercarh");
+    SDL_SetColorKey(m_up, SDL_SRCCOLORKEY, SDL_MapRGB(m_up->format, 0xff, 0xff, 0xff));
+
     m_down = IMG_Load("sprites/playercarb");
+    SDL_SetColorKey(m_down, SDL_SRCCOLORKEY, SDL_MapRGB(m_down->format, 0xff, 0xff, 0xff));
+
     m_right = IMG_Load("sprites/playercard");
+    SDL_SetColorKey(m_right, SDL_SRCCOLORKEY, SDL_MapRGB(m_right->format, 0xff, 0xff, 0xff));
+
     m_left = m_img;
 
     m_currentPos = Left;
@@ -33,48 +39,44 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
     switch(m_currentPos)
     {
         case Left :
+        {
             if(key == SDLK_LEFT)
-            {
                 m_img = m_down, m_currentPos = Down;
-            }
             else
-            {
                 m_img = m_up, m_currentPos = Up;
-            }
-        break;
+
+            break;
+        }
 
         case Right :
+        {
             if(key == SDLK_LEFT)
-            {
                 m_img = m_up, m_currentPos = Up;
-            }
             else
-            {
                 m_img = m_down, m_currentPos = Down;
-            }
-        break;
+
+            break;
+        }
 
         case Up :
+        {
             if(key == SDLK_LEFT)
-            {
                 m_img = m_left, m_currentPos = Left;
-            }
             else
-            {
                 m_img = m_right, m_currentPos = Right;
-            }
-        break;
+
+            break;
+        }
 
         case Down :
+        {
             if(key == SDLK_LEFT)
-            {
                 m_img = m_right, m_currentPos = Right;
-            }
             else
-            {
                 m_img = m_left, m_currentPos = Left;
-            }
-        break;
+
+            break;
+        }
 
         default :
         break;
@@ -90,38 +92,56 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limit)
     switch(key)
     {
         case SDLK_UP :
-            if(m_currentPos == Left)
+        {
+            switch(m_currentPos)
             {
-                x -= m_shapeSize;
+                case Left :
+                    x -= m_speed;
+                break;
+
+                case Right :
+                    x += m_speed;
+                break;
+
+                case Up :
+                    y -= m_speed;
+                break;
+
+                case Down :
+                    y += m_speed;
+                break;
             }
-            if(m_currentPos == Right)
-            {
-                x += m_shapeSize;
-            }
-            if(m_currentPos == Up)
-            {
-                y -= m_shapeSize;
-            }
-            if(m_currentPos == Down)
-            {
-                y += m_shapeSize;
-            }
+
             break;
+        }
 
         case SDLK_LEFT :
         case SDLK_RIGHT :
             loadAnotherPosition(key);
-            return;
+        break;
 
         default :
             break;
 
     }
 
+    /* # Si on a pas fait bouger le véhicule, on a chargé un nouveau sprite donc la fonction s'arrête ici */
+    if(x == m_x && y == m_y)
+        return;
+
+    fprintf(stdout, "CoordV : %d %d\n", x, y);
+
     /* # On verifie que l'on va pas déplacer le véhicule dans une bordure */
     for(std::list<Limit*>::iterator it = limit.begin(); it != limit.end(); it++)
     {
-        if(x == (*it)->getX() && y == (*it)->getY())
+        int cordxmax = (*it)->getX() + Game::getShapeSize();
+        int cordymax = (*it)->getY() + Game::getShapeSize();
+
+        fprintf(stdout, "CoordLimit : %d-%d %d-%d\n", (*it)->getX(), cordxmax, (*it)->getY(), cordymax);
+
+
+        if( (x >= (*it)->getX() && x <= cordxmax) &&
+            (y >= (*it)->getY() && y <= cordymax) )
         {
             isOk = false;
             break;
@@ -130,4 +150,9 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limit)
 
     if(isOk == true)
         m_x = x, m_y = y;
+}
+
+void PlayerCar::enableTurboMode()
+{
+    m_speed *= 2;
 }
