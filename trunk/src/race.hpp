@@ -9,8 +9,7 @@
 #include "playercar.hpp"
 #include "limit.hpp"
 #include "checkpoint.hpp"
-#include "IACar.hpp"
-#include "checkpointFinishLine.hpp"
+#include "iacar.hpp"
 
 class Race
 {
