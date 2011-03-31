@@ -48,6 +48,8 @@
 		<Unit filename="src\race.hpp" />
 		<Unit filename="src\sand.cpp" />
 		<Unit filename="src\sand.hpp" />
+		<Unit filename="src\score.cpp" />
+		<Unit filename="src\score.h" />
 		<Unit filename="src\shape.cpp" />
 		<Unit filename="src\shape.hpp" />
 		<Unit filename="src\startingfinishline.cpp" />
