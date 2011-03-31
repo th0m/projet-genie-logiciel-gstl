@@ -13,6 +13,8 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-w" />
+					<Add option="-Wextra" />
 					<Add option="-Wall" />
 				</Compiler>
 				<Linker>
@@ -25,6 +27,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="src\checkpoint.cpp" />
+		<Unit filename="src\checkpoint.hpp" />
 		<Unit filename="src\game.cpp" />
 		<Unit filename="src\game.hpp" />
 		<Unit filename="src\limit.cpp" />
