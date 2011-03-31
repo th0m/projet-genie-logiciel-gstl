@@ -1,8 +1,10 @@
 #include "race.hpp"
 #include "shape.hpp"
+#include "checkpoint.hpp"
 
 Race::Race(SDL_Surface *window)
-: m_window(window), m_playercar(NULL), m_nbRows(Game::getNbVerticalSprites()), m_nbLines(Game::getNbHorizontalSprites()), m_map(NULL)
+: m_window(window), m_playercar(NULL), m_nbRows(Game::getNbVerticalSprites()), m_nbLines(Game::getNbHorizontalSprites()), m_map(NULL),
+  c1(NULL), c2(NULL), c3(NULL)
 {
     unsigned int i = 0;
 
@@ -24,6 +26,10 @@ Race::Race(SDL_Surface *window)
     for(unsigned int j = 1; j < m_nbLines; ++j)
         for(unsigned int k = 0; k < m_nbRows; ++k)
             m_map[j][k] = Shape::SAND;
+
+    c1 = new Checkpoint();
+    c2 = new Checkpoint();
+    c3 = new Checkpoint();
 }
 
 Race::~Race()

@@ -86,7 +86,7 @@
 1300988514 d:\school\polytech\1a\offroadlike\src\limit.hpp
 	"shape.hpp"
 
-1301242419 d:\school\polytech\1a\offroadlike\src\shape.hpp
+1301576232 d:\school\polytech\1a\offroadlike\src\shape.hpp
 	<SDL/SDL.h>
 	<string>
 
@@ -98,22 +98,23 @@
 	<SDL/SDL.h>
 	<string>
 
-1301242476 source:d:\school\polytech\1a\offroadlike\src\r1.cpp
+1301576969 source:d:\school\polytech\1a\offroadlike\src\r1.cpp
 	"r1.hpp"
 	"shape.hpp"
 
 1300916254 d:\school\polytech\1a\offroadlike\src\r1.hpp
 	"race.hpp"
 
-1301242403 d:\school\polytech\1a\offroadlike\src\race.hpp
+1301578784 d:\school\polytech\1a\offroadlike\src\race.hpp
 	<SDL/SDL.h>
 	<list>
 	"game.hpp"
 	"shape.hpp"
 	"playercar.hpp"
 	"limit.hpp"
+	"checkpoint.hpp"
 
-1301242466 d:\school\polytech\1a\offroadlike\src\playercar.hpp
+1301393140 d:\school\polytech\1a\offroadlike\src\playercar.hpp
 	"limit.hpp"
 	<list>
 
@@ -123,9 +124,15 @@
 1300988565 d:\school\polytech\1a\offroadlike\src\sand.hpp
 	"shape.hpp"
 
-1300988700 source:d:\school\polytech\1a\offroadlike\src\shape.cpp
+1301576507 source:d:\school\polytech\1a\offroadlike\src\shape.cpp
 	"shape.hpp"
 	"game.hpp"
+	"sand.hpp"
+	"white.hpp"
+	"turbo.hpp"
+	"limit.hpp"
+	"startingfinishline.hpp"
+	"playercar.hpp"
 	<stdexcept>
 	<SDL/SDL_image.h>
 
@@ -147,7 +154,7 @@
 1300988582 d:\school\polytech\1a\offroadlike\src\white.hpp
 	"shape.hpp"
 
-1301252594 source:d:\school\polytech\1a\offroadlike\src\game.cpp
+1301576942 source:d:\school\polytech\1a\offroadlike\src\game.cpp
 	"game.hpp"
 	"r1.hpp"
 	"r2.hpp"
@@ -155,31 +162,33 @@
 	<SDL/SDL_image.h>
 	<stdexcept>
 
-1301242458 source:d:\school\polytech\1a\offroadlike\src\playercar.cpp
+1301576761 source:d:\school\polytech\1a\offroadlike\src\playercar.cpp
 	"playercar.hpp"
 	"game.hpp"
+	<SDL/SDL_Image.h>
 	<list>
-	"limit.hpp"
 
-1301251975 source:d:\school\polytech\1a\offroadlike\src\race.cpp
+1301579709 source:d:\school\polytech\1a\offroadlike\src\race.cpp
 	"race.hpp"
-	"sand.hpp"
-	"white.hpp"
-	"turbo.hpp"
-	"limit.hpp"
-	"startingfinishline.hpp"
+	"shape.hpp"
+	"checkpoint.hpp"
 
 1301251314 d:\school\polytech\1a\offroadlike\src\r2.hpp
 	"race.hpp"
 
-1301252369 source:d:\school\polytech\1a\offroadlike\src\r2.cpp
+1301576982 source:d:\school\polytech\1a\offroadlike\src\r2.cpp
 	"r2.hpp"
 	"shape.hpp"
 
-1301252696 source:d:\school\polytech\1a\offroadlike\src\r3.cpp
+1301576996 source:d:\school\polytech\1a\offroadlike\src\r3.cpp
 	"r3.hpp"
 	"shape.hpp"
 
 1301252405 d:\school\polytech\1a\offroadlike\src\r3.hpp
 	"race.hpp"
+
+1301579575 d:\school\polytech\1a\offroadlike\src\checkpoint.hpp
+
+1301579601 source:d:\school\polytech\1a\offroadlike\src\checkpoint.cpp
+	"checkpoint.hpp"
 
