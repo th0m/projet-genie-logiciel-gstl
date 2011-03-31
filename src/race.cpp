@@ -33,13 +33,21 @@ Race::Race(SDL_Surface *window)
 
 Race::~Race()
 {
+    /* # On desactive le timer */
+    SDL_RemoveTimer(m_IATimer);
+
+    /* # On desalloue proprement chaque colonnes de notre map */
     for(unsigned int i = 0; i < m_nbLines; ++i)
         delete[] m_map[i];
+
+    /* # On desalloue les lignes */
     delete [] m_map;
 
+    /* # On supprime proprement chaque surface utilisé par la map */
     for(std::list<Shape*>::iterator it = m_surfaces.begin(); it != m_surfaces.end(); ++it)
         delete (*it);
 
+    /* # On oublie pas de supprimer la voiture du joueur */
     if(m_playercar != NULL)
         delete m_playercar;
 }
@@ -84,10 +92,12 @@ void Race::load()
             else
             {
                 ptr = Shape::getInstance((Shape::shape_type)m_map[i][j], x, y, m_window);
+
                 if(m_map[i][j] == Shape::LIMITH)
                     m_limitsH.push_back(static_cast<Limit*>(ptr));
-                else
+                else if(m_map[i][j] == Shape::LIMITV)
                     m_limitsV.push_back(static_cast<Limit*>(ptr));
+                else;
 
                 m_surfaces.push_back(ptr);
             }
