@@ -130,7 +130,11 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
     if(x == m_x && y == m_y)
         return;
 
-    //int diffx, diffy = m_speed+1;
+    /* # On initialise diffx et diffy pour nos comparaisons pour coller au bord */
+    int diffx = m_speed, diffy = m_speed;
+
+    /* # On recupere les precedentes coordonnes basses et droite de notre vehicule pour notre gestion de collision */
+    int pvyb = m_y + Game::getShapeSize(), pvxd = m_x + Game::getShapeSize();
 
     /* # On prend les coordonnees du vehicule -> vxg : vehicule x gauche, vxd : vehicule x droite */
     int vxg = x;
@@ -142,9 +146,6 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
 
     /* # On prepare le terrain pour les coordonnes des limites -> limxg : limite x gauche, limxd : limite x droite, limyh : limite y haut, limyb : limite y bas */
     int limxg =0, limxd=0, limyh=0, limyb = 0;
-
-    /*fprintf(stdout, "CoordVehicule : hg(%d,%d) hd(%d,%d) bg (%d,%d) bd(%d,%d)\n", vxg, vyh, vxd, vyh, vxg, vyb, vxd, vyb);
-    fflush(stdout);*/
 
     /* # On commence par tester si on veut se deplacer dans une limite HV Horizontale Verticale : limite dans laquelle on peut entrer en collision verticalement ou horizontalement (Haut, Bas, Gauche, Droite) */
     for(std::list<Limit*>::iterator it = limitsHV.begin(); it != limitsHV.end();it++)
@@ -159,32 +160,32 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
         {
             if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
             {
+                diffx = fabs(m_x - limxd);
                 isOk = false;
-                fprintf(stdout, "False : CoordLimit : xg %d xd %d yh %d yb %d\n",limxg, limxd, limyh, limyb);
             }
         }
         else if (m_currentPos == Right)
         {
             if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
             {
+                diffx = fabs(pvxd - limxg);
                 isOk = false;
-                fprintf(stdout, "False : CoordLimit : xg %d xd %d\n",limxg, limxd);
             }
         }
         else if(m_currentPos == Up)
         {
             if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
             {
+                diffy = fabs(m_y - limyb);
                 isOk = false;
-                fprintf(stdout, "False : CoordLimit : yh %d yb %d\n",limyh, limyb);
             }
         }
         else if (m_currentPos == Down)
         {
             if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
             {
+                diffy = fabs(pvyb - limyh);
                 isOk = false;
-                fprintf(stdout, "False : CoordLimit : yh %d yb %d\n",limyh, limyb);
             }
         }
     }
@@ -202,16 +203,16 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
         {
             if(vxg < limxd && vxg > limxg)
             {
+                diffx = fabs(m_x - limxd);
                 isOk = false;
-                fprintf(stdout, "False : CoordLimit : xg %d xd %d yh %d yb %d\n",limxg, limxd, limyh, limyb);
             }
         }
         else if (m_currentPos == Right )
         {
             if(vxd > limxg && vxd < limxd)
             {
+                diffx = fabs(pvxd - limxg);
                 isOk = false;
-                fprintf(stdout, "False : CoordLimit : xg %d xd %d\n",limxg, limxd);
             }
         }
     }
@@ -229,103 +230,52 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
         {
             if(vyh < limyb && vyh > limyh)
             {
+                diffy = fabs(m_y - limyb);
                 isOk = false;
-                fprintf(stdout, "False : CoordLimit : yh %d yb %d\n",limyh, limyb);
             }
         }
         else if (m_currentPos == Down)
         {
             if(vyb > limyh && vyb < limyb)
             {
+                diffy = fabs(pvyb - limyh);
                 isOk = false;
-                fprintf(stdout, "False : CoordLimit : yh %d yb %d\n",limyh, limyb);
             }
         }
     }
-
-    //fflush(stdout);
-
-        /*//Vehicule haut a gauche dans le limit
-        if(((vxg > limxg && vxg < limxd) && (vyh > limyh && vyh < limyb)) ||
-        //Vehicule bas a gauche dans le limit
-        ((vxg > limxg && vxg < limxd) && (vyb > limyh && vyb < limyb)) ||
-        //Vehicule haut a droite dans le limit
-        ((vxd > limxg && vxd < limxd) && (vyh > limyh && vyh < limyb)) ||
-        //Vehicule bas a droite dans le limit
-        ((vxd > limxg && vxd < limxd) && (vyb > limyh && vyb < limyb)))
-        {
-            fprintf(stdout,"False");
-            isOk = false;
-            switch(m_currentPos)
-            {
-                case Left :
-                    diffx = fabs(m_x - limxd);
-                break;
-
-                case Right :
-                    diffx = fabs(m_x - limxg);
-                break;
-
-                case Up :
-                    diffy = fabs(m_y - limyb);
-                break;
-
-                case Down :
-                    diffy = fabs(m_y - limyh);
-                break;
-            }
-
-            fprintf(stdout,"%d %d \n",diffx,diffy);
-            fflush(stdout);
-
-            break;
-        }
-    }
-                    x += m_speed;
-                break;
-
-                case Up :
-                    y -= m_speed;
-                break;
-
-                case Down :
-                    y += m_speed;
-                break;
-            }*/
 
     /* # Si on ne fonce pas dans une bordure on bouge le vehicule */
     if(isOk == true)
     {
         m_x = x, m_y = y;
     }
-
-    /*switch(m_currentPos)
+    switch(m_currentPos)
     {
         case Left :
             if(diffx < m_speed)
-            m_x -=diffx;
+                m_x -=diffx;
         break;
 
         case Right :
             if(diffx < m_speed)
-            m_x +=diffx;
+                m_x +=diffx;
         break;
 
         case Up :
             if(diffy < m_speed)
-            m_y -=diffy;
+                m_y -=diffy;
         break;
 
         case Down :
             if(diffy < m_speed)
-            m_y +=diffy;
+                m_y +=diffy;
         break;
-    }*/
+    }
 
 
 }
 
 void PlayerCar::enableTurboMode()
 {
-    m_speed *= 2;
+    m_speed = 5*2;
 }
