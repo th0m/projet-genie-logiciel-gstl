@@ -2,6 +2,7 @@
 #include "game.hpp"
 
 #include <SDL/SDL_Image.h>
+#include <cmath>
 #include <list>
 
 
@@ -129,30 +130,61 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limit)
     if(x == m_x && y == m_y)
         return;
 
-    fprintf(stdout, "CoordV : %d %d\n", x, y);
+    int diffx, diffy = m_speed+1;
+    int vxg = x;
+    int vxd = x + Game::getShapeSize();
+
+    int vyh = y;
+    int vyb = y + Game::getShapeSize();
+    fprintf(stdout, "CoordVehicule : hg(%d,%d) hd(%d,%d) bg (%d,%d) bd(%d,%d)\n", vxg, vyh, vxd, vyh, vxg, vyb, vxd, vyb);
 
     /* # On verifie que l'on va pas déplacer le véhicule dans une bordure */
     for(std::list<Limit*>::iterator it = limit.begin(); it != limit.end(); it++)
     {
+
         int limxg = (*it)->getX();
         int limxd = (*it)->getX() + Game::getShapeSize();
 
         int limyh = (*it)->getY();
         int limyb = (*it)->getY() + Game::getShapeSize();
+        fprintf(stdout, "CoordLimit : hg(%d,%d) hd(%d,%d) bg (%d,%d) bd(%d,%d)\n",limxg, limyh, limxd, limyh, limxg, limyb, limxd, limyb);
 
 
-        int vxg = x;
-        int vxd = x + Game::getShapeSize();
+        fflush(stdout);
 
-        int vyh = y;
-        int vyb = y + Game::getShapeSize();
-
-        if(((vxg >= limxg && vxg <= limxd) && (vyh >= limyh && vyh <= limyb)) ||
-        ((vxg >= limxg && vxg <= limxd) && (vyb >= limyh && vyb <= limyb)) ||
-        ((vxd >= limxg && vxd <= limxd) && (vyh >= limyh && vyh <= limyb)) ||
-        ((vxd >= limxg && vxd <= limxd) && (vyb >= limyh && vyb <= limyb)))
+        //Vehicule haut a gauche dans le limit
+        if(((vxg > limxg && vxg < limxd) && (vyh > limyh && vyh < limyb)) ||
+        //Vehicule bas a gauche dans le limit
+        ((vxg > limxg && vxg < limxd) && (vyb > limyh && vyb < limyb)) ||
+        //Vehicule haut a droite dans le limit
+        ((vxd > limxg && vxd < limxd) && (vyh > limyh && vyh < limyb)) ||
+        //Vehicule bas a droite dans le limit
+        ((vxd > limxg && vxd < limxd) && (vyb > limyh && vyb < limyb)))
         {
+            fprintf(stdout,"False");
             isOk = false;
+            switch(m_currentPos)
+            {
+                case Left :
+                    diffx = fabs(m_x - limxd);
+                break;
+
+                case Right :
+                    diffx = fabs(m_x - limxg);
+                break;
+
+                case Up :
+                    diffy = fabs(m_y - limyb);
+                break;
+
+                case Down :
+                    diffy = fabs(m_y - limyh);
+                break;
+            }
+
+            fprintf(stdout,"%d %d \n",diffx,diffy);
+            fflush(stdout);
+
             break;
         }
     }
@@ -160,7 +192,34 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limit)
 
 
     if(isOk == true)
+    {
         m_x = x, m_y = y;
+    }
+
+    switch(m_currentPos)
+    {
+        case Left :
+            if(diffx < m_speed)
+            m_x -=diffx;
+        break;
+
+        case Right :
+            if(diffx < m_speed)
+            m_x +=diffx;
+        break;
+
+        case Up :
+            if(diffy < m_speed)
+            m_y -=diffy;
+        break;
+
+        case Down :
+            if(diffy < m_speed)
+            m_y +=diffy;
+        break;
+    }
+
+
 }
 
 void PlayerCar::enableTurboMode()
