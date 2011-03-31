@@ -84,7 +84,7 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
     }
 }
 
-void PlayerCar::move(SDLKey key, std::list<Limit*> &limit)
+void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &limitsV)
 {
     bool isOk = true;
     Sint32 x = m_x, y = m_y;
@@ -139,7 +139,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limit)
     fprintf(stdout, "CoordVehicule : hg(%d,%d) hd(%d,%d) bg (%d,%d) bd(%d,%d)\n", vxg, vyh, vxd, vyh, vxg, vyb, vxd, vyb);
 
     /* # On verifie que l'on va pas déplacer le véhicule dans une bordure */
-    for(std::list<Limit*>::iterator it = limit.begin(); it != limit.end(); it++)
+    for(std::list<Limit*>::iterator it = limitsH.begin(); it != limitsH.end(); it++)
     {
 
         int limxg = (*it)->getX();

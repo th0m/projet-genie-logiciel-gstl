@@ -13,7 +13,8 @@ class Shape
             SAND,
             WHITE,
             TURBO,
-            LIMIT,
+            LIMITH,
+            LIMITV,
             STARTINGFINISHLINE,
             PLAYERCAR
         };

@@ -85,8 +85,11 @@ void Race::load()
             else
             {
                 ptr = Shape::getInstance((Shape::shape_type)m_map[i][j], x, y, m_window);
-                if(m_map[i][j] == Shape::LIMIT)
-                    m_limits.push_back(static_cast<Limit*>(ptr));
+                if(m_map[i][j] == Shape::LIMITH)
+                    m_limitsH.push_back(static_cast<Limit*>(ptr));
+                else
+                    m_limitsV.push_back(static_cast<Limit*>(ptr));
+
                 m_surfaces.push_back(ptr);
             }
 
@@ -114,7 +117,7 @@ void Race::useTurbo()
 void Race::movePlayerCar(SDLKey key)
 {
     /* # On bouge la voiture */
-    m_playercar->move(key, m_limits);
+    m_playercar->move(key, m_limitsH, m_limitsV);
 
     /* # On recharge les formes */
     refresh();
