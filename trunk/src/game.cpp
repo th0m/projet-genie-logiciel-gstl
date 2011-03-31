@@ -17,7 +17,7 @@ Game::Game()
 : m_currentRace(NULL), m_r1(NULL), m_r2(NULL), m_r3(NULL), m_isOk(true), m_window(NULL), m_ico(NULL)
 {
     /* # Chargement des composants vidéos de la librairie */
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
 
     /* # On charge et on place l'icone de l'application */
     m_ico = IMG_Load("sprites/gstl");

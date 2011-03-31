@@ -9,6 +9,7 @@
 #include "playercar.hpp"
 #include "limit.hpp"
 #include "checkpoint.hpp"
+#include "IACar.hpp"
 
 class Race
 {
@@ -51,7 +52,10 @@ class Race
         std::list<Limit*> m_limitsH, m_limitsV;
 
         /* # Les checkpoints que l'on a besoin de placer sur la map */
-        Checkpoint *c1, *c2, *c3;
+        Checkpoint *m_c1, *m_c2, *m_c3;
+
+        /* # Timer */
+        SDL_TimerID m_IATimer;
 };
 
 #endif
