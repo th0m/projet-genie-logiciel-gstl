@@ -27,7 +27,7 @@ Race::Race(SDL_Surface *window)
         for(unsigned int k = 0; k < m_nbRows; ++k)
             m_map[j][k] = Shape::SAND;
 
-    /* # Instanciation du timer des IAs */
+	/* # Instanciation du timer des IAs */
     m_IATimer = SDL_AddTimer(10, &IACar::move, NULL);
 }
 
@@ -133,3 +133,31 @@ void Race::movePlayerCar(SDLKey key)
     /* # On recharge les formes */
     refresh();
 }
+
+
+void Race::checkCheckPoint()
+{
+    m_c1->check(m_playercar->getX(), m_playercar->getY());
+    if(m_c1->isValidated())
+    {
+        m_c2->check(m_playercar->getX(), m_playercar->getY());
+    }
+    if(m_c2->isValidated())
+    {
+        m_c3->check(m_playercar->getX(), m_playercar->getY());
+    }
+    /* # si les 3 checkpoints sont valides */
+    if(m_c1->isValidated() && m_c2->isValidated() && m_c3->isValidated())
+        m_csfl->check(m_playercar->getX(), m_playercar->getY());
+
+    if(m_csfl->isValidated()){
+        /* # on remet a 0 les 3 checkpoints */
+        m_c1->reset();
+        m_c2->reset();
+        m_c3->reset();
+        m_csfl->reset();
+        printf("Tour fini !!!\n");
+    }
+
+}
+
