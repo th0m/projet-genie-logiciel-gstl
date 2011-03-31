@@ -27,6 +27,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="src\IACar.cpp" />
+		<Unit filename="src\IACar.hpp" />
 		<Unit filename="src\checkpoint.cpp" />
 		<Unit filename="src\checkpoint.hpp" />
 		<Unit filename="src\game.cpp" />
