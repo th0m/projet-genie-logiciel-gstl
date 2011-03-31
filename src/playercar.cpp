@@ -88,7 +88,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limit)
     bool isOk = true;
     Sint32 x = m_x, y = m_y;
 
-    /* # Suivant la touche appuyer soit on fait avancer le vehicule (fleche haut) soit on change la position (fleche droite ou gauche) */
+    /* # Suivant la touche appuyee soit on fait avancer le vehicule (fleche haut) soit on change la position (fleche droite ou gauche) */
     switch(key)
     {
         case SDLK_UP :
@@ -134,19 +134,30 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limit)
     /* # On verifie que l'on va pas déplacer le véhicule dans une bordure */
     for(std::list<Limit*>::iterator it = limit.begin(); it != limit.end(); it++)
     {
-        int cordxmax = (*it)->getX() + Game::getShapeSize();
-        int cordymax = (*it)->getY() + Game::getShapeSize();
+        int limxg = (*it)->getX();
+        int limxd = (*it)->getX() + Game::getShapeSize();
 
-        fprintf(stdout, "CoordLimit : %d-%d %d-%d\n", (*it)->getX(), cordxmax, (*it)->getY(), cordymax);
+        int limyh = (*it)->getY();
+        int limyb = (*it)->getY() + Game::getShapeSize();
 
 
-        if( (x >= (*it)->getX() && x <= cordxmax) &&
-            (y >= (*it)->getY() && y <= cordymax) )
+        int vxg = x;
+        int vxd = x + Game::getShapeSize();
+
+        int vyh = y;
+        int vyb = y + Game::getShapeSize();
+
+        if(((vxg >= limxg && vxg <= limxd) && (vyh >= limyh && vyh <= limyb)) ||
+        ((vxg >= limxg && vxg <= limxd) && (vyb >= limyh && vyb <= limyb)) ||
+        ((vxd >= limxg && vxd <= limxd) && (vyh >= limyh && vyh <= limyb)) ||
+        ((vxd >= limxg && vxd <= limxd) && (vyb >= limyh && vyb <= limyb)))
         {
             isOk = false;
             break;
         }
     }
+
+
 
     if(isOk == true)
         m_x = x, m_y = y;
