@@ -10,12 +10,12 @@ class Shape
 
         enum shape_type
         {
-            Sand,
-            White,
-            Turbo,
-            Limits,
-            StartingFinishLine,
-            PlayerCar
+            SAND,
+            WHITE,
+            TURBO,
+            LIMIT,
+            STARTINGFINISHLINE,
+            PLAYERCAR
         };
 
         explicit Shape(Sint32 x, Sint32 y, std::string type, SDL_Surface *window);
@@ -42,6 +42,9 @@ class Shape
 
         /* # Fonction qui renvoit le type du sprite */
         std::string getType() const;
+
+        /* # Factory design pattern - fonction d'instanciation */
+        static Shape* getInstance(Shape::shape_type type, Sint32 x, Sint32 y, SDL_Surface *window);
 
     protected:
 

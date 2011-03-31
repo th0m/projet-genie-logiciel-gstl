@@ -1,6 +1,13 @@
 #include "shape.hpp"
 #include "game.hpp"
 
+#include "sand.hpp"
+#include "white.hpp"
+#include "turbo.hpp"
+#include "limit.hpp"
+#include "startingfinishline.hpp"
+#include "playercar.hpp"
+
 #include <stdexcept>
 #include <SDL/SDL_image.h>
 
@@ -44,6 +51,53 @@ Shape::~Shape()
     /* # On y met du blanc à la place */
     SDL_FillRect(m_window, &rec, SDL_MapRGB(m_window->format, 0xff, 0xff, 0xff));
 }
+
+Shape* Shape::getInstance(shape_type type, Sint32 x, Sint32 y, SDL_Surface *window)
+{
+    Shape *ptr = NULL;
+
+    switch(type)
+    {
+            case LIMIT :
+            {
+                ptr = new Limit(x, y, window);
+                break;
+            }
+
+            case SAND :
+            {
+                ptr = new Sand(x, y, window);
+                break;
+            }
+
+            case WHITE :
+            {
+                ptr = new White(x, y, window);
+                break;
+            }
+
+            case TURBO :
+            {
+                ptr = new Turbo(x, y, window);
+                break;
+            }
+
+            case STARTINGFINISHLINE :
+            {
+                ptr = new StartingFinishLine(x, y, window);
+                break;
+            }
+
+            case PLAYERCAR :
+            {
+                ptr = new PlayerCar(x, y, window);
+                break;
+            }
+    }
+
+    return ptr;
+}
+
 
 void Shape::actualize()
 {

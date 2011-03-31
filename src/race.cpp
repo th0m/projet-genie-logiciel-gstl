@@ -1,11 +1,5 @@
 #include "race.hpp"
-
-#include "sand.hpp"
-#include "white.hpp"
-#include "turbo.hpp"
-#include "limit.hpp"
-#include "startingfinishline.hpp"
-
+#include "shape.hpp"
 
 Race::Race(SDL_Surface *window)
 : m_window(window), m_nbRows(Game::getNbVerticalSprites()), m_nbLines(Game::getNbHorizontalSprites()), m_playercar(NULL)
@@ -20,16 +14,16 @@ Race::Race(SDL_Surface *window)
 
     /* # On sait d'or et deja que la première ligne est reserve à afficher les turbos, nous avons du blanc au depart */
     for(; i < m_nbRows - 3; ++i)
-        m_map[0][i] = Shape::White;
+        m_map[0][i] = Shape::WHITE;
 
     /* # Puis les turbos */
     for(; i < m_nbRows; ++i)
-        m_map[0][i] = Shape::Turbo;
+        m_map[0][i] = Shape::TURBO;
 
     /* # Et on initialise le reste de la carte avec du sable */
     for(int j = 1; j < m_nbLines; ++j)
         for(int k = 0; k < m_nbRows; ++k)
-            m_map[j][k] = Shape::Sand;
+            m_map[j][k] = Shape::SAND;
 }
 
 Race::~Race()
@@ -76,52 +70,22 @@ void Race::load()
         x = 0;
         for(int j = 0; j < m_nbRows; j++)
         {
-            switch(m_map[i][j])
+            if(m_map[i][j] == Shape::PLAYERCAR)
             {
-                case Shape::Limits :
-                {
-                    ptr = new Limit(x, y, m_window);
+                /* On a un cas special ici, car on doit blitter la voiture *au dessus* du sable */
+                ptr = Shape::getInstance(Shape::SAND, x, y, m_window);
+                m_surfaces.push_back(ptr);
+
+                m_playercar = static_cast<PlayerCar*>(Shape::getInstance(Shape::PLAYERCAR, x, y, m_window));
+            }
+            else
+            {
+                ptr = Shape::getInstance((Shape::shape_type)m_map[i][j], x, y, m_window);
+                if(m_map[i][j] == Shape::LIMIT)
                     m_limits.push_back(static_cast<Limit*>(ptr));
-                    break;
-                }
-
-                case Shape::Sand :
-                {
-                    ptr = new Sand(x, y, m_window);
-                    break;
-                }
-
-                case Shape::White :
-                {
-                    ptr = new White(x, y, m_window);
-                    break;
-                }
-
-                case Shape::Turbo :
-                {
-                    ptr = new Turbo(x, y, m_window);
-                    break;
-                }
-
-                case Shape::StartingFinishLine :
-                {
-                    ptr = new StartingFinishLine(x, y, m_window);
-                    break;
-                }
-
-                case Shape::PlayerCar :
-                {
-                    /* # On affiche quand même du sable, etant donne que quand la voiture va bouger nous aurons du blanc */
-                    ptr = new Sand(x, y, m_window);
-
-                    /* # On peut maintenant blitter la voiture par dessus */
-                    m_playercar = new PlayerCar(x, y, m_window);
-                    break;
-                }
+                m_surfaces.push_back(ptr);
             }
 
-            if(ptr != NULL)
-                m_surfaces.push_back(ptr);
             x += shapeSize;
         }
 
