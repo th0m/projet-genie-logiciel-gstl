@@ -4,7 +4,7 @@
 
 Race::Race(SDL_Surface *window)
 : m_window(window), m_playercar(NULL), m_nbRows(Game::getNbVerticalSprites()), m_nbLines(Game::getNbHorizontalSprites()), m_map(NULL),
-  c1(NULL), c2(NULL), c3(NULL)
+  m_c1(NULL), m_c2(NULL), m_c3(NULL)
 {
     unsigned int i = 0;
 
@@ -27,9 +27,12 @@ Race::Race(SDL_Surface *window)
         for(unsigned int k = 0; k < m_nbRows; ++k)
             m_map[j][k] = Shape::SAND;
 
-    c1 = new Checkpoint();
-    c2 = new Checkpoint();
-    c3 = new Checkpoint();
+    m_c1 = new Checkpoint();
+    m_c2 = new Checkpoint();
+    m_c3 = new Checkpoint();
+
+    /* # Instanciation du timer des IAs */
+    m_IATimer = SDL_AddTimer(10, &IACar::move, NULL);
 }
 
 Race::~Race()
