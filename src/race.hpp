@@ -8,6 +8,7 @@
 #include "shape.hpp"
 #include "playercar.hpp"
 #include "limit.hpp"
+#include "checkpoint.hpp"
 
 class Race
 {
@@ -48,6 +49,9 @@ class Race
 
         /* # Un conteneur qui stock l'ensemble des limites */
         std::list<Limit*> m_limits;
+
+        /* # Les checkpoints que l'on a besoin de placer sur la map */
+        Checkpoint *c1, *c2, *c3;
 };
 
 #endif
