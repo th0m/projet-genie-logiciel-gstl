@@ -4,13 +4,13 @@
 Race::Race(SDL_Surface *window)
 : m_window(window), m_playercar(NULL), m_nbRows(Game::getNbVerticalSprites()), m_nbLines(Game::getNbHorizontalSprites()), m_map(NULL)
 {
-    int i = 0;
+    unsigned int i = 0;
 
     /* # On alloue la mémoire necessaire à stocker le niveau */
     m_map = new Uint8*[m_nbLines];
 
-    for(unsigned int i = 0; i < m_nbLines; ++i)
-        m_map[i] = new Uint8[m_nbRows];
+    for(unsigned int j = 0; j < m_nbLines; ++j)
+        m_map[j] = new Uint8[m_nbRows];
 
     /* # On sait d'or et deja que la première ligne est reserve à afficher les turbos, nous avons du blanc au depart */
     for(; i < m_nbRows - 3; ++i)
