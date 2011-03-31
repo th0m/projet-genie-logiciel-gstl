@@ -27,10 +27,6 @@ Race::Race(SDL_Surface *window)
         for(unsigned int k = 0; k < m_nbRows; ++k)
             m_map[j][k] = Shape::SAND;
 
-    m_c1 = new Checkpoint();
-    m_c2 = new Checkpoint();
-    m_c3 = new Checkpoint();
-
     /* # Instanciation du timer des IAs */
     m_IATimer = SDL_AddTimer(10, &IACar::move, NULL);
 }
