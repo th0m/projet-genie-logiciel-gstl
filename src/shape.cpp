@@ -58,6 +58,7 @@ Shape* Shape::getInstance(shape_type type, Sint32 x, Sint32 y, SDL_Surface *wind
 
     switch(type)
     {
+            case LIMITHV :
             case LIMITV :
             case LIMITH :
             {

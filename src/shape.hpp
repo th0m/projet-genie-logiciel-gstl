@@ -15,6 +15,7 @@ class Shape
             TURBO,
             LIMITH,
             LIMITV,
+            LIMITHV,
             STARTINGFINISHLINE,
             PLAYERCAR
         };

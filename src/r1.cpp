@@ -21,7 +21,7 @@ R1::R1(SDL_Surface *window)
 
     /* # Et maintenant les limites internes ! */
     for(unsigned int i = (m_nbRows / 2) - 3; i < m_nbRows - 4; ++i)
-        m_map[m_nbLines / 2][i] = Shape::LIMITH;
+        m_map[m_nbLines / 2][i] = Shape::LIMITHV;
 
     /* # La ligne d'arrivée/de départ */
     for(unsigned int i = m_nbLines / 2 + 1; i < m_nbLines - 1; ++i)

@@ -14,7 +14,7 @@ class PlayerCar : public Shape
         ~PlayerCar();
 
         /* # Fonction qui permet de deplacer le vehicule */
-        void move(SDLKey key, std::list<Limit*> &limitH, std::list<Limit*> &limitV);
+        void move(SDLKey key, std::list<Limit*> &limitH, std::list<Limit*> &limitV, std::list<Limit*> &limitsHV);
 
         /* # Fonction qui permet d'activer le mode turbo */
         void enableTurboMode();

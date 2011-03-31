@@ -84,7 +84,7 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
     }
 }
 
-void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &limitsV)
+void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &limitsV, std::list<Limit*> &limitsHV)
 {
     bool isOk = true;
     Sint32 x = m_x, y = m_y;
@@ -126,33 +126,126 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
 
     }
 
-    /* # Si on a pas fait bouger le véhicule, on a chargé un nouveau sprite donc la fonction s'arrête ici */
+    /* # Si on n'a pas fait bouger le véhicule, on a chargé un nouveau sprite donc la fonction s'arrête ici */
     if(x == m_x && y == m_y)
         return;
 
-    int diffx, diffy = m_speed+1;
+    //int diffx, diffy = m_speed+1;
+
+    /* # On prend les coordonnees du vehicule -> vxg : vehicule x gauche, vxd : vehicule x droite */
     int vxg = x;
     int vxd = x + Game::getShapeSize();
 
+    /* # On prend les coordonnees du vehicule -> vyh : vehicule y haut, vyb : vehicule y bas */
     int vyh = y;
     int vyb = y + Game::getShapeSize();
-    fprintf(stdout, "CoordVehicule : hg(%d,%d) hd(%d,%d) bg (%d,%d) bd(%d,%d)\n", vxg, vyh, vxd, vyh, vxg, vyb, vxd, vyb);
 
-    /* # On verifie que l'on va pas déplacer le véhicule dans une bordure */
+    /* # On prepare le terrain pour les coordonnes des limites -> limxg : limite x gauche, limxd : limite x droite, limyh : limite y haut, limyb : limite y bas */
+    int limxg =0, limxd=0, limyh=0, limyb = 0;
+
+    /*fprintf(stdout, "CoordVehicule : hg(%d,%d) hd(%d,%d) bg (%d,%d) bd(%d,%d)\n", vxg, vyh, vxd, vyh, vxg, vyb, vxd, vyb);
+    fflush(stdout);*/
+
+    /* # On commence par tester si on veut se deplacer dans une limite HV Horizontale Verticale : limite dans laquelle on peut entrer en collision verticalement ou horizontalement (Haut, Bas, Gauche, Droite) */
+    for(std::list<Limit*>::iterator it = limitsHV.begin(); it != limitsHV.end();it++)
+    {
+        limxg = (*it)->getX();
+        limxd = (*it)->getX() + Game::getShapeSize();
+
+        limyh = (*it)->getY();
+        limyb = (*it)->getY() + Game::getShapeSize();
+
+        if(m_currentPos == Left)
+        {
+            if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+            {
+                isOk = false;
+                fprintf(stdout, "False : CoordLimit : xg %d xd %d yh %d yb %d\n",limxg, limxd, limyh, limyb);
+            }
+        }
+        else if (m_currentPos == Right)
+        {
+            if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
+            {
+                isOk = false;
+                fprintf(stdout, "False : CoordLimit : xg %d xd %d\n",limxg, limxd);
+            }
+        }
+        else if(m_currentPos == Up)
+        {
+            if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+            {
+                isOk = false;
+                fprintf(stdout, "False : CoordLimit : yh %d yb %d\n",limyh, limyb);
+            }
+        }
+        else if (m_currentPos == Down)
+        {
+            if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
+            {
+                isOk = false;
+                fprintf(stdout, "False : CoordLimit : yh %d yb %d\n",limyh, limyb);
+            }
+        }
+    }
+
+    /* # On commence par tester si on veut se deplacer dans une limite verticale : limite dans laquelle on peut entrer en collision verticalement (Haut, Bas) */
+    for(std::list<Limit*>::iterator it = limitsV.begin(); it != limitsV.end(); it++)
+    {
+        limxg = (*it)->getX();
+        limxd = (*it)->getX() + Game::getShapeSize();
+
+        limyh = (*it)->getY();
+        limyb = (*it)->getY() + Game::getShapeSize();
+
+        if(m_currentPos == Left)
+        {
+            if(vxg < limxd && vxg > limxg)
+            {
+                isOk = false;
+                fprintf(stdout, "False : CoordLimit : xg %d xd %d yh %d yb %d\n",limxg, limxd, limyh, limyb);
+            }
+        }
+        else if (m_currentPos == Right )
+        {
+            if(vxd > limxg && vxd < limxd)
+            {
+                isOk = false;
+                fprintf(stdout, "False : CoordLimit : xg %d xd %d\n",limxg, limxd);
+            }
+        }
+    }
+
+    /* # On commence par tester si on veut se deplacer dans une limite horizontale : limite dans laquelle on peut entrer en collision horizontalement (Gauche, Droite) */
     for(std::list<Limit*>::iterator it = limitsH.begin(); it != limitsH.end(); it++)
     {
+        limxg = (*it)->getX();
+        limxd = (*it)->getX() + Game::getShapeSize();
 
-        int limxg = (*it)->getX();
-        int limxd = (*it)->getX() + Game::getShapeSize();
+        limyh = (*it)->getY();
+        limyb = (*it)->getY() + Game::getShapeSize();
 
-        int limyh = (*it)->getY();
-        int limyb = (*it)->getY() + Game::getShapeSize();
-        fprintf(stdout, "CoordLimit : hg(%d,%d) hd(%d,%d) bg (%d,%d) bd(%d,%d)\n",limxg, limyh, limxd, limyh, limxg, limyb, limxd, limyb);
+        if(m_currentPos == Up)
+        {
+            if(vyh < limyb && vyh > limyh)
+            {
+                isOk = false;
+                fprintf(stdout, "False : CoordLimit : yh %d yb %d\n",limyh, limyb);
+            }
+        }
+        else if (m_currentPos == Down)
+        {
+            if(vyb > limyh && vyb < limyb)
+            {
+                isOk = false;
+                fprintf(stdout, "False : CoordLimit : yh %d yb %d\n",limyh, limyb);
+            }
+        }
+    }
 
+    //fflush(stdout);
 
-        fflush(stdout);
-
-        //Vehicule haut a gauche dans le limit
+        /*//Vehicule haut a gauche dans le limit
         if(((vxg > limxg && vxg < limxd) && (vyh > limyh && vyh < limyb)) ||
         //Vehicule bas a gauche dans le limit
         ((vxg > limxg && vxg < limxd) && (vyb > limyh && vyb < limyb)) ||
@@ -188,15 +281,25 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
             break;
         }
     }
+                    x += m_speed;
+                break;
 
+                case Up :
+                    y -= m_speed;
+                break;
 
+                case Down :
+                    y += m_speed;
+                break;
+            }*/
 
+    /* # Si on ne fonce pas dans une bordure on bouge le vehicule */
     if(isOk == true)
     {
         m_x = x, m_y = y;
     }
 
-    switch(m_currentPos)
+    /*switch(m_currentPos)
     {
         case Left :
             if(diffx < m_speed)
@@ -217,7 +320,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
             if(diffy < m_speed)
             m_y +=diffy;
         break;
-    }
+    }*/
 
 
 }
