@@ -2,14 +2,14 @@
 #include "shape.hpp"
 
 Race::Race(SDL_Surface *window)
-: m_window(window), m_nbRows(Game::getNbVerticalSprites()), m_nbLines(Game::getNbHorizontalSprites()), m_playercar(NULL)
+: m_window(window), m_playercar(NULL), m_nbRows(Game::getNbVerticalSprites()), m_nbLines(Game::getNbHorizontalSprites()), m_map(NULL)
 {
     int i = 0;
 
     /* # On alloue la mémoire necessaire à stocker le niveau */
     m_map = new Uint8*[m_nbLines];
 
-    for(int i = 0; i < m_nbLines; ++i)
+    for(unsigned int i = 0; i < m_nbLines; ++i)
         m_map[i] = new Uint8[m_nbRows];
 
     /* # On sait d'or et deja que la première ligne est reserve à afficher les turbos, nous avons du blanc au depart */
@@ -21,14 +21,14 @@ Race::Race(SDL_Surface *window)
         m_map[0][i] = Shape::TURBO;
 
     /* # Et on initialise le reste de la carte avec du sable */
-    for(int j = 1; j < m_nbLines; ++j)
-        for(int k = 0; k < m_nbRows; ++k)
+    for(unsigned int j = 1; j < m_nbLines; ++j)
+        for(unsigned int k = 0; k < m_nbRows; ++k)
             m_map[j][k] = Shape::SAND;
 }
 
 Race::~Race()
 {
-    for(int i = 0; i < m_nbLines; ++i)
+    for(unsigned int i = 0; i < m_nbLines; ++i)
         delete[] m_map[i];
     delete [] m_map;
 
@@ -41,8 +41,6 @@ Race::~Race()
 
 void Race::refresh()
 {
-    Shape *ptr = NULL;
-
     /* # On efface l'ecran avant de ré-afficher les shapes */
     SDL_FillRect(m_window, NULL, SDL_MapRGB(m_window->format, 0xff, 0xff, 0xff));
 
@@ -65,10 +63,10 @@ void Race::load()
     Sint32 x = 0, y = 0;
     Uint32 shapeSize = Game::getShapeSize();
 
-    for(int i = 0; i < m_nbLines; ++i)
+    for(unsigned int i = 0; i < m_nbLines; ++i)
     {
         x = 0;
-        for(int j = 0; j < m_nbRows; j++)
+        for(unsigned int j = 0; j < m_nbRows; j++)
         {
             if(m_map[i][j] == Shape::PLAYERCAR)
             {
