@@ -99,6 +99,7 @@ void Game::eventloop()
                     case SDLK_LEFT :
                     {
                         m_currentRace->movePlayerCar(ev.key.keysym.sym);
+                        m_currentRace->checkCheckPoint();
                         break;
                     }
 

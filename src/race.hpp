@@ -10,6 +10,7 @@
 #include "limit.hpp"
 #include "checkpoint.hpp"
 #include "IACar.hpp"
+#include "checkpointFinishLine.hpp"
 
 class Race
 {
@@ -28,8 +29,11 @@ class Race
         /* # Fonction qui gere les turbos */
         void useTurbo();
 
-        /* # Foncction qui est capable de faire bouger la voiture du joueur */
+        /* # Fonction qui est capable de faire bouger la voiture du joueur */
         void movePlayerCar(SDLKey key);
+
+        /* # Verification des 3 checkpoints*/
+        void checkCheckPoint();
 
     protected:
 
@@ -51,11 +55,12 @@ class Race
         /* # Un conteneur qui stock l'ensemble des limites verticales et horizontales */
         std::list<Limit*> m_limitsH, m_limitsV, m_limitsHV;
 
-        /* # Les checkpoints que l'on a besoin de placer sur la map */
-        Checkpoint *m_c1, *m_c2, *m_c3;
+        /* # Les checkpoints que l'on a besoin de placer sur la map dont la ligne d'arrivee */
+        Checkpoint *m_c1, *m_c2, *m_c3, *m_csfl;
 
         /* # Timer */
         SDL_TimerID m_IATimer;
+
 };
 
 #endif
