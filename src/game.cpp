@@ -16,7 +16,8 @@ const float Game::m_revSpeed = m_fwdSpeed / 2;
 const std::string Game::m_title = "Projet Genie Logiciel 3A - GSTL";
 
 Game::Game()
-: m_currentRace(NULL), m_r1(NULL), m_r2(NULL), m_r3(NULL), m_isOk(true), m_window(NULL), m_ico(NULL)
+: m_currentRace(NULL), m_r1(NULL), m_r2(NULL), m_r3(NULL), m_isOk(true), m_window(NULL), m_ico(NULL),
+  m_rNumber(Race1)
 {
     /* # Chargement des composants vidéos de la librairie */
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
@@ -107,8 +108,25 @@ void Game::eventloop()
                             nbLap++;
                             if(nbLap == 2)
                             {
-                                printf("Fin de course \n");
                                 nbLap = 0;
+                                printf("Switch de course\n");
+                                switch(m_rNumber)
+                                {
+                                    case Race1 :
+                                        m_currentRace = m_r2;
+                                    break;
+
+                                    case Race2 :
+                                        m_currentRace = m_r3;
+                                    break;
+
+                                    case Race3 :
+                                        m_currentRace = m_r1;
+                                    break;
+                                }
+
+                                cleanScreen();
+                                m_currentRace->load();
                             }
                         }
                         break;
@@ -162,4 +180,9 @@ float Game::getRevSpeed()
 Uint32 Game::getTurboTime()
 {
     return m_turboTime;
+}
+
+void Game::cleanScreen()
+{
+    SDL_FillRect(m_window, NULL, SDL_MapRGB(m_window->format, 0xff, 0xff, 0xff));
 }

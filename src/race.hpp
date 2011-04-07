@@ -16,7 +16,11 @@ class Race
 {
     public:
 
-        typedef enum Lap { Finished = 1, InProgress = 2 };
+        typedef enum Lap
+        {
+            Finished,
+            InProgress
+        };
 
         explicit Race(SDL_Surface *window);
 
@@ -65,6 +69,8 @@ class Race
 
         /* # Timer */
         SDL_TimerID m_IATimer;
+
+        bool isAlreadyLoaded;
 
 };
 

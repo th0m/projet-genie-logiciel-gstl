@@ -36,7 +36,6 @@ PlayerCar::PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window)
     m_currentPos = Left;
 }
 
-
 PlayerCar::~PlayerCar()
 {
     /* # On decharge proprement les images */

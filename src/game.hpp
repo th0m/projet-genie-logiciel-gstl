@@ -38,8 +38,17 @@ class Game
 
     private:
 
+        typedef enum RaceNumber
+        {
+            Race1,
+            Race2,
+            Race3
+        };
+
         /* # La boucle principale d'evenement */
         void eventloop();
+
+        void cleanScreen();
 
         /* # La course courante */
         Race *m_currentRace;
@@ -67,6 +76,8 @@ class Game
 
         /* # Le titre de la fenetre */
         static const std::string m_title;
+
+        RaceNumber m_rNumber;
 };
 
 #endif
