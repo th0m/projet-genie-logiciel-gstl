@@ -20,7 +20,7 @@ class Shape
             PLAYERCAR
         };
 
-        explicit Shape(Sint32 x, Sint32 y, std::string type, SDL_Surface *window);
+        explicit Shape(float x, float y, std::string type, SDL_Surface *window);
 
         ~Shape();
 
@@ -37,16 +37,16 @@ class Shape
         void actualize();
 
         /* # Fonction qui renvoit le coordonne x de la forme */
-        Sint32 getX() const;
+        float getX() const;
 
         /* # Fonction qui renvoit le coordonne y de la forme */
-        Sint32 getY() const;
+        float getY() const;
 
         /* # Fonction qui renvoit le type du sprite */
         std::string getType() const;
 
         /* # Factory design pattern - fonction d'instanciation */
-        static Shape* getInstance(Shape::shape_type type, Sint32 x, Sint32 y, SDL_Surface *window);
+        static Shape* getInstance(Shape::shape_type type, float x, float y, SDL_Surface *window);
 
     protected:
 
@@ -57,7 +57,7 @@ class Shape
         bool m_isHidden;
 
         /* # Coordonnées de la forme */
-        Sint32 m_x, m_y;
+        float m_x, m_y;
 
         /* # Notre sprite, et la fenetre */
         SDL_Surface *m_img, *m_window;
