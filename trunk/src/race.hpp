@@ -16,7 +16,7 @@ class Race
 {
     public:
 
-        typedef enum Lap { finished = 1, inProgress = 2 };
+        typedef enum Lap { Finished = 1, InProgress = 2 };
 
         explicit Race(SDL_Surface *window);
 
