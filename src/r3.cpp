@@ -20,11 +20,11 @@ R3::R3(SDL_Surface *window)
     m_map[m_nbLines - 1][0] = m_map[m_nbLines - 1][m_nbRows - 1] = Shape::WHITE;
 
     /* # Pour reconnaitre la course numero 3 */
-    m_map[(m_nbLines / 2) - 1][m_nbRows - 5] = Shape::LIMITV;
+    m_map[(m_nbLines / 2) - 1][m_nbRows - 5] = Shape::LIMITHV;
 
     /* # Et maintenant les limites internes ! */
     for(unsigned int i = (m_nbRows / 2) - 3; i < m_nbRows - 4; ++i)
-        m_map[m_nbLines / 2][i] = Shape::LIMITH;
+        m_map[m_nbLines / 2][i] = Shape::LIMITHV;
 
     /* # La ligne d'arrivée/de départ */
     for(unsigned int i = m_nbLines / 2 + 1; i < m_nbLines - 1; ++i)
@@ -32,4 +32,13 @@ R3::R3(SDL_Surface *window)
 
     /* # Le bolide du joueur */
     m_map[m_nbLines / 2 + 1][(m_nbRows/2)] = Shape::PLAYERCAR;
+
+    /* # Réutilisation des checkpoints de la course numéro 1 étant donne que les courses ne changent que *tres* peu */
+    m_c1 = new Checkpoint(0, 180, 160, 180);
+    m_c2 = new Checkpoint(350, 0, 350, 200);
+    m_c3 = new Checkpoint(440, 180, 600, 180);
+
+    m_csfl = new Checkpoint(280, 240, 280, 400);
+
+
 }

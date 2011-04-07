@@ -25,7 +25,7 @@ class PlayerCar : public Shape
 
     private:
 
-        enum CurrentPosition
+        typedef enum CurrentPosition
         {
             Up,
             Down,
@@ -36,6 +36,14 @@ class PlayerCar : public Shape
             SouthWest,
             SouthEast
         };
+
+        typedef enum PlayerCarState
+        {
+            TurboMode,
+            Others
+        };
+
+        float getSpeed();
 
         void loadAnotherPosition(SDLKey key);
 
@@ -55,6 +63,8 @@ class PlayerCar : public Shape
         SDL_TimerID m_timer;
 
         Uint32 currentScore;
+
+        PlayerCarState m_state;
 };
 
 #endif
