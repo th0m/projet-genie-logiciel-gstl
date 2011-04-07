@@ -20,6 +20,9 @@ class PlayerCar : public Shape
         /* # Fonction qui permet d'activer le mode turbo */
         void enableTurboMode();
 
+        /* # Fonction accesseur permettant de recupérer le score du joueur */
+        Uint32 getScore();
+
     private:
 
         enum CurrentPosition
@@ -50,6 +53,8 @@ class PlayerCar : public Shape
         CurrentPosition m_currentPos;
 
         SDL_TimerID m_timer;
+
+        Uint32 currentScore;
 };
 
 #endif

@@ -4,7 +4,7 @@
 
 Race::Race(SDL_Surface *window)
 : m_window(window), m_playercar(NULL), m_nbRows(Game::getNbVerticalSprites()), m_nbLines(Game::getNbHorizontalSprites()), m_map(NULL),
-  m_c1(NULL), m_c2(NULL), m_c3(NULL)
+  m_c1(NULL), m_c2(NULL), m_c3(NULL), isAlreadyLoaded(false)
 {
     unsigned int i = 0;
 
@@ -76,6 +76,10 @@ void Race::load()
     Sint32 x = 0, y = 0;
     Uint32 shapeSize = Game::getShapeSize();
 
+    if(isAlreadyLoaded == false)
+        isAlreadyLoaded = true;
+    else
+        return;
     for(unsigned int i = 0; i < m_nbLines; ++i)
     {
         x = 0;
@@ -135,7 +139,6 @@ void Race::movePlayerCar(SDLKey key)
     /* # On recharge les formes */
     refresh();
 }
-
 
 Race::Lap Race::checkCheckPoint()
 {
