@@ -1,4 +1,5 @@
 #include "checkpoint.hpp"
+#include "game.hpp"
 #include <stdio.h>
 
 Checkpoint::Checkpoint(int x1, int y1, int x2, int y2)
@@ -21,35 +22,75 @@ void Checkpoint::reset()
     m_isValidated = false;
 }
 
-void Checkpoint::check(int lex, int ley)
+
+void Checkpoint::checkC1(int lex, int ley)
 {
     /* # on prend les coordonnées du centre de la voiture */
     int x = lex + 20, y = ley + 20;
-    /* # si le checpoint est vertical */
-    if(m_pointBegin.x == m_pointEnd.x)
-    {
-        /* # pour savoir quel point est le plus haut */
-        if(m_pointBegin.y < m_pointEnd.y){
-            if(m_pointBegin.x == x && m_pointBegin.y <= y && y <= m_pointEnd.y)
-                m_isValidated = !m_isValidated;
-        }
-        else{
-            if(m_pointBegin.x == x && m_pointEnd.y <= y && y <= m_pointBegin.y)
-                m_isValidated = !m_isValidated;
-        }
-    }
-    /* # si le checpoint est horizontal */
-    if(m_pointBegin.y == m_pointEnd.y)
-    {
-        /* # pour savoir quel point est le plus a gauche */
-        if(m_pointBegin.x < m_pointEnd.x){
-            if(m_pointBegin.y == y && m_pointBegin.x <= x && x <= m_pointEnd.x)
-                m_isValidated = !m_isValidated;
-        }
-        else{
-            if(m_pointBegin.y == y && m_pointEnd.x <= x && x <= m_pointBegin.x)
-                m_isValidated = !m_isValidated;
-        }
-    }
-    printf("Verif checkpoint : %d\n",m_isValidated );
+    int pixelParSeconde = Game::getFwdSpeed() * 2;
+    /* # le checpoint est horizontal */
+
+
+    if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y > y && y > m_pointBegin.y - pixelParSeconde)
+        m_isValidated = true;
+    if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y < y && y < m_pointBegin.y + pixelParSeconde)
+        m_isValidated = false;
+
+    printf("Verif checkpoint C1 : %d\n",m_isValidated );
+    fflush(stdout);
+
+}
+
+void Checkpoint::checkC2(int lex, int ley)
+{
+    /* # on prend les coordonnées du centre de la voiture */
+    int x = lex + 20, y = ley + 20;
+    int pixelParSeconde = Game::getFwdSpeed() * 2;
+    /* # le checpoint est vertical */
+    /* # pour savoir quel point est le plus haut */
+    if(m_pointBegin.x < x && x < m_pointBegin.x + pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
+        m_isValidated = true;
+    if(m_pointBegin.x > x && x > m_pointBegin.x - pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
+        m_isValidated = false;
+
+    printf("Verif checkpoint C2 : %d\n",m_isValidated );
+    fflush(stdout);
+}
+
+
+
+void Checkpoint::checkC3(int lex, int ley)
+{
+    /* # on prend les coordonnées du centre de la voiture */
+    int x = lex + 20, y = ley + 20;
+    int pixelParSeconde = Game::getFwdSpeed() * 2;
+    /* # le checpoint est horizontal */
+
+
+    if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y > y && y > m_pointBegin.y - pixelParSeconde)
+        m_isValidated = false;
+    if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y < y && y < m_pointBegin.y + pixelParSeconde)
+        m_isValidated = true;
+
+    printf("Verif checkpoint C3 : %d\n",m_isValidated );
+    fflush(stdout);
+}
+
+
+
+void Checkpoint::checkCF(int lex, int ley)
+{
+    /* # on prend les coordonnées du centre de la voiture */
+    int x = lex + 20, y = ley + 20;
+    int pixelParSeconde = Game::getFwdSpeed() * 2;
+    /* # le checpoint est vertical */
+    /* # pour savoir quel point est le plus haut */
+    if(m_pointBegin.x > x && x > m_pointBegin.x - pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
+        m_isValidated = true;
+    if(m_pointBegin.x < x && x < m_pointBegin.x + pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
+        m_isValidated = false;
+
+    printf("Verif checkpoint CF : %d\n",m_isValidated );
+    fflush(stdout);
+
 }

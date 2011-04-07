@@ -10,6 +10,10 @@ class Checkpoint
         bool isValidated() const;
 
         void check(int x, int y);
+        void checkC1(int x, int y);
+        void checkC2(int x, int y);
+        void checkC3(int x, int y);
+        void checkCF(int x, int y);
 
         void reset();
 

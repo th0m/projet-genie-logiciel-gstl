@@ -135,29 +135,27 @@ void Race::movePlayerCar(SDLKey key)
 }
 
 
-void Race::checkCheckPoint()
+Race::Lap Race::checkCheckPoint()
 {
-    m_c1->check(m_playercar->getX(), m_playercar->getY());
-    if(m_c1->isValidated())
-    {
-        m_c2->check(m_playercar->getX(), m_playercar->getY());
-    }
-    if(m_c2->isValidated())
-    {
-        m_c3->check(m_playercar->getX(), m_playercar->getY());
-    }
-    /* # si les 3 checkpoints sont valides */
-    if(m_c1->isValidated() && m_c2->isValidated() && m_c3->isValidated())
-        m_csfl->check(m_playercar->getX(), m_playercar->getY());
+    Lap lap = inProgress;
 
-    if(m_csfl->isValidated()){
-        /* # on remet a 0 les 3 checkpoints */
+    m_c1->checkC1(m_playercar->getX(), m_playercar->getY());
+    m_c2->checkC2(m_playercar->getX(), m_playercar->getY());
+    m_c3->checkC3(m_playercar->getX(), m_playercar->getY());
+    m_csfl->checkCF(m_playercar->getX(), m_playercar->getY());
+
+    /* # si les 3 checkpoints sont valides */
+    if(m_c1->isValidated() && m_c2->isValidated() && m_c3->isValidated() && m_csfl->isValidated())
+    {
+        lap = finished;
         m_c1->reset();
         m_c2->reset();
         m_c3->reset();
-        m_csfl->reset();
-        printf("Tour fini !!!\n");
-    }
 
+        printf("Tour fini !!!\n");
+        fflush(stdout);
+    }
+    m_csfl->reset();
+    return lap;
 }
 

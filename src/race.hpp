@@ -15,6 +15,8 @@ class Race
 {
     public:
 
+        typedef enum Lap { finished = 1, inProgress = 2 };
+
         explicit Race(SDL_Surface *window);
 
         ~Race();
@@ -32,7 +34,7 @@ class Race
         void movePlayerCar(SDLKey key);
 
         /* # Verification des 3 checkpoints*/
-        void checkCheckPoint();
+        Lap checkCheckPoint();
 
     protected:
 
