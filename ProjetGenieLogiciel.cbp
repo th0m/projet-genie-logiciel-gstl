@@ -30,6 +30,8 @@
 		</Compiler>
 		<Unit filename="src\checkpoint.cpp" />
 		<Unit filename="src\checkpoint.hpp" />
+		<Unit filename="src\flaque.cpp" />
+		<Unit filename="src\flaque.hpp" />
 		<Unit filename="src\game.cpp" />
 		<Unit filename="src\game.hpp" />
 		<Unit filename="src\iacar.cpp" />
@@ -50,7 +52,6 @@
 		<Unit filename="src\sand.cpp" />
 		<Unit filename="src\sand.hpp" />
 		<Unit filename="src\score.cpp" />
-		<Unit filename="src\score.h" />
 		<Unit filename="src\score.hpp" />
 		<Unit filename="src\shape.cpp" />
 		<Unit filename="src\shape.hpp" />
