@@ -33,16 +33,10 @@ R2::R2(SDL_Surface *window)
     /* # Le bolide du joueur */
     m_map[m_nbLines / 2 + 1][(m_nbRows/2)] = Shape::PLAYERCAR;
 
-    /* # attention ;
-        m_c1 : premier checkpoint recontré
-        m_c2 : second checkpoint recontré
-        m_c3 : troisieme checkpoint recontré
-        l'ordre sert par la suite pour la validation du tour
-    */
+    /* # Réutilisation des checkpoints de la course numéro 1 étant donne que les courses ne changent que *tres* peu */
     m_c1 = new Checkpoint(0, 180, 160, 180);
     m_c2 = new Checkpoint(350, 0, 350, 200);
     m_c3 = new Checkpoint(440, 180, 600, 180);
 
     m_csfl = new Checkpoint(280, 240, 280, 400);
-
 }

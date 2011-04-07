@@ -13,10 +13,11 @@ const Uint32 Game::m_shapeSize = 40;
 const Uint32 Game::m_turboTime = 2000;
 const float Game::m_fwdSpeed = 5;
 const float Game::m_revSpeed = m_fwdSpeed / 2;
+const Uint32 Game::m_nbLap = 2;
 const std::string Game::m_title = "Projet Genie Logiciel 3A - GSTL";
 
 Game::Game()
-: m_currentRace(NULL), m_r1(NULL), m_r2(NULL), m_r3(NULL), m_isOk(true), m_window(NULL), m_ico(NULL),
+: m_currentRace(NULL), m_isOk(true), m_window(NULL), m_ico(NULL),
   m_rNumber(Race1)
 {
     /* # Chargement des composants vidéos de la librairie */
@@ -44,23 +45,14 @@ Game::Game()
     /* # On renome la fenetre */
     SDL_WM_SetCaption(m_title.c_str(), NULL);
 
-    /* # On instancie les courses */
-    m_r1 = new R1(m_window);
-
-    m_r2 = new R2(m_window);
-
-    m_r3 = new R3(m_window);
-
     /* # On commence par la première course */
-    m_currentRace = m_r1;
+    m_currentRace = new R1(m_window);
 }
 
 Game::~Game()
 {
     /* # On detruit les courses */
-    delete m_r1;
-    delete m_r2;
-    delete m_r3;
+    delete m_currentRace;
 
     /* # On décharge la librarie proprement à la mort de l'instance du jeux */
     SDL_Quit();
@@ -108,7 +100,7 @@ void Game::eventloop()
                             nbLap++;
                             printf("Fin de tours\n");
                             fflush(stdout);
-                            if(nbLap == 2)
+                            if(nbLap == Game::m_nbLap)
                             {
                                 nbLap = 0;
                                 printf("Switch de course\n");
@@ -116,17 +108,17 @@ void Game::eventloop()
                                 switch(m_rNumber)
                                 {
                                     case Race1 :
-                                        m_currentRace = m_r2;
+                                        m_currentRace = new R2(m_window);
                                         m_rNumber = Race2;
                                     break;
 
                                     case Race2 :
-                                        m_currentRace = m_r3;
+                                        m_currentRace = new R3(m_window);
                                         m_rNumber = Race3;
                                     break;
 
                                     case Race3 :
-                                        m_currentRace = m_r1;
+                                        m_currentRace = new R1(m_window);
                                         m_rNumber = Race1;
                                     break;
                                 }

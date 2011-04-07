@@ -79,7 +79,8 @@ void Race::load()
     if(isAlreadyLoaded == false)
         isAlreadyLoaded = true;
     else
-        return;
+        refresh();
+
     for(unsigned int i = 0; i < m_nbLines; ++i)
     {
         x = 0;

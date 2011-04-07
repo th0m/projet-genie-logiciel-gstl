@@ -53,15 +53,6 @@ class Game
         /* # La course courante */
         Race *m_currentRace;
 
-        /* # La première course */
-        R1 *m_r1;
-
-        /* # La seconde course */
-        R2 *m_r2;
-
-        /* # La dernière course */
-        R3 *m_r3;
-
         /* # Sommes-nous toujours dans la boucle d'evenement ? */
         bool m_isOk;
 
@@ -69,7 +60,7 @@ class Game
         SDL_Surface *m_window, *m_ico;
 
         /* # La largeur et la hauteur de notre fenetre */
-        static const Uint32 m_width, m_height, m_shapeSize, m_turboTime;
+        static const Uint32 m_width, m_height, m_shapeSize, m_turboTime, m_nbLap;
 
         /* # Vitesses marche avant et marche arriere */
         static const float m_fwdSpeed, m_revSpeed;
