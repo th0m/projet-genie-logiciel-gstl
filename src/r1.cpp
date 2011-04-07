@@ -27,6 +27,10 @@ R1::R1(SDL_Surface *window)
     for(unsigned int i = m_nbLines / 2 + 1; i < m_nbLines - 1; ++i)
         m_map[i][(m_nbRows / 2) - 1] = Shape::STARTINGFINISHLINE;
 
+    /* # Deux flaques */
+    m_map[m_nbLines / 2 + 2][(m_nbRows/2)-3] = Shape::FLAQUE;
+    m_map[m_nbLines / 2 + 2][(m_nbRows/2)-4] = Shape::FLAQUE;
+
     /* # Le bolide du joueur */
     m_map[m_nbLines / 2 + 1][(m_nbRows/2)] = Shape::PLAYERCAR;
 

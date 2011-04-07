@@ -32,7 +32,9 @@ class Game
 
         static Uint32 getTurboTime();
 
-        static Uint32 getFwdSpeed();
+        static float getFwdSpeed();
+
+        static float getRevSpeed();
 
     private:
 
@@ -58,7 +60,10 @@ class Game
         SDL_Surface *m_window, *m_ico;
 
         /* # La largeur et la hauteur de notre fenetre */
-        static const Uint32 m_width, m_height, m_shapeSize, m_turboTime, m_fwdSpeed;
+        static const Uint32 m_width, m_height, m_shapeSize, m_turboTime;
+
+        /* # Vitesses marche avant et marche arriere */
+        static const float m_fwdSpeed, m_revSpeed;
 
         /* # Le titre de la fenetre */
         static const std::string m_title;

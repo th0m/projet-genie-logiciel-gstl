@@ -129,9 +129,10 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
     }
 }
 
-void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &limitsV, std::list<Limit*> &limitsHV)
+void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &limitsV, std::list<Limit*> &limitsHV, std::list<Flaque*> &flaques)
 {
     bool isOk = true;
+    bool isFlaque = false;
     float x = m_x, y = m_y;
 
     /* # Composantes x et y pour conserver la vitesse en diagonale */
@@ -276,7 +277,102 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
     float vxg = x, vxd = x + Game::getShapeSize(), vyh = y, vyb = y + Game::getShapeSize();
 
     /* # On prepare le terrain pour les coordonnes des limites -> limxg : limite x gauche, limxd : limite x droite, limyh : limite y haut, limyb : limite y bas */
-    float limxg =0, limxd=0, limyh=0, limyb = 0;
+    float limxg = 0, limxd = 0, limyh = 0, limyb = 0;
+
+    /* # On test si on est dans une flaque */
+    for(std::list<Flaque*>::iterator it = flaques.begin(); it != flaques.end();it++)
+    {
+        limxg = (*it)->getX();
+        limxd = (*it)->getX() + Game::getShapeSize();
+
+        limyh = (*it)->getY();
+        limyb = (*it)->getY() + Game::getShapeSize();
+
+        /* # Marche avant */
+        if(key == SDLK_UP)
+            if(m_currentPos == Left)
+                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+                    isFlaque=true;
+            else if (m_currentPos == Right)
+                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
+                    isFlaque=true;
+            else if(m_currentPos == Up)
+                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+                    isFlaque=true;
+            else if (m_currentPos == Down)
+                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
+                    isFlaque=true;
+            else if(m_currentPos == NorthWest)
+                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+                    isFlaque=true;
+                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+                    isFlaque=true;
+            else if(m_currentPos == NorthEast)
+                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
+                    isFlaque=true;
+                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+                    isFlaque=true;
+            else if(m_currentPos == SouthEast)
+                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
+                    isFlaque=true;
+                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
+                    isFlaque=true;
+            else if(m_currentPos == SouthWest)
+                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+                    isFlaque=true;
+                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
+                    isFlaque=true;
+        /* # Marche arriere */
+        else if(key == SDLK_DOWN)
+            if(m_currentPos == Right )
+                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+                    isFlaque=true;
+            else if (m_currentPos == Left)
+                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
+                    isFlaque=true;
+            else if(m_currentPos == Down)
+                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+                    isFlaque=true;
+            else if (m_currentPos == Up)
+                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
+                    isFlaque=true;
+            else if(m_currentPos == SouthEast)
+                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+                    isFlaque=true;
+                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+                    isFlaque=true;
+            else if(m_currentPos == SouthWest)
+                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
+                    isFlaque=true;
+                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+                    isFlaque=true;
+            else if(m_currentPos == NorthWest)
+                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
+                    isFlaque=true;
+                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
+                    isFlaque=true;
+            else if(m_currentPos == NorthEast)
+                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+                    isFlaque=true;
+                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
+                    isFlaque=true;
+    }
+    if(isFlaque)
+    {
+        if(key == SDLK_UP)
+            m_fwdspeed=Game::getFwdSpeed()/2;
+        if(key == SDLK_DOWN)
+            m_revspeed=Game::getRevSpeed()/2;
+    }
+    else
+    {
+        if(key == SDLK_UP)
+            m_fwdspeed=Game::getFwdSpeed();
+        if(key == SDLK_DOWN)
+            m_revspeed=Game::getRevSpeed();
+    }
+
+
 
     /* # On commence par tester si on veut se deplacer dans une limite HV Horizontale Verticale : limite dans laquelle on peut entrer en collision verticalement ou horizontalement (Haut, Bas, Gauche, Droite) */
     for(std::list<Limit*>::iterator it = limitsHV.begin(); it != limitsHV.end();it++)
@@ -571,7 +667,6 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
             {
                 if(vxd > limxg && vxd < limxd)
                 {
-                    printf("nw down v diffx %f\n",diffx);
                     diffx = fabs(pvxd - limxg);
                     isOk = false;
                 }

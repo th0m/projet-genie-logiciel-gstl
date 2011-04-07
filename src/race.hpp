@@ -10,6 +10,7 @@
 #include "limit.hpp"
 #include "checkpoint.hpp"
 #include "iacar.hpp"
+#include "flaque.hpp"
 
 class Race
 {
@@ -55,6 +56,9 @@ class Race
 
         /* # Un conteneur qui stock l'ensemble des limites verticales et horizontales */
         std::list<Limit*> m_limitsH, m_limitsV, m_limitsHV;
+
+        /* # Un conteneur qui stock l'ensemble des flaques */
+        std::list<Flaque*> m_flaques;
 
         /* # Les checkpoints que l'on a besoin de placer sur la map dont la ligne d'arrivee */
         Checkpoint *m_c1, *m_c2, *m_c3, *m_csfl;

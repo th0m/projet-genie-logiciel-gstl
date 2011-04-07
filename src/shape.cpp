@@ -7,6 +7,7 @@
 #include "limit.hpp"
 #include "startingfinishline.hpp"
 #include "playercar.hpp"
+#include "flaque.hpp"
 
 #include <stdexcept>
 #include <SDL/SDL_image.h>
@@ -93,6 +94,11 @@ Shape* Shape::getInstance(shape_type type, float x, float y, SDL_Surface *window
             case PLAYERCAR :
             {
                 ptr = new PlayerCar(x, y, window);
+                break;
+            }
+            case FLAQUE :
+            {
+                ptr = new Flaque(x,y,window);
                 break;
             }
     }

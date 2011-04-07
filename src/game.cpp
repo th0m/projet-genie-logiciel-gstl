@@ -11,7 +11,8 @@ const Uint32 Game::m_width = 600;
 const Uint32 Game::m_height = 400;
 const Uint32 Game::m_shapeSize = 40;
 const Uint32 Game::m_turboTime = 2000;
-const Uint32 Game::m_fwdSpeed = 5;
+const float Game::m_fwdSpeed = 5;
+const float Game::m_revSpeed = m_fwdSpeed / 2;
 const std::string Game::m_title = "Projet Genie Logiciel 3A - GSTL";
 
 Game::Game()
@@ -139,9 +140,14 @@ Uint32 Game::getShapeSize()
     return m_shapeSize;
 }
 
-Uint32 Game::getFwdSpeed()
+float Game::getFwdSpeed()
 {
     return m_fwdSpeed;
+}
+
+float Game::getRevSpeed()
+{
+    return m_revSpeed;
 }
 
 Uint32 Game::getTurboTime()
