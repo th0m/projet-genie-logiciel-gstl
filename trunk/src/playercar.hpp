@@ -2,6 +2,7 @@
 #define PLAYERCAR_HPP
 
 #include "limit.hpp"
+#include "flaque.hpp"
 #include <list>
 
 
@@ -14,7 +15,7 @@ class PlayerCar : public Shape
         ~PlayerCar();
 
         /* # Fonction qui permet de deplacer le vehicule */
-        void move(SDLKey key, std::list<Limit*> &limitH, std::list<Limit*> &limitV, std::list<Limit*> &limitsHV);
+        void move(SDLKey key, std::list<Limit*> &limitH, std::list<Limit*> &limitV, std::list<Limit*> &limitsHV, std::list<Flaque*> &flaques);
 
         /* # Fonction qui permet d'activer le mode turbo */
         void enableTurboMode();

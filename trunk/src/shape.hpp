@@ -17,7 +17,8 @@ class Shape
             LIMITV,
             LIMITHV,
             STARTINGFINISHLINE,
-            PLAYERCAR
+            PLAYERCAR,
+            FLAQUE
         };
 
         explicit Shape(float x, float y, std::string type, SDL_Surface *window);
