@@ -11,7 +11,7 @@
 #include <stdexcept>
 #include <SDL/SDL_image.h>
 
-Shape::Shape(Sint32 x, Sint32 y, std::string type, SDL_Surface *window)
+Shape::Shape(float x, float y, std::string type, SDL_Surface *window)
 : m_type(type), m_isHidden(false), m_x(x), m_y(y), m_img(NULL), m_window(window)
 {
     std::string path("sprites/" + m_type);
@@ -52,7 +52,7 @@ Shape::~Shape()
     SDL_FillRect(m_window, &rec, SDL_MapRGB(m_window->format, 0xff, 0xff, 0xff));
 }
 
-Shape* Shape::getInstance(shape_type type, Sint32 x, Sint32 y, SDL_Surface *window)
+Shape* Shape::getInstance(shape_type type, float x, float y, SDL_Surface *window)
 {
     Shape *ptr = NULL;
 
@@ -139,12 +139,12 @@ void Shape::unhide()
     actualize();
 }
 
-Sint32 Shape::getX() const
+float Shape::getX() const
 {
     return m_x;
 }
 
-Sint32 Shape::getY() const
+float Shape::getY() const
 {
     return m_y;
 }

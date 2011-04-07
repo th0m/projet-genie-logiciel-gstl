@@ -26,7 +26,11 @@ class PlayerCar : public Shape
             Up,
             Down,
             Left,
-            Right
+            Right,
+            NorthWest,
+            NorthEast,
+            SouthWest,
+            SouthEast
         };
 
         void loadAnotherPosition(SDLKey key);
@@ -38,9 +42,9 @@ class PlayerCar : public Shape
         static Uint32 callback(Uint32 interval, void* param);
 
         /* # vitesse du véhicule forward : marche avant, reverse : marche arriere*/
-        Uint32 m_fwdspeed, m_revspeed;
+        float m_fwdspeed, m_revspeed;
 
-        SDL_Surface *m_up, *m_down, *m_right, *m_left;
+        SDL_Surface *m_up, *m_down, *m_right, *m_left, *m_northwest, *m_northeast, *m_southwest, *m_southeast;
 
         CurrentPosition m_currentPos;
 
