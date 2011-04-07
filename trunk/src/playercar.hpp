@@ -31,6 +31,11 @@ class PlayerCar : public Shape
 
         void loadAnotherPosition(SDLKey key);
 
+        void setNormalSpeed();
+
+        void destroyTimer();
+
+        static Uint32 callback(Uint32 interval, void* param);
 
         /* # vitesse du véhicule forward : marche avant, reverse : marche arriere*/
         Uint32 m_fwdspeed, m_revspeed;
@@ -38,6 +43,8 @@ class PlayerCar : public Shape
         SDL_Surface *m_up, *m_down, *m_right, *m_left;
 
         CurrentPosition m_currentPos;
+
+        SDL_TimerID m_timer;
 };
 
 #endif

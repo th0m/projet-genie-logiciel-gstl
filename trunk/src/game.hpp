@@ -30,6 +30,10 @@ class Game
         /* # Fonction qui permet de récuperer la taille d'un sprite */
         static Uint32 getShapeSize();
 
+        static Uint32 getTurboTime();
+
+        static Uint32 getFwdSpeed();
+
     private:
 
         /* # La boucle principale d'evenement */
@@ -54,7 +58,7 @@ class Game
         SDL_Surface *m_window, *m_ico;
 
         /* # La largeur et la hauteur de notre fenetre */
-        static const Uint32 m_width, m_height, m_shapeSize;
+        static const Uint32 m_width, m_height, m_shapeSize, m_turboTime, m_fwdSpeed;
 
         /* # Le titre de la fenetre */
         static const std::string m_title;

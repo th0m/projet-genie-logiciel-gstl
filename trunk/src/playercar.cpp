@@ -7,7 +7,7 @@
 
 
 PlayerCar::PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window)
-: Shape(x, y, std::string("playercarg"), window), m_fwdspeed(5), m_revspeed(m_fwdspeed/2)
+: Shape(x, y, std::string("playercarg"), window), m_fwdspeed(Game::getFwdSpeed()), m_revspeed(m_fwdspeed / 2), m_timer(0)
 {
     /* # On charge les differentes sprites */
     m_up = IMG_Load("sprites/playercarh");
@@ -427,5 +427,27 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
 
 void PlayerCar::enableTurboMode()
 {
-    m_fwdspeed = 5*2;
+    m_timer = SDL_AddTimer(Game::getTurboTime(), &PlayerCar::callback, this);
+    m_fwdspeed = Game::getFwdSpeed() * 2;
+}
+
+void PlayerCar::setNormalSpeed()
+{
+    m_fwdspeed = Game::getFwdSpeed();
+}
+
+Uint32 PlayerCar::callback(Uint32 interval, void* param)
+{
+    PlayerCar* inst = (PlayerCar*)param;
+    inst->setNormalSpeed();
+    inst->destroyTimer();
+}
+
+void PlayerCar::destroyTimer()
+{
+    if(m_timer != 0)
+    {
+        SDL_RemoveTimer(m_timer);
+        m_timer = 0;
+    }
 }
