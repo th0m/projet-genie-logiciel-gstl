@@ -35,10 +35,6 @@ void Checkpoint::checkC1(int lex, int ley)
         m_isValidated = true;
     if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y < y && y < m_pointBegin.y + pixelParSeconde)
         m_isValidated = false;
-
-    printf("Verif checkpoint C1 : %d\n",m_isValidated );
-    fflush(stdout);
-
 }
 
 void Checkpoint::checkC2(int lex, int ley)
@@ -52,9 +48,6 @@ void Checkpoint::checkC2(int lex, int ley)
         m_isValidated = true;
     if(m_pointBegin.x > x && x > m_pointBegin.x - pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
         m_isValidated = false;
-
-    printf("Verif checkpoint C2 : %d\n",m_isValidated );
-    fflush(stdout);
 }
 
 
@@ -71,9 +64,6 @@ void Checkpoint::checkC3(int lex, int ley)
         m_isValidated = false;
     if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y < y && y < m_pointBegin.y + pixelParSeconde)
         m_isValidated = true;
-
-    printf("Verif checkpoint C3 : %d\n",m_isValidated );
-    fflush(stdout);
 }
 
 
@@ -89,8 +79,4 @@ void Checkpoint::checkCF(int lex, int ley)
         m_isValidated = true;
     if(m_pointBegin.x < x && x < m_pointBegin.x + pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
         m_isValidated = false;
-
-    printf("Verif checkpoint CF : %d\n",m_isValidated );
-    fflush(stdout);
-
 }

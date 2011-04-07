@@ -76,6 +76,7 @@ void Game::start()
 void Game::eventloop()
 {
     SDL_Event ev = {0};
+    int nbLap = 0;
 
     /* On active la repetition des touches */
     SDL_EnableKeyRepeat(100, 5);
@@ -101,7 +102,15 @@ void Game::eventloop()
                     case SDLK_LEFT :
                     {
                         m_currentRace->movePlayerCar(ev.key.keysym.sym);
-                        m_currentRace->checkCheckPoint();
+                        if(m_currentRace->checkCheckPoint() == Race::Finished)
+                        {
+                            nbLap++;
+                            if(nbLap == 2)
+                            {
+                                printf("Fin de course \n");
+                                nbLap = 0;
+                            }
+                        }
                         break;
                     }
 

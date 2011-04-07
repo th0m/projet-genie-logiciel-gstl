@@ -139,23 +139,21 @@ void Race::movePlayerCar(SDLKey key)
 
 Race::Lap Race::checkCheckPoint()
 {
-    Lap lap = inProgress;
+    Lap lap = InProgress;
 
+    /* # vérification de chaque Checkpoint */
     m_c1->checkC1(m_playercar->getX(), m_playercar->getY());
     m_c2->checkC2(m_playercar->getX(), m_playercar->getY());
     m_c3->checkC3(m_playercar->getX(), m_playercar->getY());
     m_csfl->checkCF(m_playercar->getX(), m_playercar->getY());
 
-    /* # si les 3 checkpoints sont valides */
+    /* # validation d'un tour */
     if(m_c1->isValidated() && m_c2->isValidated() && m_c3->isValidated() && m_csfl->isValidated())
     {
-        lap = finished;
+        lap = Finished;
         m_c1->reset();
         m_c2->reset();
         m_c3->reset();
-
-        printf("Tour fini !!!\n");
-        fflush(stdout);
     }
     m_csfl->reset();
     return lap;
