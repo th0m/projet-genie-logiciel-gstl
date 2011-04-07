@@ -7,7 +7,7 @@
 
 
 PlayerCar::PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window)
-: Shape(x, y, std::string("playercarg"), window), m_speed(5)
+: Shape(x, y, std::string("playercarg"), window), m_fwdspeed(5), m_revspeed(m_fwdspeed/2)
 {
     /* # On charge les differentes sprites */
     m_up = IMG_Load("sprites/playercarh");
@@ -97,25 +97,47 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
             switch(m_currentPos)
             {
                 case Left :
-                    x -= m_speed;
+                    x -= m_fwdspeed;
                 break;
 
                 case Right :
-                    x += m_speed;
+                    x += m_fwdspeed;
                 break;
 
                 case Up :
-                    y -= m_speed;
+                    y -= m_fwdspeed;
                 break;
 
                 case Down :
-                    y += m_speed;
+                    y += m_fwdspeed;
                 break;
             }
 
             break;
         }
+        case SDLK_DOWN :
+        {
+            switch(m_currentPos)
+            {
+                case Left :
+                    x += m_revspeed;
+                break;
 
+                case Right :
+                    x -= m_revspeed;
+                break;
+
+                case Up :
+                    y += m_revspeed;
+                break;
+
+                case Down :
+                    y -= m_revspeed;
+                break;
+            }
+
+            break;
+        }
         case SDLK_LEFT :
         case SDLK_RIGHT :
             loadAnotherPosition(key);
@@ -131,10 +153,21 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
         return;
 
     /* # On initialise diffx et diffy pour nos comparaisons pour coller au bord */
-    int diffx = m_speed, diffy = m_speed;
+    int diffx, diffy;
+
+    if(key == SDLK_UP)
+    {
+        diffx = m_fwdspeed, diffy = m_fwdspeed;
+    }
+
+    else if(key== SDLK_DOWN)
+    {
+        diffx = m_revspeed, diffy = m_revspeed;
+    }
+
 
     /* # On recupere les precedentes coordonnes basses et droite de notre vehicule pour notre gestion de collision */
-    int pvyb = m_y + Game::getShapeSize(), pvxd = m_x + Game::getShapeSize();
+    int pvyh = m_y, pvyb = m_y + Game::getShapeSize(), pvxg = m_x, pvxd = m_x + Game::getShapeSize();
 
     /* # On prend les coordonnees du vehicule -> vxg : vehicule x gauche, vxd : vehicule x droite */
     int vxg = x;
@@ -156,41 +189,81 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
         limyh = (*it)->getY();
         limyb = (*it)->getY() + Game::getShapeSize();
 
-        if(m_currentPos == Left)
+        /* # Marche avant */
+        if(key == SDLK_UP)
         {
-            if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+            if(m_currentPos == Left)
             {
-                diffx = fabs(m_x - limxd);
-                isOk = false;
+                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+                {
+                    diffx = fabs(pvxg - limxd);
+                    isOk = false;
+                }
+            }
+            else if (m_currentPos == Right)
+            {
+                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
+                {
+                    diffx = fabs(pvxd - limxg);
+                    isOk = false;
+                }
+            }
+            else if(m_currentPos == Up)
+            {
+                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+                {
+                    diffy = fabs(pvyh - limyb);
+                    isOk = false;
+                }
+            }
+            else if (m_currentPos == Down)
+            {
+                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
+                {
+                    diffy = fabs(pvyb - limyh);
+                    isOk = false;
+                }
             }
         }
-        else if (m_currentPos == Right)
+        /* # Marche arriere */
+        else if(key == SDLK_DOWN)
         {
-            if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
+            if(m_currentPos == Right)
             {
-                diffx = fabs(pvxd - limxg);
-                isOk = false;
+                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+                {
+                    diffx = fabs(pvxg - limxd);
+                    isOk = false;
+                }
             }
-        }
-        else if(m_currentPos == Up)
-        {
-            if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+            else if (m_currentPos == Left)
             {
-                diffy = fabs(m_y - limyb);
-                isOk = false;
+                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
+                {
+                    diffx = fabs(pvxd - limxg);
+                    isOk = false;
+                }
             }
-        }
-        else if (m_currentPos == Down)
-        {
-            if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
+            else if(m_currentPos == Down)
             {
-                diffy = fabs(pvyb - limyh);
-                isOk = false;
+                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+                {
+                    diffy = fabs(pvyh - limyb);
+                    isOk = false;
+                }
+            }
+            else if (m_currentPos == Up)
+            {
+                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
+                {
+                    diffy = fabs(pvyb - limyh);
+                    isOk = false;
+                }
             }
         }
     }
 
-    /* # On commence par tester si on veut se deplacer dans une limite verticale : limite dans laquelle on peut entrer en collision verticalement (Haut, Bas) */
+    /* # On commence par tester si on veut se deplacer dans une limite verticale : limite dans laquelle on peut entrer en collision horizontalement (Droite, Gauche) */
     for(std::list<Limit*>::iterator it = limitsV.begin(); it != limitsV.end(); it++)
     {
         limxg = (*it)->getX();
@@ -199,25 +272,49 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
         limyh = (*it)->getY();
         limyb = (*it)->getY() + Game::getShapeSize();
 
-        if(m_currentPos == Left)
+        /* # Marche avant */
+        if(key == SDLK_UP)
         {
-            if(vxg < limxd && vxg > limxg)
+            if(m_currentPos == Left)
             {
-                diffx = fabs(m_x - limxd);
-                isOk = false;
+                if(vxg < limxd && vxg > limxg)
+                {
+                    diffx = fabs(pvxg - limxd);
+                    isOk = false;
+                }
+            }
+            else if (m_currentPos == Right )
+            {
+                if(vxd > limxg && vxd < limxd)
+                {
+                    diffx = fabs(pvxd - limxg);
+                    isOk = false;
+                }
             }
         }
-        else if (m_currentPos == Right )
+        /* # Marche arriere */
+        else if(key == SDLK_DOWN)
         {
-            if(vxd > limxg && vxd < limxd)
+            if(m_currentPos == Right)
             {
-                diffx = fabs(pvxd - limxg);
-                isOk = false;
+                if(vxg < limxd && vxg > limxg)
+                {
+                    diffx = fabs(pvxg - limxd);
+                    isOk = false;
+                }
+            }
+            else if (m_currentPos == Left )
+            {
+                if(vxd > limxg && vxd < limxd)
+                {
+                    diffx = fabs(pvxd - limxg);
+                    isOk = false;
+                }
             }
         }
     }
 
-    /* # On commence par tester si on veut se deplacer dans une limite horizontale : limite dans laquelle on peut entrer en collision horizontalement (Gauche, Droite) */
+    /* # On commence par tester si on veut se deplacer dans une limite horizontale : limite dans laquelle on peut entrer en collision verticalement (Haut, Bas) */
     for(std::list<Limit*>::iterator it = limitsH.begin(); it != limitsH.end(); it++)
     {
         limxg = (*it)->getX();
@@ -226,20 +323,44 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
         limyh = (*it)->getY();
         limyb = (*it)->getY() + Game::getShapeSize();
 
-        if(m_currentPos == Up)
+        /* # Marche avant */
+        if(key == SDLK_UP)
         {
-            if(vyh < limyb && vyh > limyh)
+            if(m_currentPos == Up)
             {
-                diffy = fabs(m_y - limyb);
-                isOk = false;
+                if(vyh < limyb && vyh > limyh)
+                {
+                    diffy = fabs(pvyh - limyb);
+                    isOk = false;
+                }
+            }
+            else if (m_currentPos == Down)
+            {
+                if(vyb > limyh && vyb < limyb)
+                {
+                    diffy = fabs(pvyb - limyh);
+                    isOk = false;
+                }
             }
         }
-        else if (m_currentPos == Down)
+        /* # Marche arriere */
+        else if(key == SDLK_DOWN)
         {
-            if(vyb > limyh && vyb < limyb)
+            if(m_currentPos == Down)
             {
-                diffy = fabs(pvyb - limyh);
-                isOk = false;
+                if(vyh < limyb && vyh > limyh)
+                {
+                    diffy = fabs(pvyh - limyb);
+                    isOk = false;
+                }
+            }
+            else if (m_currentPos == Up)
+            {
+                if(vyb > limyh && vyb < limyb)
+                {
+                    diffy = fabs(pvyb - limyh);
+                    isOk = false;
+                }
             }
         }
     }
@@ -249,33 +370,62 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
     {
         m_x = x, m_y = y;
     }
-    switch(m_currentPos)
+    /* # Si on fonce dans une bordure on va coller le vehicule a la bordure en marche avant */
+    else if(key == SDLK_UP)
     {
-        case Left :
-            if(diffx < m_speed)
-                m_x -=diffx;
-        break;
+        switch(m_currentPos)
+        {
+            case Left :
+                if(diffx < m_fwdspeed)
+                    m_x -=diffx;
+            break;
 
-        case Right :
-            if(diffx < m_speed)
-                m_x +=diffx;
-        break;
+            case Right :
+                if(diffx < m_fwdspeed)
+                    m_x +=diffx;
+            break;
 
-        case Up :
-            if(diffy < m_speed)
-                m_y -=diffy;
-        break;
+            case Up :
+                if(diffy < m_fwdspeed)
+                    m_y -=diffy;
+            break;
 
-        case Down :
-            if(diffy < m_speed)
-                m_y +=diffy;
-        break;
+            case Down :
+                if(diffy < m_fwdspeed)
+                    m_y +=diffy;
+            break;
+        }
     }
+    /* # En marche arriere */
+    else if(key == SDLK_DOWN)
+    {
+        switch(m_currentPos)
+        {
+            case Left :
+                if(diffx < m_revspeed)
+                if(diffx < m_revspeed)
+                    m_x +=diffx;
+            break;
 
+            case Right :
+                if(diffx < m_revspeed)
+                    m_x -=diffx;
+            break;
 
+            case Up :
+                if(diffy < m_revspeed)
+                    m_y +=diffy;
+            break;
+
+            case Down :
+                if(diffy < m_revspeed)
+                    m_y -=diffy;
+            break;
+        }
+    }
 }
 
 void PlayerCar::enableTurboMode()
 {
-    m_speed = 5*2;
+    m_fwdspeed = 5*2;
 }
