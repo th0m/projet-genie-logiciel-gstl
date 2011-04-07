@@ -32,8 +32,8 @@ class PlayerCar : public Shape
         void loadAnotherPosition(SDLKey key);
 
 
-        /* # vitesse du véhicule */
-        Uint32 m_speed;
+        /* # vitesse du véhicule forward : marche avant, reverse : marche arriere*/
+        Uint32 m_fwdspeed, m_revspeed;
 
         SDL_Surface *m_up, *m_down, *m_right, *m_left;
 
