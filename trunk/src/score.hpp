@@ -1,10 +1,8 @@
 #ifndef SCORE_HPP
 #define SCORE_HPP
 
-#include <map>
+#include <set>
 #include <string>
-
-using namespace std;
 
 class Score
 {
@@ -13,19 +11,13 @@ class Score
         explicit Score();
         ~Score();
 
-        void ajoutScore(string s, unsigned int sc);
+        void ajoutScore(std::string s, unsigned int sc);
 
-        /* # Fonction qui permet de decharger le fichier dans le vecteur */
-        void charger_score();
-
-        /* # Fonction permettant de charger le vecteur des etudiants dans un fichiers */
-        void decharger_score();
+        std::set<std::pair<unsigned int, std::string> >& premiers();
 
     private:
 
-        multimap<string, unsigned int> premiers();
-
-        multimap<string, unsigned int> scores;
+        std::set<std::pair<unsigned int, std::string> > scores;
 
 };
 #endif
