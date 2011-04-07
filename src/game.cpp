@@ -10,8 +10,9 @@
 const Uint32 Game::m_width = 600;
 const Uint32 Game::m_height = 400;
 const Uint32 Game::m_shapeSize = 40;
+const Uint32 Game::m_turboTime = 2000;
+const Uint32 Game::m_fwdSpeed = 5;
 const std::string Game::m_title = "Projet Genie Logiciel 3A - GSTL";
-
 
 Game::Game()
 : m_currentRace(NULL), m_r1(NULL), m_r2(NULL), m_r3(NULL), m_isOk(true), m_window(NULL), m_ico(NULL)
@@ -136,4 +137,14 @@ Uint32 Game::getNbVerticalSprites()
 Uint32 Game::getShapeSize()
 {
     return m_shapeSize;
+}
+
+Uint32 Game::getFwdSpeed()
+{
+    return m_fwdSpeed;
+}
+
+Uint32 Game::getTurboTime()
+{
+    return m_turboTime;
 }
