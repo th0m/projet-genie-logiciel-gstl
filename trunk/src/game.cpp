@@ -106,22 +106,28 @@ void Game::eventloop()
                         if(m_currentRace->checkCheckPoint() == Race::Finished)
                         {
                             nbLap++;
+                            printf("Fin de tours\n");
+                            fflush(stdout);
                             if(nbLap == 2)
                             {
                                 nbLap = 0;
                                 printf("Switch de course\n");
+                                fflush(stdout);
                                 switch(m_rNumber)
                                 {
                                     case Race1 :
                                         m_currentRace = m_r2;
+                                        m_rNumber = Race2;
                                     break;
 
                                     case Race2 :
                                         m_currentRace = m_r3;
+                                        m_rNumber = Race3;
                                     break;
 
                                     case Race3 :
                                         m_currentRace = m_r1;
+                                        m_rNumber = Race1;
                                     break;
                                 }
 
