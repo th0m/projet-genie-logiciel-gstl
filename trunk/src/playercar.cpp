@@ -129,7 +129,7 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
     }
 }
 
-void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &limitsV, std::list<Limit*> &limitsHV, std::list<Flaque*> &flaques)
+void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &flaques)
 {
     bool isOk = true;
     bool isFlaque = false;
@@ -181,8 +181,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
                     y += fwdlatspeed;
                 break;
             }
-
-            break;
+        break;
         }
         case SDLK_DOWN :
         {
@@ -224,8 +223,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
                     y -= revlatspeed;
                 break;
             }
-
-            break;
+        break;
         }
         case SDLK_LEFT :
         case SDLK_RIGHT :
@@ -233,7 +231,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
         break;
 
         default :
-            break;
+        break;
 
     }
 
@@ -241,42 +239,32 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
     if(x == m_x && y == m_y)
         return;
 
-    /* # On initialise diffx et diffy pour nos comparaisons pour coller au bord */
+    /* # On initialise diffx et diffy pour nos comparaisons pour coller au bord*/
     float diffx, diffy;
 
     if(key == SDLK_UP)
     {
         if(m_currentPos == Left || m_currentPos == Right || m_currentPos == Up || m_currentPos == Down)
-        {
             diffx = m_fwdspeed, diffy = m_fwdspeed;
-        }
         else if (m_currentPos == NorthEast || m_currentPos == NorthWest || m_currentPos == SouthEast || m_currentPos == SouthWest)
-        {
             diffx = fwdlatspeed, diffy = fwdlatspeed;
-        }
     }
 
     else if(key == SDLK_DOWN)
     {
         if(m_currentPos == Left || m_currentPos == Right || m_currentPos == Up || m_currentPos == Down)
-        {
             diffx = m_revspeed, diffy = m_revspeed;
-        }
         else if (m_currentPos == NorthEast || m_currentPos == NorthWest || m_currentPos == SouthEast || m_currentPos == SouthWest)
-        {
             diffx = revlatspeed, diffy = revlatspeed;
-        }
-
     }
 
-
-    /* # On recupere les precedentes coordonnes basses et droite de notre vehicule pour notre gestion de collision pvyh : precedent y haut, pvyb : ..., pvxg : precedent x gauche, pvxd : ... */
+    /* # On recupere les precedentes coordonnes de notre vehicule pour notre gestion de collision pvyh : precedent y haut, pvyb : ..., pvxg : precedent x gauche, pvxd : ... */
     float pvyh = m_y, pvyb = m_y + Game::getShapeSize(), pvxg = m_x, pvxd = m_x + Game::getShapeSize();
 
-    /* # On prend les coordonnees du vehicule -> vxg : vehicule x gauche, vxd : vehicule x droite, vyh : vehicule y haut, vyb : vehicule y bas */
+    /* # On prend les coordonnees souhaitees du vehicule -> vxg : vehicule x gauche, vxd : vehicule x droite, vyh : vehicule y haut, vyb : vehicule y bas */
     float vxg = x, vxd = x + Game::getShapeSize(), vyh = y, vyb = y + Game::getShapeSize();
 
-    /* # On prepare le terrain pour les coordonnes des limites -> limxg : limite x gauche, limxd : limite x droite, limyh : limite y haut, limyb : limite y bas */
+    /* # On prepare le terrain pour les coordonnees des limites -> limxg : limite x gauche, limxd : limite x droite, limyh : limite y haut, limyb : limite y bas */
     float limxg = 0, limxd = 0, limyh = 0, limyb = 0;
 
     /* # On test si on est dans une flaque */
@@ -288,80 +276,14 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
         limyh = (*it)->getY();
         limyb = (*it)->getY() + Game::getShapeSize();
 
-        /* # Marche avant */
-        if(key == SDLK_UP)
-            if(m_currentPos == Left)
-                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
-                    isFlaque=true;
-            else if (m_currentPos == Right)
-                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
-                    isFlaque=true;
-            else if(m_currentPos == Up)
-                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
-                    isFlaque=true;
-            else if (m_currentPos == Down)
-                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
-                    isFlaque=true;
-            else if(m_currentPos == NorthWest)
-                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
-                    isFlaque=true;
-                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
-                    isFlaque=true;
-            else if(m_currentPos == NorthEast)
-                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
-                    isFlaque=true;
-                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
-                    isFlaque=true;
-            else if(m_currentPos == SouthEast)
-                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
-                    isFlaque=true;
-                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
-                    isFlaque=true;
-            else if(m_currentPos == SouthWest)
-                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
-                    isFlaque=true;
-                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
-                    isFlaque=true;
-        /* # Marche arriere */
-        else if(key == SDLK_DOWN)
-            if(m_currentPos == Right )
-                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
-                    isFlaque=true;
-            else if (m_currentPos == Left)
-                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
-                    isFlaque=true;
-            else if(m_currentPos == Down)
-                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
-                    isFlaque=true;
-            else if (m_currentPos == Up)
-                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
-                    isFlaque=true;
-            else if(m_currentPos == SouthEast)
-                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
-                    isFlaque=true;
-                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
-                    isFlaque=true;
-            else if(m_currentPos == SouthWest)
-                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
-                    isFlaque=true;
-                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
-                    isFlaque=true;
-            else if(m_currentPos == NorthWest)
-                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
-                    isFlaque=true;
-                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
-                    isFlaque=true;
-            else if(m_currentPos == NorthEast)
-                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
-                    isFlaque=true;
-                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
-                    isFlaque=true;
+        if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
+            isFlaque=true;
     }
+    /* # Si on est dans une flaque on ralentit la voiture */
     if(isFlaque)
     {
         if(key == SDLK_UP)
             m_fwdspeed = getSpeed()/2;
-
         if(key == SDLK_DOWN)
             m_revspeed = Game::getRevSpeed()/2;
     }
@@ -373,10 +295,8 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
             m_revspeed=Game::getRevSpeed();
     }
 
-
-
-    /* # On commence par tester si on veut se deplacer dans une limite HV Horizontale Verticale : limite dans laquelle on peut entrer en collision verticalement ou horizontalement (Haut, Bas, Gauche, Droite) */
-    for(std::list<Limit*>::iterator it = limitsHV.begin(); it != limitsHV.end();it++)
+    /* # On test si on veut se deplacer dans une limite */
+    for(std::list<Limit*>::iterator it = limits.begin(); it != limits.end();it++)
     {
         limxg = (*it)->getX();
         limxd = (*it)->getX() + Game::getShapeSize();
@@ -384,539 +304,103 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limitsH, std::list<Limit*> &
         limyh = (*it)->getY();
         limyb = (*it)->getY() + Game::getShapeSize();
 
-        /* # Marche avant */
-        if(key == SDLK_UP)
+        if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
         {
-            if(m_currentPos == Left)
+            isOk=false;
+            /* # Si on veut déplacer la voiture dans une limite on fait le nécessaire pour la coller au bord */
+            if( (key == SDLK_UP && m_currentPos == Left) || (key==SDLK_DOWN && m_currentPos == Right) )
             {
-                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+                diffx = fabs(pvxg - limxd);
+                if( (key == SDLK_UP && diffx < m_fwdspeed) || (key == SDLK_DOWN && diffx < m_revspeed) )
                 {
-                    diffx = fabs(pvxg - limxd);
-                    isOk = false;
+                    m_x -= diffx;
                 }
             }
-            else if (m_currentPos == Right)
+            else if( (key == SDLK_UP && m_currentPos == Right) || (key == SDLK_DOWN && m_currentPos == Left) )
             {
-                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
+                diffx = fabs(pvxd - limxg);
+                if( (key == SDLK_UP && diffx < m_fwdspeed) || (key == SDLK_DOWN && diffx < m_revspeed) )
                 {
-                    diffx = fabs(pvxd - limxg);
-                    isOk = false;
+                    m_x += diffx;
                 }
             }
-            else if(m_currentPos == Up)
+            else if( (key == SDLK_UP && m_currentPos == Up) || (key == SDLK_DOWN && m_currentPos == Down) )
             {
-                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+                diffy = fabs(pvyh - limyb);
+                if( (key == SDLK_UP && diffy < m_fwdspeed) || (key == SDLK_DOWN && diffy < m_revspeed) )
                 {
-                    diffy = fabs(pvyh - limyb);
-                    isOk = false;
-                }
-            }
-            else if (m_currentPos == Down)
-            {
-                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
-                {
-                    diffy = fabs(pvyb - limyh);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == NorthWest)
-            {
-                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
-                {
-                    diffx = fabs(pvxg - limxd);
-                    isOk = false;
-                }
-                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
-                {
-                    diffy = fabs(pvyh - limyb);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == NorthEast)
-            {
-                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
-                {
-                    diffx = fabs(pvxd - limxg);
-                    isOk = false;
-                }
-                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
-                {
-                    diffy = fabs(pvyh - limyb);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == SouthEast)
-            {
-                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
-                {
-                    diffx = fabs(pvxd - limxg);
-                    isOk = false;
-                }
-                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
-                {
-                    diffy = fabs(pvyb - limyh);
-                    isOk = false;
+                    m_y -=diffy;
                 }
 
             }
-            else if(m_currentPos == SouthWest)
+            else if( (key == SDLK_UP && m_currentPos == Down) || (key == SDLK_DOWN && m_currentPos == Up) )
             {
-                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+                diffy = fabs(pvyb - limyh);
+                if( (key == SDLK_UP && diffy < m_fwdspeed) || (key == SDLK_DOWN && diffy < m_revspeed) )
                 {
-                    diffx = fabs(pvxg - limxd);
-                    isOk = false;
-                }
-                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
-                {
-                    diffy = fabs(pvyb - limyh);
-                    isOk = false;
-                }
-
-            }
-        }
-        /* # Marche arriere */
-        else if(key == SDLK_DOWN)
-        {
-            if(m_currentPos == Right )
-            {
-                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
-                {
-                    diffx = fabs(pvxg - limxd);
-                    isOk = false;
+                    m_y +=diffy;
                 }
             }
-            else if (m_currentPos == Left)
+            else if( (key == SDLK_UP && m_currentPos == NorthEast) || (key == SDLK_DOWN && m_currentPos == SouthWest) )
             {
-                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
+                diffx = fabs(pvxd - limxg);
+                diffy = fabs(pvyh - limyb);
+                if( (key == SDLK_UP && diffx < fwdlatspeed) || (key == SDLK_DOWN && diffx < revlatspeed) )
                 {
-                    diffx = fabs(pvxd - limxg);
-                    isOk = false;
+                    m_x += diffx;
+                }
+                if( (key == SDLK_UP && diffy < fwdlatspeed) || (key == SDLK_DOWN && diffy < revlatspeed) )
+                {
+                    m_y -=diffy;
                 }
             }
-            else if(m_currentPos == Down)
+            else if( (key == SDLK_UP && m_currentPos == SouthEast) || (key == SDLK_DOWN && m_currentPos == NorthWest) )
             {
-                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+                diffx = fabs(pvxd - limxg);
+                diffy = fabs(pvyb - limyh);
+                if( (key == SDLK_UP && diffx < fwdlatspeed) || (key == SDLK_DOWN && diffx < revlatspeed) )
                 {
-                    diffy = fabs(pvyh - limyb);
-                    isOk = false;
+                    m_x += diffx;
+                }
+                if( (key == SDLK_UP && diffy < fwdlatspeed) || (key == SDLK_DOWN && diffy < revlatspeed) )
+                {
+                    m_y +=diffy;
                 }
             }
-            else if (m_currentPos == Up)
+            else if( (key == SDLK_UP && m_currentPos == NorthWest) || (key == SDLK_DOWN && m_currentPos == SouthEast) )
             {
-                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
+                diffx = fabs(pvxg - limxd);
+                diffy = fabs(pvyh - limyb);
+                if( (key == SDLK_UP && diffx < fwdlatspeed) || (key == SDLK_DOWN && diffx < revlatspeed) )
                 {
-                    diffy = fabs(pvyb - limyh);
-                    isOk = false;
+                    m_x -= diffx;
+                }
+                if( (key == SDLK_UP && diffy < fwdlatspeed) || (key == SDLK_DOWN && diffy < revlatspeed) )
+                {
+                    m_y -=diffy;
                 }
             }
-            else if(m_currentPos == SouthEast)
+            else if( (key == SDLK_UP && m_currentPos == SouthWest) || (key == SDLK_DOWN && m_currentPos == NorthEast) )
             {
-                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
+                diffx = fabs(pvxg - limxd);
+                diffy = fabs(pvyb - limyh);
+                if( (key == SDLK_UP && diffx < fwdlatspeed) || (key == SDLK_DOWN && diffx < revlatspeed) )
                 {
-                    diffx = fabs(pvxg - limxd);
-                    isOk = false;
+                    m_x -= diffx;
                 }
-                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
+                if( (key == SDLK_UP && diffy < fwdlatspeed) || (key == SDLK_DOWN && diffy < revlatspeed) )
                 {
-                    diffy = fabs(pvyh - limyb);
-                    isOk = false;
+                    m_y +=diffy;
                 }
             }
-            else if(m_currentPos == SouthWest)
-            {
-                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
-                {
-                    diffx = fabs(pvxd - limxg);
-                    isOk = false;
-                }
-                if(vyh < limyb && vyh > limyh && vxg < limxd && vxd > limxg)
-                {
-                    diffy = fabs(pvyh - limyb);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == NorthWest)
-            {
-                if(vxd > limxg && vxd < limxd && vyh < limyb && vyb > limyh)
-                {
-                    diffx = fabs(pvxd - limxg);
-                    isOk = false;
-                }
-                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
-                {
-                    diffy = fabs(pvyb - limyh);
-                    isOk = false;
-                }
-
-            }
-            else if(m_currentPos == NorthEast)
-            {
-                if(vxg < limxd && vxg > limxg && vyh < limyb && vyb > limyh)
-                {
-                    diffx = fabs(pvxg - limxd);
-                    isOk = false;
-                }
-                if(vyb > limyh && vyb < limyb && vxg < limxd && vxd > limxg)
-                {
-                    diffy = fabs(pvyb - limyh);
-                    isOk = false;
-                }
-
-            }
-        }
-    }
-
-    /* # On commence par tester si on veut se deplacer dans une limite verticale : limite dans laquelle on peut entrer en collision horizontalement (Droite, Gauche) */
-    for(std::list<Limit*>::iterator it = limitsV.begin(); it != limitsV.end(); it++)
-    {
-        limxg = (*it)->getX();
-        limxd = (*it)->getX() + Game::getShapeSize();
-
-        limyh = (*it)->getY();
-        limyb = (*it)->getY() + Game::getShapeSize();
-
-        /* # Marche avant */
-        if(key == SDLK_UP)
-        {
-            if(m_currentPos == Left)
-            {
-                if(vxg < limxd && vxg > limxg)
-                {
-                    diffx = fabs(pvxg - limxd);
-                    isOk = false;
-                }
-            }
-            else if (m_currentPos == Right)
-            {
-                if(vxd > limxg && vxd < limxd)
-                {
-                    diffx = fabs(pvxd - limxg);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == NorthWest)
-            {
-                if(vxg < limxd && vxg > limxg)
-                {
-                    diffx = fabs(pvxg - limxd);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == NorthEast)
-            {
-                if(vxd > limxg && vxd < limxd)
-                {
-                    diffx = fabs(pvxd - limxg);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == SouthEast)
-            {
-                if(vxd > limxg && vxd < limxd)
-                {
-                    diffx = fabs(pvxd - limxg);
-                    isOk = false;
-                }
-
-            }
-            else if(m_currentPos == SouthWest)
-            {
-                if(vxg < limxd && vxg > limxg)
-                {
-                    diffx = fabs(pvxg - limxd);
-                    isOk = false;
-                }
-
-            }
-        }
-        /* # Marche arriere */
-        else if(key == SDLK_DOWN)
-        {
-            if(m_currentPos == Right)
-            {
-                if(vxg < limxd && vxg > limxg)
-                {
-                    diffx = fabs(pvxg - limxd);
-                    isOk = false;
-                }
-            }
-            else if (m_currentPos == Left )
-            {
-                if(vxd > limxg && vxd < limxd)
-                {
-                    diffx = fabs(pvxd - limxg);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == SouthEast)
-            {
-                if(vxg < limxd && vxg > limxg)
-                {
-                    diffx = fabs(pvxg - limxd);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == SouthWest)
-            {
-                if(vxd > limxg && vxd < limxd)
-                {
-                    diffx = fabs(pvxd - limxg);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == NorthWest)
-            {
-                if(vxd > limxg && vxd < limxd)
-                {
-                    diffx = fabs(pvxd - limxg);
-                    isOk = false;
-                }
-
-            }
-            else if(m_currentPos == NorthEast)
-            {
-                if(vxg < limxd && vxg > limxg)
-                {
-                    diffx = fabs(pvxg - limxd);
-                    isOk = false;
-                }
-
-            }
-        }
-    }
-
-    /* # On commence par tester si on veut se deplacer dans une limite horizontale : limite dans laquelle on peut entrer en collision verticalement (Haut, Bas) */
-    for(std::list<Limit*>::iterator it = limitsH.begin(); it != limitsH.end(); it++)
-    {
-        limxg = (*it)->getX();
-        limxd = (*it)->getX() + Game::getShapeSize();
-
-        limyh = (*it)->getY();
-        limyb = (*it)->getY() + Game::getShapeSize();
-
-        /* # Marche avant */
-        if(key == SDLK_UP)
-        {
-            if(m_currentPos == Up)
-            {
-                if(vyh < limyb && vyh > limyh)
-                {
-                    diffy = fabs(pvyh - limyb);
-                    isOk = false;
-                }
-            }
-            else if (m_currentPos == Down)
-            {
-                if(vyb > limyh && vyb < limyb)
-                {
-                    diffy = fabs(pvyb - limyh);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == NorthWest)
-            {
-                if(vyh < limyb && vyh > limyh)
-                {
-                    diffy = fabs(pvyh - limyb);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == NorthEast)
-            {
-                if(vyh < limyb && vyh > limyh)
-                {
-                    diffy = fabs(pvyh - limyb);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == SouthEast)
-            {
-                if(vyb > limyh && vyb < limyb)
-                {
-                    diffy = fabs(pvyb - limyh);
-                    isOk = false;
-                }
-
-            }
-            else if(m_currentPos == SouthWest)
-            {
-                if(vyb > limyh && vyb < limyb)
-                {
-                    diffy = fabs(pvyb - limyh);
-                    isOk = false;
-                }
-
-            }
-        }
-        /* # Marche arriere */
-        else if(key == SDLK_DOWN)
-        {
-            if(m_currentPos == Down)
-            {
-                if(vyh < limyb && vyh > limyh)
-                {
-                    diffy = fabs(pvyh - limyb);
-                    isOk = false;
-                }
-            }
-            else if (m_currentPos == Up)
-            {
-                if(vyb > limyh && vyb < limyb)
-                {
-                    diffy = fabs(pvyb - limyh);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == SouthEast)
-            {
-                if(vyh < limyb && vyh > limyh)
-                {
-                    diffy = fabs(pvyh - limyb);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == SouthWest)
-            {
-                if(vyh < limyb && vyh > limyh)
-                {
-                    diffy = fabs(pvyh - limyb);
-                    isOk = false;
-                }
-            }
-            else if(m_currentPos == NorthWest)
-            {
-                if(vyb > limyh && vyb < limyb)
-                {
-                    diffy = fabs(pvyb - limyh);
-                    isOk = false;
-                }
-
-            }
-            else if(m_currentPos == NorthEast)
-            {
-                if(vyb > limyh && vyb < limyb)
-                {
-                    diffy = fabs(pvyb - limyh);
-                    isOk = false;
-                }
-
-            }
+            return;
         }
     }
 
     /* # Si on ne fonce pas dans une bordure on bouge le vehicule */
-    if(isOk == true)
+    if(isOk)
     {
         m_x = x, m_y = y;
-    }
-    /* # Si on fonce dans une bordure on va coller le vehicule a la bordure en marche avant */
-    else if(key == SDLK_UP)
-    {
-        switch(m_currentPos)
-        {
-            case Left :
-                if(diffx < m_fwdspeed)
-                    m_x -=diffx;
-            break;
-
-            case Right :
-                if(diffx < m_fwdspeed)
-                    m_x +=diffx;
-            break;
-
-            case Up :
-                if(diffy < m_fwdspeed)
-                    m_y -=diffy;
-            break;
-
-            case Down :
-                if(diffy < m_fwdspeed)
-                    m_y +=diffy;
-            break;
-
-            case NorthWest :
-                if(diffx < fwdlatspeed)
-                    m_x -= diffx;
-                if(diffy < fwdlatspeed)
-                    m_y -= diffy;
-            break;
-
-            case NorthEast :
-                if(diffx < fwdlatspeed)
-                    m_x += diffx;
-                if(diffy < fwdlatspeed)
-                    m_y -= diffy;
-            break;
-
-            case SouthEast :
-                if(diffx < fwdlatspeed)
-                    m_x += diffx;
-                if(diffy < fwdlatspeed)
-                    m_y += diffy;
-            break;
-
-            case SouthWest :
-                if(diffx < fwdlatspeed)
-                    m_x -= diffx;
-                if(diffy < fwdlatspeed)
-                    m_y += diffy;
-            break;
-        }
-    }
-    /* # En marche arriere */
-    else if(key == SDLK_DOWN)
-    {
-        switch(m_currentPos)
-        {
-            case Left :
-                if(diffx < m_revspeed)
-                    m_x +=diffx;
-            break;
-
-            case Right :
-                if(diffx < m_revspeed)
-                    m_x -=diffx;
-            break;
-
-            case Up :
-                if(diffy < m_revspeed)
-                    m_y +=diffy;
-            break;
-
-            case Down :
-                if(diffy < m_revspeed)
-                    m_y -=diffy;
-            break;
-
-            case NorthWest :
-                if(diffx < revlatspeed)
-                   m_x += diffx;
-                if(diffy < revlatspeed)
-                    m_y += diffy;
-            break;
-
-            case NorthEast :
-                if(diffx < revlatspeed)
-                    m_x -= diffx;
-                if(diffy < revlatspeed)
-                    m_y += diffy;
-            break;
-
-            case SouthEast :
-                if(diffx < revlatspeed)
-                    m_x -= diffx;
-                if(diffy < revlatspeed)
-                    m_y -= diffy;
-            break;
-
-            case SouthWest :
-                if(diffx < revlatspeed)
-                    m_x += diffx;
-                if(diffy < revlatspeed)
-                    m_y -= diffy;
-            break;
-
-        }
     }
 }
 
