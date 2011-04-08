@@ -59,9 +59,7 @@ Shape* Shape::getInstance(shape_type type, float x, float y, SDL_Surface *window
 
     switch(type)
     {
-            case LIMITHV :
-            case LIMITV :
-            case LIMITH :
+            case LIMIT :
             {
                 ptr = new Limit(x, y, window);
                 break;
