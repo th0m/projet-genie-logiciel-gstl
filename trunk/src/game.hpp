@@ -45,10 +45,17 @@ class Game
             Race3
         };
 
+        typedef struct
+        {
+            char key[SDLK_LAST];
+        } Input;
         /* # La boucle principale d'evenement */
         void eventloop();
 
         void cleanScreen();
+
+        /* # La fonction qui gere les evenements */
+        void UpdateEvents(Input* in, bool& continuer);
 
         /* # La course courante */
         Race *m_currentRace;

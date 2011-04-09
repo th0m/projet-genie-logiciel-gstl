@@ -5,6 +5,7 @@
 
 #include <SDL/SDL_image.h>
 #include <stdexcept>
+#include <Windows.h>
 
 /* On initialise les variables statiques constantes */
 const Uint32 Game::m_width = 600;
@@ -66,87 +67,118 @@ void Game::start()
     eventloop();
 }
 
-void Game::eventloop()
+void Game::UpdateEvents(Input* in, bool& continuer)
 {
-    SDL_Event ev = {0};
-    int nbLap = 0;
-
-    /* On active la repetition des touches */
-    SDL_EnableKeyRepeat(100, 5);
-
-    while(m_isOk)
+    SDL_Event event;
+    while(SDL_PollEvent(&event))
     {
-        SDL_WaitEvent(&ev);
-        switch(ev.type)
+        switch (event.type)
         {
-            case SDL_QUIT :
-            {
-                m_isOk = false;
-                break;
-            }
-
-            case SDL_KEYDOWN :
-            {
-                switch(ev.key.keysym.sym)
-                {
-                    case SDLK_DOWN :
-                    case SDLK_UP :
-                    case SDLK_RIGHT :
-                    case SDLK_LEFT :
-                    {
-                        m_currentRace->movePlayerCar(ev.key.keysym.sym);
-                        if(m_currentRace->checkCheckPoint() == Race::Finished)
-                        {
-                            nbLap++;
-                            printf("Fin de tours\n");
-                            fflush(stdout);
-                            if(nbLap == Game::m_nbLap)
-                            {
-                                nbLap = 0;
-                                printf("Switch de course\n");
-                                fflush(stdout);
-                                switch(m_rNumber)
-                                {
-                                    case Race1 :
-                                        m_currentRace = new R2(m_window);
-                                        m_rNumber = Race2;
-                                    break;
-
-                                    case Race2 :
-                                        m_currentRace = new R3(m_window);
-                                        m_rNumber = Race3;
-                                    break;
-
-                                    case Race3 :
-                                        m_currentRace = new R1(m_window);
-                                        m_rNumber = Race1;
-                                    break;
-                                }
-
-                                cleanScreen();
-                                m_currentRace->load();
-                            }
-                        }
-                        break;
-                    }
-
-                    case SDLK_SPACE :
-                    {
-                        m_currentRace->useTurbo();
-                        m_currentRace->refresh();
-                        break;
-                    }
-
-                    default:
-                    break;
-                }
-
-                break;
-            }
-
-            default:
+        case SDL_KEYDOWN:
+            in->key[event.key.keysym.sym]=1;
+            break;
+        case SDL_KEYUP:
+            in->key[event.key.keysym.sym]=0;
+            break;
+        case SDL_QUIT:
+            continuer = 0;
+            break;
+        default:
             break;
         }
+    }
+}
+
+void Game::eventloop()
+{
+    int nbLap = 0;
+
+    Input in;
+    memset(&in,0,sizeof(in));
+
+    bool continuer = 1;
+    bool enavant = 0, enarriere = 0;
+
+    while(continuer)
+    {
+        Sleep(50);
+        UpdateEvents(&in,continuer);
+        if (!in.key[SDLK_UP])
+        {
+            enavant = 0;
+        }
+        if (in.key[SDLK_UP])
+        {
+            if(!enavant)
+            {
+                Sleep(1000);
+            }
+
+            m_currentRace->movePlayerCar(SDLK_UP);
+
+            if(m_currentRace->checkCheckPoint() == Race::Finished)
+            {
+                nbLap++;
+                printf("Fin de tours\n");
+                fflush(stdout);
+                if(nbLap == Game::m_nbLap)
+                {
+                    nbLap = 0;
+                    printf("Switch de course\n");
+                    fflush(stdout);
+                    switch(m_rNumber)
+                    {
+                        case Race1 :
+                        m_currentRace = new R2(m_window);
+                        m_rNumber = Race2;
+                        break;
+
+                        case Race2 :
+                        m_currentRace = new R3(m_window);
+                        m_rNumber = Race3;
+                        break;
+
+                        case Race3 :
+                        m_currentRace = new R1(m_window);
+                        m_rNumber = Race1;
+                        break;
+                    }
+
+                    cleanScreen();
+                    m_currentRace->load();
+                }
+            }
+
+            enavant=1;
+        }
+        if (!in.key[SDLK_DOWN])
+        {
+            enarriere = 0;
+        }
+        if (in.key[SDLK_DOWN])
+        {
+            if(!enarriere)
+            {
+                Sleep(1000);
+            }
+            m_currentRace->movePlayerCar(SDLK_DOWN);
+            enarriere=1;
+        }
+        if (in.key[SDLK_LEFT])
+        {
+            m_currentRace->changePlayerCarPosition(SDLK_LEFT);
+        }
+        if (in.key[SDLK_RIGHT])
+        {
+            m_currentRace->changePlayerCarPosition(SDLK_RIGHT);
+        }
+        if (in.key[SDLK_SPACE])
+        {
+            m_currentRace->useTurbo();
+            m_currentRace->refresh();
+
+        }
+
     }
 }
 

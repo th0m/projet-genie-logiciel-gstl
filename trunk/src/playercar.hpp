@@ -17,6 +17,9 @@ class PlayerCar : public Shape
         /* # Fonction qui permet de deplacer le vehicule */
         void move(SDLKey key, std::list<Limit*> &limit, std::list<Flaque*> &flaques);
 
+        /* # Fonction qui change la position du vehicule */
+        void loadAnotherPosition(SDLKey key);
+
         /* # Fonction qui permet d'activer le mode turbo */
         void enableTurboMode();
 
@@ -45,7 +48,7 @@ class PlayerCar : public Shape
 
         float getSpeed();
 
-        void loadAnotherPosition(SDLKey key);
+
 
         void setNormalSpeed();
 
