@@ -225,23 +225,16 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
             }
         break;
         }
-        case SDLK_LEFT :
-        case SDLK_RIGHT :
-            loadAnotherPosition(key);
-        break;
 
         default :
         break;
 
     }
 
-    /* # Si on n'a pas fait bouger le véhicule, on a charge un nouveau sprite donc la fonction s'arrête ici */
-    if(x == m_x && y == m_y)
-        return;
-
     /* # On initialise diffx et diffy pour nos comparaisons pour coller au bord*/
     float diffx, diffy;
 
+    /* # En fonction de la direction et du sens dans lequel on roule on affecte les diffx et diffy correspondants */
     if(key == SDLK_UP)
     {
         if(m_currentPos == Left || m_currentPos == Right || m_currentPos == Up || m_currentPos == Down)
