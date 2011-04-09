@@ -49,6 +49,7 @@ class Game
         {
             char key[SDLK_LAST];
         } Input;
+
         /* # La boucle principale d'evenement */
         void eventloop();
 
