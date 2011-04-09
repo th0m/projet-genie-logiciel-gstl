@@ -132,6 +132,14 @@ void Race::useTurbo()
     }
 }
 
+void Race::changePlayerCarPosition(SDLKey key)
+{
+    /* # On change de position */
+    m_playercar->loadAnotherPosition(key);
+
+    /* # On recharge les formes */
+    refresh();
+}
 void Race::movePlayerCar(SDLKey key)
 {
     /* # On bouge la voiture */

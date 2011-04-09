@@ -38,6 +38,9 @@ class Race
         /* # Fonction qui est capable de faire bouger la voiture du joueur */
         void movePlayerCar(SDLKey key);
 
+        /* # Fonction qui change la position de la voiture du joueur */
+        void changePlayerCarPosition(SDLKey key);
+
         /* # Verification des 3 checkpoints*/
         Lap checkCheckPoint();
 
