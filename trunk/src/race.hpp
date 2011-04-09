@@ -62,7 +62,6 @@ class Race
         std::list<Shape*> m_surfaces;
 
         /* # Un conteneur qui stock l'ensemble des limites verticales et horizontales */
-        //std::list<Limit*> m_limitsH, m_limitsV, m_limitsHV;
         std::list<Limit*> m_limits;
 
         /* # Un conteneur qui stock l'ensemble des flaques */

@@ -87,6 +87,7 @@ void Game::UpdateEvents(Input* in, bool& continuer)
             break;
         }
     }
+    Sleep(50);
 }
 
 void Game::eventloop()
@@ -101,7 +102,7 @@ void Game::eventloop()
 
     while(continuer)
     {
-        Sleep(50);
+
         UpdateEvents(&in,continuer);
         if (!in.key[SDLK_UP])
         {
@@ -167,16 +168,18 @@ void Game::eventloop()
         if (in.key[SDLK_LEFT])
         {
             m_currentRace->changePlayerCarPosition(SDLK_LEFT);
+            in.key[SDLK_LEFT] = 0;
         }
         if (in.key[SDLK_RIGHT])
         {
             m_currentRace->changePlayerCarPosition(SDLK_RIGHT);
+            in.key[SDLK_RIGHT] = 0;
         }
         if (in.key[SDLK_SPACE])
         {
             m_currentRace->useTurbo();
             m_currentRace->refresh();
-
+            in.key[SDLK_SPACE] = 0;
         }
 
     }
