@@ -48,6 +48,10 @@ Race::~Race()
     /* # On oublie pas de supprimer la voiture du joueur */
     if(m_playercar != NULL)
         delete m_playercar;
+
+    /* # On detruit nos IAs */
+    for(std::list<IACar*>::iterator it = m_iacars.begin(); it != m_iacars.end(); ++it)
+        delete (*it);
 }
 
 void Race::refresh()
@@ -73,7 +77,6 @@ void Race::refresh()
 
 void Race::load()
 {
-    printf("tg\n");
     Shape *ptr = NULL;
     Sint32 x = 0, y = 0;
     Uint32 shapeSize = Game::getShapeSize();
@@ -137,18 +140,12 @@ void Race::changePlayerCarPosition(SDLKey key)
 {
     /* # On change de position */
     m_playercar->loadAnotherPosition(key);
-
-    /* # On recharge les formes */
-    refresh();
 }
 
 void Race::movePlayerCar(SDLKey key)
 {
     /* # On bouge la voiture */
     m_playercar->move(key, m_limits, m_flaques);
-
-    /* # On recharge les formes */
-    refresh();
 }
 
 Race::Lap Race::checkCheckPoint()
@@ -176,24 +173,27 @@ Race::Lap Race::checkCheckPoint()
 Uint32 Race::moveIAs(Uint32 interval, void* param)
 {
     Race *race = static_cast<Race*>(param);
-    race->moveIAs();
+    try
+    {
+            race->moveIAs();
+
+    }catch(...)
+    {
+        printf("EXCEPTION\n");
+                fflush(stdout);
+
+    }
     return interval;
 }
 
 void Race::moveIAs()
 {
     for(std::list<IACar*>::const_iterator it = m_iacars.begin(); it != m_iacars.end(); it++)
-    {
-        printf("Avant %f %f\n", (*it)->getX(), (*it)->getY());
         (*it)->move();
-        printf("apres %f %f\n", (*it)->getX(), (*it)->getY());
-    }
-
-    refresh();
 }
 
 void Race::launchIAsTimer()
 {
    	/* # Instanciation du timer des IAs */
-    m_IATimer = SDL_AddTimer(10, &Race::moveIAs, this);
+    m_IATimer = SDL_AddTimer(5, &Race::moveIAs, this);
 }

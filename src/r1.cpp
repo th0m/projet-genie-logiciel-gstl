@@ -48,9 +48,23 @@ R1::R1(SDL_Surface *window)
     m_csfl = new Checkpoint(280, 240, 280, 400);
 }
 
+R1::~R1()
+{
+    printf("R1::~R1()\n");
+    fflush(stdout);
+}
+
 void R1::load()
 {
-    Race::load();
+    try
+    {
+        Race::load();
+    }
+    catch(...)
+    {
+        printf("EXCEPTION::R1::load\n");
+        fflush(stdout);
+    }
 
     std::vector<float> pts;
     pts.push_back(80);
