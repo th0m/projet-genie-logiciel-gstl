@@ -4,7 +4,7 @@
 
 Race::Race(SDL_Surface *window)
 : m_window(window), m_playercar(NULL), m_nbRows(Game::getNbVerticalSprites()), m_nbLines(Game::getNbHorizontalSprites()), m_map(NULL),
-  m_c1(NULL), m_c2(NULL), m_c3(NULL), isAlreadyLoaded(false)
+  m_c1(NULL), m_c2(NULL), m_c3(NULL)
 {
     unsigned int i = 0;
 
@@ -26,15 +26,13 @@ Race::Race(SDL_Surface *window)
     for(unsigned int j = 1; j < m_nbLines; ++j)
         for(unsigned int k = 0; k < m_nbRows; ++k)
             m_map[j][k] = Shape::SAND;
-
-	/* # Instanciation du timer des IAs */
-    m_IATimer = SDL_AddTimer(10, &IACar::move, NULL);
 }
 
 Race::~Race()
 {
-    /* # On desactive le timer */
-    SDL_RemoveTimer(m_IATimer);
+    if(m_IATimer != NULL)
+        /* # On desactive le timer */
+        SDL_RemoveTimer(m_IATimer);
 
     /* # On desalloue proprement chaque colonnes de notre map */
     for(unsigned int i = 0; i < m_nbLines; ++i)
@@ -64,22 +62,21 @@ void Race::refresh()
             (*it)->actualize();
     }
 
-    /* # On affiche maintenant la voiture */
+    /* # On affiche maintenant les voitures */
     m_playercar->actualize();
+
+    for(std::list<IACar*>::iterator it = m_iacars.begin(); it != m_iacars.end(); it++)
+        (*it)->actualize();
 
     SDL_Flip(m_window);
 }
 
 void Race::load()
 {
+    printf("tg\n");
     Shape *ptr = NULL;
     Sint32 x = 0, y = 0;
     Uint32 shapeSize = Game::getShapeSize();
-
-    if(isAlreadyLoaded == false)
-        isAlreadyLoaded = true;
-    else
-        refresh();
 
     for(unsigned int i = 0; i < m_nbLines; ++i)
     {
@@ -94,16 +91,20 @@ void Race::load()
 
                 m_playercar = static_cast<PlayerCar*>(Shape::getInstance(Shape::PLAYERCAR, x, y, m_window));
             }
+            else if(m_map[i][j] == Shape::IACAR)
+            {
+                /* On a un cas special ici, car on doit blitter la voiture *au dessus* du sable */
+                ptr = Shape::getInstance(Shape::SAND, x, y, m_window);
+                m_surfaces.push_back(ptr);
+
+                m_iacars.push_back(static_cast<IACar*>(Shape::getInstance(Shape::IACAR, x, y, m_window)));
+            }
             else
             {
                 ptr = Shape::getInstance((Shape::shape_type)m_map[i][j], x, y, m_window);
 
                 if(m_map[i][j] == Shape::LIMIT)
                     m_limits.push_back(static_cast<Limit*>(ptr));
-                /*else if(m_map[i][j] == Shape::LIMITV)
-                    m_limitsV.push_back(static_cast<Limit*>(ptr));
-                else if(m_map[i][j] == Shape::LIMITHV)
-                    m_limitsHV.push_back(static_cast<Limit*>(ptr));*/
                 else if(m_map[i][j] == Shape::FLAQUE)
                     m_flaques.push_back(static_cast<Flaque*>(ptr));
                 else;
@@ -140,6 +141,7 @@ void Race::changePlayerCarPosition(SDLKey key)
     /* # On recharge les formes */
     refresh();
 }
+
 void Race::movePlayerCar(SDLKey key)
 {
     /* # On bouge la voiture */
@@ -171,3 +173,27 @@ Race::Lap Race::checkCheckPoint()
     return lap;
 }
 
+Uint32 Race::moveIAs(Uint32 interval, void* param)
+{
+    Race *race = static_cast<Race*>(param);
+    race->moveIAs();
+    return interval;
+}
+
+void Race::moveIAs()
+{
+    for(std::list<IACar*>::const_iterator it = m_iacars.begin(); it != m_iacars.end(); it++)
+    {
+        printf("Avant %f %f\n", (*it)->getX(), (*it)->getY());
+        (*it)->move();
+        printf("apres %f %f\n", (*it)->getX(), (*it)->getY());
+    }
+
+    refresh();
+}
+
+void Race::launchIAsTimer()
+{
+   	/* # Instanciation du timer des IAs */
+    m_IATimer = SDL_AddTimer(10, &Race::moveIAs, this);
+}

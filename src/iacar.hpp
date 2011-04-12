@@ -1,18 +1,35 @@
 #ifndef IACAR_HPP
 #define IACAR_HPP
 
-#include <SDL/SDL.h>
+#include <vector>
+#include "shape.hpp"
 
-class IACar
+class IACar : public Shape
 {
     public:
 
-        explicit IACar();
+        enum Step
+        {
+            FirstStep,
+            SecondStep,
+            ThirdStep,
+            LastStep
+        };
 
-        virtual ~IACar();
+        explicit IACar(float x, float y, SDL_Surface *window);
 
-        /* # Fonction qui permet de faire evoluer les voitures pseudo-IAs - signature d'une callback de type SDL_NewTimerCallback */
-        static Uint32 move(Uint32 interval, void* param);
+        ~IACar();
+
+        void setPoints(std::vector<float> &points);
+
+        /* # Fonction qui permet de faire evoluer les voitures pseudo-IAs */
+        void move();
+
+    private:
+
+        std::vector<float> m_points;
+
+        Step m_currentStep;
 };
 
 #endif
