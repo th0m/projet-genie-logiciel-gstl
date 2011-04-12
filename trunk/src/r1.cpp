@@ -33,6 +33,7 @@ R1::R1(SDL_Surface *window)
 
     /* # Le bolide du joueur */
     m_map[m_nbLines / 2 + 1][(m_nbRows/2)] = Shape::PLAYERCAR;
+    m_map[m_nbLines / 2 + 1][(m_nbRows/2 +1)] = Shape::IACAR;
 
     /* # attention ;
         m_c1 : premier checkpoint recontré
@@ -45,5 +46,20 @@ R1::R1(SDL_Surface *window)
     m_c3 = new Checkpoint(440, 180, 600, 180);
 
     m_csfl = new Checkpoint(280, 240, 280, 400);
+}
 
+void R1::load()
+{
+    Race::load();
+
+    std::vector<float> pts;
+    pts.push_back(80);
+    pts.push_back(80);
+    pts.push_back(520);
+    pts.push_back(320);
+
+    for(std::list<IACar*>::iterator it = m_iacars.begin(); it != m_iacars.end(); it++)
+        (*it)->setPoints(pts);
+
+    launchIAsTimer();
 }

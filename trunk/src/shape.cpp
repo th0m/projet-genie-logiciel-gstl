@@ -8,6 +8,7 @@
 #include "startingfinishline.hpp"
 #include "playercar.hpp"
 #include "flaque.hpp"
+#include "iacar.hpp"
 
 #include <stdexcept>
 #include <SDL/SDL_image.h>
@@ -30,7 +31,7 @@ Shape::Shape(float x, float y, std::string type, SDL_Surface *window)
     }
 
     /* # Si il s'agit d'une voiture on active la transparence */
-    if(m_type == "playercarg")
+    if(m_type == "playercarg" || m_type == "iacarg")
         SDL_SetColorKey(m_img, SDL_SRCCOLORKEY, SDL_MapRGB(m_img->format, 0xff, 0xff, 0xff));
 
 
@@ -94,6 +95,13 @@ Shape* Shape::getInstance(shape_type type, float x, float y, SDL_Surface *window
                 ptr = new PlayerCar(x, y, window);
                 break;
             }
+
+            case IACAR :
+            {
+                ptr = new IACar(x, y, window);
+                break;
+            }
+
             case FLAQUE :
             {
                 ptr = new Flaque(x,y,window);

@@ -24,10 +24,10 @@ class Race
 
         explicit Race(SDL_Surface *window);
 
-        ~Race();
+        virtual ~Race();
 
         /* # Fonction qui va charge le contenu graphique du niveau */
-        void load();
+        virtual void load();
 
         /* # Fonction qui actualise la course */
         void refresh();
@@ -46,6 +46,8 @@ class Race
 
     protected:
 
+        void launchIAsTimer();
+
         /* # La fenetre du jeu */
         SDL_Surface *m_window;
 
@@ -57,6 +59,9 @@ class Race
 
         /* # Le contenu visuel du niveau */
         Uint8 **m_map;
+
+        /* # Les voitures des IAs */
+        std::list<IACar*> m_iacars;
 
         /* # Un conteneur qui stock l'ensemble des formes presentes sur l'ecran */
         std::list<Shape*> m_surfaces;
@@ -73,8 +78,12 @@ class Race
         /* # Timer */
         SDL_TimerID m_IATimer;
 
-        bool isAlreadyLoaded;
+    private :
 
+        /* Mise en mouvement des véhicules - signature d'une callback de type SDL_NewTimerCallback */
+        static Uint32 moveIAs(Uint32 interval, void* param);
+
+        void moveIAs();
 };
 
 #endif
