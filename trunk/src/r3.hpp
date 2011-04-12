@@ -8,7 +8,9 @@ class R3 : public Race
     public:
         explicit R3(SDL_Surface *window);
 
-    private:
+        ~R3();
+
+        void load();
 };
 
 #endif

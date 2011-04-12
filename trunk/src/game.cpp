@@ -74,16 +74,19 @@ void Game::UpdateEvents(Input* in, bool& continuer)
     {
         switch (event.type)
         {
-        case SDL_KEYDOWN:
-            in->key[event.key.keysym.sym]=1;
+            case SDL_KEYDOWN:
+                in->key[event.key.keysym.sym] = 1;
             break;
-        case SDL_KEYUP:
-            in->key[event.key.keysym.sym]=0;
+
+            case SDL_KEYUP:
+                in->key[event.key.keysym.sym] = 0;
             break;
-        case SDL_QUIT:
-            continuer = 0;
+
+            case SDL_QUIT:
+                continuer = 0;
             break;
-        default:
+
+            default:
             break;
         }
     }
@@ -95,25 +98,23 @@ void Game::eventloop()
     int nbLap = 0;
 
     Input in;
-    memset(&in,0,sizeof(in));
+    memset(&in, 0, sizeof(in));
 
     bool continuer = 1;
     bool enavant = 0, enarriere = 0;
 
     while(continuer)
     {
-
         UpdateEvents(&in,continuer);
+        m_currentRace->refresh();
+
         if (!in.key[SDLK_UP])
-        {
             enavant = 0;
-        }
+
         if (in.key[SDLK_UP])
         {
             if(!enavant)
-            {
                 Sleep(1000);
-            }
 
             m_currentRace->movePlayerCar(SDLK_UP);
 
@@ -122,26 +123,30 @@ void Game::eventloop()
                 nbLap++;
                 printf("Fin de tours\n");
                 fflush(stdout);
+
                 if(nbLap == Game::m_nbLap)
                 {
                     nbLap = 0;
                     printf("Switch de course\n");
                     fflush(stdout);
+
+                    delete m_currentRace;
+
                     switch(m_rNumber)
                     {
                         case Race1 :
-                        m_currentRace = new R2(m_window);
-                        m_rNumber = Race2;
+                            m_currentRace = new R2(m_window);
+                            m_rNumber = Race2;
                         break;
 
                         case Race2 :
-                        m_currentRace = new R3(m_window);
-                        m_rNumber = Race3;
+                            m_currentRace = new R3(m_window);
+                            m_rNumber = Race3;
                         break;
 
                         case Race3 :
-                        m_currentRace = new R1(m_window);
-                        m_rNumber = Race1;
+                            m_currentRace = new R1(m_window);
+                            m_rNumber = Race1;
                         break;
                     }
 
@@ -178,7 +183,6 @@ void Game::eventloop()
         if (in.key[SDLK_SPACE])
         {
             m_currentRace->useTurbo();
-            m_currentRace->refresh();
             in.key[SDLK_SPACE] = 0;
         }
 

@@ -8,9 +8,10 @@ class R1 : public Race
     public:
         explicit R1(SDL_Surface *window);
 
+        ~R1();
+
         void load();
 
-    private:
 };
 
 #endif
