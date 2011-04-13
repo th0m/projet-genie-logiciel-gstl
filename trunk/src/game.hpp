@@ -57,7 +57,8 @@ class Game
         /* # La fonction qui gere les evenements */
         void UpdateEvents(Input* in, bool& continuer);
 
-
+        /* # Fonction qui donne le temps a sleep avant le prochaine rafraichissement */
+        Uint32 time_left(Uint32 &next_time);
 
         /* # La course courante */
         Race *m_currentRace;
@@ -69,7 +70,7 @@ class Game
         SDL_Surface *m_window, *m_ico;
 
         /* # La largeur et la hauteur de notre fenetre */
-        static const Uint32 m_width, m_height, m_shapeSize, m_turboTime, m_nbLap;
+        static const Uint32 m_width, m_height, m_shapeSize, m_turboTime, m_nbLap, m_framerate;
 
         /* # Vitesses marche avant et marche arriere */
         static const float m_fwdSpeed, m_revSpeed;

@@ -30,9 +30,9 @@ Race::Race(SDL_Surface *window)
 
 Race::~Race()
 {
-    if(m_IATimer != NULL)
+    //if(m_IATimer != NULL)
         /* # On desactive le timer */
-        SDL_RemoveTimer(m_IATimer);
+        //SDL_RemoveTimer(m_IATimer);
 
     /* # On desalloue proprement chaque colonnes de notre map */
     for(unsigned int i = 0; i < m_nbLines; ++i)
@@ -176,21 +176,8 @@ Race::Lap Race::checkCheckPoint()
     return lap;
 }
 
-Uint32 Race::moveIAs(Uint32 interval, void* param)
-{
-    Race *race = static_cast<Race*>(param);
-    race->moveIAs();
-    return interval;
-}
-
 void Race::moveIAs()
 {
     for(std::list<IACar*>::const_iterator it = m_iacars.begin(); it != m_iacars.end(); it++)
         (*it)->move();
-}
-
-void Race::launchIAsTimer()
-{
-   	/* # Instanciation du timer des IAs */
-    m_IATimer = SDL_AddTimer(16, &Race::moveIAs, this);
 }

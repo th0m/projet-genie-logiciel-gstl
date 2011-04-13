@@ -17,6 +17,18 @@ const float Game::m_revSpeed = m_fwdSpeed / 2;
 const Uint32 Game::m_nbLap = 2;
 Uint32 Game::m_speedFactorIA = 1;
 const std::string Game::m_title = "Projet Genie Logiciel 3A - GSTL";
+const Uint32 Game::m_framerate = 60;
+
+Uint32 Game::time_left(Uint32 &next_time)
+{
+    Uint32 now;
+    now = SDL_GetTicks();
+
+    if(next_time <= now)
+        return 0;
+    else
+        return next_time - now;
+}
 
 Game::Game()
 : m_currentRace(NULL), m_isOk(true), m_window(NULL), m_ico(NULL),
@@ -92,86 +104,92 @@ void Game::UpdateEvents(Input* in, bool& continuer)
             break;
         }
     }
-
-    /* # Pour des raisons d'occupation CPU */
-    Sleep(6);
 }
 
 void Game::eventloop()
 {
     int nbLap = 0;
     Input in = {0};
-    bool continuer = true, enavant = false, enarriere = false;
+    bool continuer = true;
+    Uint32 tick_interval = 1000/m_framerate, beforefwd = SDL_GetTicks(), beforerev = SDL_GetTicks(), next_time = SDL_GetTicks() + tick_interval;
 
     while(continuer)
     {
+        /* On met a jour le tableau des touches enfoncees */
         UpdateEvents(&in,continuer);
+
+        /* On rafraichit l'affichage et on deplace l'IA */
         m_currentRace->refresh();
+        m_currentRace->moveIAs();
 
+        /* Tant qu'on n'enfonce pas la touche pour avancer ou reculer ou les deux on affecte nos tick au temps actuel */
         if(!in.key[SDLK_UP])
-            enavant = false;
-
-        if(in.key[SDLK_UP])
         {
-            if(!enavant)
-                Sleep(1000);
-
-            m_currentRace->movePlayerCar(SDLK_UP);
-
-            if(m_currentRace->checkCheckPoint() == Race::Finished)
+            beforefwd = SDL_GetTicks();
+        }
+        if(!in.key[SDLK_DOWN])
+        {
+            beforerev = SDL_GetTicks();
+        }
+        if(in.key[SDLK_UP] && in.key[SDLK_DOWN])
+        {
+            beforefwd = SDL_GetTicks();
+            beforerev = SDL_GetTicks();
+        }
+        /* Si on appuie sur la touche pour avancer sans appuyer sur celle pour reculer on va pouvoir avancer */
+        if(in.key[SDLK_UP] && !in.key[SDLK_DOWN])
+        {
+            /* On attend une seconde avant de demarrer */
+            if(SDL_GetTicks() > (beforefwd+1000))
             {
-                nbLap++;
-                printf("Fin de tours\n");
-                fflush(stdout);
+                m_currentRace->movePlayerCar(SDLK_UP);
 
-                if(nbLap == Game::m_nbLap)
+                if(m_currentRace->checkCheckPoint() == Race::Finished)
                 {
-                    nbLap = 0;
-                    printf("Switch de course\n");
-                    fflush(stdout);
+                    nbLap++;
 
-                    delete m_currentRace;
-
-                    switch(m_rNumber)
+                    if(nbLap == Game::m_nbLap)
                     {
-                        case Race1 :
-                            m_currentRace = new R2(m_window);
-                            m_rNumber = Race2;
-                        break;
+                        nbLap = 0;
+                        beforefwd = SDL_GetTicks();
 
-                        case Race2 :
-                            m_currentRace = new R3(m_window);
-                            m_rNumber = Race3;
-                        break;
+                        delete m_currentRace;
 
-                        case Race3 :
-                            /* On vient de finir un cycle, on incremente la difficulte des IAs */
-                            Game::m_speedFactorIA *= 2;
+                        switch(m_rNumber)
+                        {
+                            case Race1 :
+                                m_currentRace = new R2(m_window);
+                                m_rNumber = Race2;
+                            break;
 
-                            m_currentRace = new R1(m_window);
-                            m_rNumber = Race1;
-                        break;
+                            case Race2 :
+                                m_currentRace = new R3(m_window);
+                                m_rNumber = Race3;
+                            break;
+
+                            case Race3 :
+                                /* On vient de finir un cycle, on incremente la difficulte des IAs */
+                                Game::m_speedFactorIA *= 2;
+
+                                m_currentRace = new R1(m_window);
+                                m_rNumber = Race1;
+                            break;
+                        }
+
+                        cleanScreen();
+                        m_currentRace->load();
                     }
-
-                    cleanScreen();
-                    m_currentRace->load();
                 }
             }
-            enavant = true;
         }
-
-        if(!in.key[SDLK_DOWN])
-            enarriere = false;
-
-        if(in.key[SDLK_DOWN])
+        /* Si on appuie sur la touche pour reculer sans appuyer sur celle pour avancer on va pouvoir reculer */
+        if(in.key[SDLK_DOWN] && !in.key[SDLK_UP])
         {
-            if(!enarriere)
-                Sleep(1000);
-
-            m_currentRace->movePlayerCar(SDLK_DOWN);
-            enarriere = true;
+            /* On attend une seconde avant de demarrer */
+            if(SDL_GetTicks() > (beforerev+1000))
+                m_currentRace->movePlayerCar(SDLK_DOWN);
         }
-
+        /* Si on enfonce la touche droite ou gauche on change la direction de la voiture */
         if(in.key[SDLK_LEFT])
         {
             m_currentRace->changePlayerCarPosition(SDLK_LEFT);
@@ -183,17 +201,20 @@ void Game::eventloop()
             m_currentRace->changePlayerCarPosition(SDLK_RIGHT);
             in.key[SDLK_RIGHT] = 0;
         }
-
+        /* Si on appuie sur espace ca pousse ! */
         if(in.key[SDLK_SPACE])
         {
             m_currentRace->useTurbo();
             in.key[SDLK_SPACE] = 0;
         }
 
-        /* # Occupation CPU */
-        Sleep(1);
+        /* On fait un delay (ie un sleep) avec le temps qu'il nous reste avant le prochain rafraichissement pour avoir un framerate fixe */
+        SDL_Delay(time_left(next_time));
+        next_time += tick_interval;
     }
 }
+
+
 
 Uint32 Game::getNbHorizontalSprites()
 {
