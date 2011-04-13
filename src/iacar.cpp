@@ -4,6 +4,9 @@
 IACar::IACar(float x, float y, SDL_Surface *window)
 : Shape(x, y, std::string("iacarg"), window), m_currentStep(FirstStep)
 {
+    /* # On veut controler completement la destruction de l'objet */
+    m_free = false;
+
     /* # On charge les differentes sprites */
     m_up = IMG_Load("sprites/iacarh");
     SDL_SetColorKey(m_up, SDL_SRCCOLORKEY, SDL_MapRGB(m_up->format, 0xff, 0xff, 0xff));
@@ -23,6 +26,7 @@ IACar::~IACar()
     SDL_FreeSurface(m_up);
     SDL_FreeSurface(m_down);
     SDL_FreeSurface(m_right);
+    SDL_FreeSurface(m_left);
 }
 
 void IACar::move()

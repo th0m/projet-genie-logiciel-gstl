@@ -14,7 +14,7 @@
 #include <SDL/SDL_image.h>
 
 Shape::Shape(float x, float y, std::string type, SDL_Surface *window)
-: m_type(type), m_isHidden(false), m_x(x), m_y(y), m_img(NULL), m_window(window)
+: m_type(type), m_isHidden(false), m_x(x), m_y(y), m_img(NULL), m_window(window), m_free(true)
 {
     std::string path("sprites/" + m_type);
 
@@ -34,7 +34,6 @@ Shape::Shape(float x, float y, std::string type, SDL_Surface *window)
     if(m_type == "playercarg" || m_type == "iacarg")
         SDL_SetColorKey(m_img, SDL_SRCCOLORKEY, SDL_MapRGB(m_img->format, 0xff, 0xff, 0xff));
 
-
     /* # On affiche notre sprite */
     actualize();
 
@@ -47,11 +46,9 @@ Shape::~Shape()
 
     rec.h = rec.w = m_img->h;
 
-    /* # On decharge proprement l'image */
-    SDL_FreeSurface(m_img);
-
-    /* # On y met du blanc à la place */
-    SDL_FillRect(m_window, &rec, SDL_MapRGB(m_window->format, 0xff, 0xff, 0xff));
+    if(m_free)
+        /* # On decharge proprement l'image */
+        SDL_FreeSurface(m_img);
 }
 
 Shape* Shape::getInstance(shape_type type, float x, float y, SDL_Surface *window)

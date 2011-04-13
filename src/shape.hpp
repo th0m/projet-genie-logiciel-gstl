@@ -61,6 +61,8 @@ class Shape
 
         /* # Notre sprite, et la fenetre */
         SDL_Surface *m_img, *m_window;
+
+        bool m_free;
 };
 
 #endif
