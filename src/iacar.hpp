@@ -20,6 +20,7 @@ class IACar : public Shape
 
         ~IACar();
 
+        /* # Fonction qui permet de définir les points "d'interpolation" du mouvement */
         void setPoints(std::vector<float> &points);
 
         /* # Fonction qui permet de faire evoluer les voitures pseudo-IAs */
@@ -27,13 +28,14 @@ class IACar : public Shape
 
     private:
 
+        /* # Vecteur des points d'interpolations */
         std::vector<float> m_points;
 
+        /* # Le mouvement s'oppère en 4 étapes, cet attribut indique le courant */
         Step m_currentStep;
 
+        /* # Les différentes surfaces de la voiture */
         SDL_Surface *m_up, *m_down, *m_right, *m_left;
-
-        bool m_isFirstTime;
 };
 
 #endif
