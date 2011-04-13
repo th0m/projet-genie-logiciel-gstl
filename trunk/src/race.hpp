@@ -48,6 +48,7 @@ class Race
 
         void launchIAsTimer();
 
+
         /* # La fenetre du jeu */
         SDL_Surface *m_window;
 

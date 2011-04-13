@@ -52,6 +52,12 @@ Race::~Race()
     /* # On detruit nos IAs */
     for(std::list<IACar*>::iterator it = m_iacars.begin(); it != m_iacars.end(); ++it)
         delete (*it);
+
+    /* # On detruit nos checkpoints */
+    delete m_c1;
+    delete m_c2;
+    delete m_c3;
+    delete m_csfl;
 }
 
 void Race::refresh()
@@ -173,16 +179,7 @@ Race::Lap Race::checkCheckPoint()
 Uint32 Race::moveIAs(Uint32 interval, void* param)
 {
     Race *race = static_cast<Race*>(param);
-    try
-    {
-            race->moveIAs();
-
-    }catch(...)
-    {
-        printf("EXCEPTION\n");
-                fflush(stdout);
-
-    }
+    race->moveIAs();
     return interval;
 }
 

@@ -7,7 +7,7 @@ class White : public Shape
 {
     public:
 
-        explicit White(Sint32 x, Sint32 y, SDL_Surface *window);
+        explicit White(float x, float y, SDL_Surface *window);
 
 };
 

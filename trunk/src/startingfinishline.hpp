@@ -7,7 +7,7 @@ class StartingFinishLine : public Shape
 {
     public:
 
-        explicit StartingFinishLine(Sint32 x, Sint32 y, SDL_Surface *window);
+        explicit StartingFinishLine(float x, float y, SDL_Surface *window);
 
 };
 

@@ -50,21 +50,11 @@ R1::R1(SDL_Surface *window)
 
 R1::~R1()
 {
-    printf("R1::~R1()\n");
-    fflush(stdout);
 }
 
 void R1::load()
 {
-    try
-    {
-        Race::load();
-    }
-    catch(...)
-    {
-        printf("EXCEPTION::R1::load\n");
-        fflush(stdout);
-    }
+    Race::load();
 
     std::vector<float> pts;
     pts.push_back(80);

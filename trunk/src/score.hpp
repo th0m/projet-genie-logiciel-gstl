@@ -9,6 +9,7 @@ class Score
     public:
 
         explicit Score();
+
         ~Score();
 
         void ajoutScore(std::string s, unsigned int sc);

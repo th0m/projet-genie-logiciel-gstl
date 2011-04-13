@@ -10,6 +10,9 @@ PlayerCar::PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window)
 : Shape(x, y, std::string("playercarg"), window), m_fwdspeed(Game::getFwdSpeed()), m_revspeed(m_fwdspeed / 2), m_timer(0),
   m_state(Others)
 {
+    /* # On veut contrôler completement la destruction de l'objet */
+    m_free = false;
+
     /* # On charge les differentes sprites */
     m_up = IMG_Load("sprites/playercarh");
     SDL_SetColorKey(m_up, SDL_SRCCOLORKEY, SDL_MapRGB(m_up->format, 0xff, 0xff, 0xff));
@@ -43,6 +46,7 @@ PlayerCar::~PlayerCar()
     SDL_FreeSurface(m_up);
     SDL_FreeSurface(m_down);
     SDL_FreeSurface(m_right);
+    SDL_FreeSurface(m_left);
     SDL_FreeSurface(m_northwest);
     SDL_FreeSurface(m_northeast);
     SDL_FreeSurface(m_southwest);
@@ -417,10 +421,7 @@ void PlayerCar::enableTurboMode()
 
 float PlayerCar::getSpeed()
 {
-    if(m_state == TurboMode)
-        return Game::getFwdSpeed() * 2;
-    else
-        return Game::getFwdSpeed();
+    return (m_state == TurboMode) ? Game::getFwdSpeed() * 2 : Game::getFwdSpeed();
 }
 
 void PlayerCar::setNormalSpeed()

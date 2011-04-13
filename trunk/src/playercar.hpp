@@ -28,7 +28,7 @@ class PlayerCar : public Shape
 
     private:
 
-        typedef enum CurrentPosition
+        enum CurrentPosition
         {
             Up,
             Down,
@@ -40,7 +40,7 @@ class PlayerCar : public Shape
             SouthEast
         };
 
-        typedef enum PlayerCarState
+        enum PlayerCarState
         {
             TurboMode,
             Others
@@ -48,13 +48,13 @@ class PlayerCar : public Shape
 
         float getSpeed();
 
-
-
         void setNormalSpeed();
 
         void destroyTimer();
 
         static Uint32 callback(Uint32 interval, void* param);
+
+
 
         /* # vitesse du véhicule forward : marche avant, reverse : marche arriere*/
         float m_fwdspeed, m_revspeed;

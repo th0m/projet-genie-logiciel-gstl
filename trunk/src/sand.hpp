@@ -7,7 +7,7 @@ class Sand : public Shape
 {
     public:
 
-        explicit Sand(Sint32 x, Sint32 y, SDL_Surface *window);
+        explicit Sand(float x, float y, SDL_Surface *window);
 
 };
 
