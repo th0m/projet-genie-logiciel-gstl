@@ -41,14 +41,13 @@ class Race
         /* # Fonction qui change la position de la voiture du joueur */
         void changePlayerCarPosition(SDLKey key);
 
+        /* # Fonction qui s'occupe du deplacement de l'IA */
+        void moveIAs();
+
         /* # Verification des 3 checkpoints*/
         Lap checkCheckPoint();
 
     protected:
-
-        void launchIAsTimer();
-
-
         /* # La fenetre du jeu */
         SDL_Surface *m_window;
 
@@ -76,15 +75,6 @@ class Race
         /* # Les checkpoints que l'on a besoin de placer sur la map dont la ligne d'arrivee */
         Checkpoint *m_c1, *m_c2, *m_c3, *m_csfl;
 
-        /* # Timer */
-        SDL_TimerID m_IATimer;
-
-    private :
-
-        /* Mise en mouvement des véhicules - signature d'une callback de type SDL_NewTimerCallback */
-        static Uint32 moveIAs(Uint32 interval, void* param);
-
-        void moveIAs();
 };
 
 #endif

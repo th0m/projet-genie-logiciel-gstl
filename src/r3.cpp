@@ -59,5 +59,4 @@ void R3::load()
     for(std::list<IACar*>::iterator it = m_iacars.begin(); it != m_iacars.end(); it++)
         (*it)->setPoints(pts);
 
-    launchIAsTimer();
 }
