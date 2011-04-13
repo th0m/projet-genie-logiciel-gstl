@@ -43,6 +43,10 @@ PlayerCar::~PlayerCar()
     SDL_FreeSurface(m_up);
     SDL_FreeSurface(m_down);
     SDL_FreeSurface(m_right);
+    SDL_FreeSurface(m_northwest);
+    SDL_FreeSurface(m_northeast);
+    SDL_FreeSurface(m_southwest);
+    SDL_FreeSurface(m_southeast);
 }
 
 void PlayerCar::loadAnotherPosition(SDLKey key)
@@ -60,6 +64,7 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
 
             break;
         }
+
         case NorthWest :
         {
             if(key == SDLK_LEFT)
@@ -69,6 +74,7 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
 
             break;
         }
+
         case Up :
         {
             if(key == SDLK_LEFT)
@@ -78,6 +84,7 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
 
             break;
         }
+
         case NorthEast :
         {
             if(key == SDLK_LEFT)
@@ -87,6 +94,7 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
 
             break;
         }
+
         case Right :
         {
             if(key == SDLK_LEFT)
@@ -96,6 +104,7 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
 
             break;
         }
+
         case SouthEast :
         {
             if(key == SDLK_LEFT)
@@ -105,6 +114,7 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
 
             break;
         }
+
         case Down :
         {
             if(key == SDLK_LEFT)
@@ -114,6 +124,7 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
 
             break;
         }
+
         case SouthWest :
         {
             if(key == SDLK_LEFT)
@@ -181,8 +192,9 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
                     y += fwdlatspeed;
                 break;
             }
-        break;
+            break;
         }
+
         case SDLK_DOWN :
         {
             switch(m_currentPos)
@@ -223,7 +235,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
                     y -= revlatspeed;
                 break;
             }
-        break;
+            break;
         }
 
         default :
@@ -272,6 +284,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
         if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
             isFlaque=true;
     }
+
     /* # Si on est dans une flaque on ralentit la voiture */
     if(isFlaque)
     {
@@ -283,9 +296,9 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
     else
     {
         if(key == SDLK_UP)
-            m_fwdspeed=getSpeed();
+            m_fwdspeed = getSpeed();
         if(key == SDLK_DOWN)
-            m_revspeed=Game::getRevSpeed();
+            m_revspeed = Game::getRevSpeed();
     }
 
     /* # On test si on veut se deplacer dans une limite */
@@ -299,7 +312,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
 
         if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
         {
-            isOk=false;
+            isOk = false;
             /* # Si on veut déplacer la voiture dans une limite on fait le nécessaire pour la coller au bord */
             if( (key == SDLK_UP && m_currentPos == Left) || (key==SDLK_DOWN && m_currentPos == Right) )
             {
@@ -322,7 +335,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
                 diffy = fabs(pvyh - limyb);
                 if( (key == SDLK_UP && diffy < m_fwdspeed) || (key == SDLK_DOWN && diffy < m_revspeed) )
                 {
-                    m_y -=diffy;
+                    m_y -= diffy;
                 }
 
             }
@@ -331,7 +344,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
                 diffy = fabs(pvyb - limyh);
                 if( (key == SDLK_UP && diffy < m_fwdspeed) || (key == SDLK_DOWN && diffy < m_revspeed) )
                 {
-                    m_y +=diffy;
+                    m_y += diffy;
                 }
             }
             else if( (key == SDLK_UP && m_currentPos == NorthEast) || (key == SDLK_DOWN && m_currentPos == SouthWest) )
@@ -344,7 +357,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
                 }
                 if( (key == SDLK_UP && diffy < fwdlatspeed) || (key == SDLK_DOWN && diffy < revlatspeed) )
                 {
-                    m_y -=diffy;
+                    m_y -= diffy;
                 }
             }
             else if( (key == SDLK_UP && m_currentPos == SouthEast) || (key == SDLK_DOWN && m_currentPos == NorthWest) )
@@ -357,7 +370,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
                 }
                 if( (key == SDLK_UP && diffy < fwdlatspeed) || (key == SDLK_DOWN && diffy < revlatspeed) )
                 {
-                    m_y +=diffy;
+                    m_y += diffy;
                 }
             }
             else if( (key == SDLK_UP && m_currentPos == NorthWest) || (key == SDLK_DOWN && m_currentPos == SouthEast) )
@@ -370,7 +383,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
                 }
                 if( (key == SDLK_UP && diffy < fwdlatspeed) || (key == SDLK_DOWN && diffy < revlatspeed) )
                 {
-                    m_y -=diffy;
+                    m_y -= diffy;
                 }
             }
             else if( (key == SDLK_UP && m_currentPos == SouthWest) || (key == SDLK_DOWN && m_currentPos == NorthEast) )
@@ -383,7 +396,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
                 }
                 if( (key == SDLK_UP && diffy < fwdlatspeed) || (key == SDLK_DOWN && diffy < revlatspeed) )
                 {
-                    m_y +=diffy;
+                    m_y += diffy;
                 }
             }
             return;
@@ -392,9 +405,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
 
     /* # Si on ne fonce pas dans une bordure on bouge le vehicule */
     if(isOk)
-    {
         m_x = x, m_y = y;
-    }
 }
 
 void PlayerCar::enableTurboMode()

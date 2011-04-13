@@ -12,7 +12,7 @@ const Uint32 Game::m_width = 600;
 const Uint32 Game::m_height = 400;
 const Uint32 Game::m_shapeSize = 40;
 const Uint32 Game::m_turboTime = 2000;
-const float Game::m_fwdSpeed = 5;
+const float Game::m_fwdSpeed = 2;
 const float Game::m_revSpeed = m_fwdSpeed / 2;
 const Uint32 Game::m_nbLap = 2;
 const std::string Game::m_title = "Projet Genie Logiciel 3A - GSTL";
@@ -70,6 +70,7 @@ void Game::start()
 void Game::UpdateEvents(Input* in, bool& continuer)
 {
     SDL_Event event;
+
     while(SDL_PollEvent(&event))
     {
         switch (event.type)
@@ -83,35 +84,33 @@ void Game::UpdateEvents(Input* in, bool& continuer)
             break;
 
             case SDL_QUIT:
-                continuer = 0;
+                continuer = false;
             break;
 
             default:
             break;
         }
     }
-    Sleep(50);
+
+    /* # Pour des raisons d'occupation CPU */
+    Sleep(1);
 }
 
 void Game::eventloop()
 {
     int nbLap = 0;
-
-    Input in;
-    memset(&in, 0, sizeof(in));
-
-    bool continuer = 1;
-    bool enavant = 0, enarriere = 0;
+    Input in = {0};
+    bool continuer = true, enavant = false, enarriere = false;
 
     while(continuer)
     {
         UpdateEvents(&in,continuer);
         m_currentRace->refresh();
 
-        if (!in.key[SDLK_UP])
-            enavant = 0;
+        if(!in.key[SDLK_UP])
+            enavant = false;
 
-        if (in.key[SDLK_UP])
+        if(in.key[SDLK_UP])
         {
             if(!enavant)
                 Sleep(1000);
@@ -154,38 +153,38 @@ void Game::eventloop()
                     m_currentRace->load();
                 }
             }
+            enavant = true;
+        }
 
-            enavant=1;
-        }
-        if (!in.key[SDLK_DOWN])
-        {
-            enarriere = 0;
-        }
-        if (in.key[SDLK_DOWN])
+        if(!in.key[SDLK_DOWN])
+            enarriere = false;
+
+        if(in.key[SDLK_DOWN])
         {
             if(!enarriere)
-            {
                 Sleep(1000);
-            }
+
             m_currentRace->movePlayerCar(SDLK_DOWN);
-            enarriere=1;
+            enarriere = true;
         }
-        if (in.key[SDLK_LEFT])
+
+        if(in.key[SDLK_LEFT])
         {
             m_currentRace->changePlayerCarPosition(SDLK_LEFT);
             in.key[SDLK_LEFT] = 0;
         }
-        if (in.key[SDLK_RIGHT])
+
+        if(in.key[SDLK_RIGHT])
         {
             m_currentRace->changePlayerCarPosition(SDLK_RIGHT);
             in.key[SDLK_RIGHT] = 0;
         }
-        if (in.key[SDLK_SPACE])
+
+        if(in.key[SDLK_SPACE])
         {
             m_currentRace->useTurbo();
             in.key[SDLK_SPACE] = 0;
         }
-
     }
 }
 
