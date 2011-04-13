@@ -48,13 +48,7 @@ R2::~R2()
 
 void R2::load()
 {
-    printf("avant R2::load\n");
-    fflush(stdout);
-
     Race::load();
-
-    printf("R2::load\n");
-    fflush(stdout);
 
     std::vector<float> pts;
     pts.push_back(90);
@@ -65,13 +59,5 @@ void R2::load()
     for(std::list<IACar*>::iterator it = m_iacars.begin(); it != m_iacars.end(); it++)
         (*it)->setPoints(pts);
 
-    printf("set points ok\n");
-    fflush(stdout);
-
-
     launchIAsTimer();
-
-    printf("lauchn ia timer ok\n");
-    fflush(stdout);
-
 }

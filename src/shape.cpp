@@ -112,7 +112,6 @@ Shape* Shape::getInstance(shape_type type, float x, float y, SDL_Surface *window
     return ptr;
 }
 
-
 void Shape::actualize()
 {
     SDL_Rect pos = { m_x, m_y };

@@ -30,6 +30,10 @@ class IACar : public Shape
         std::vector<float> m_points;
 
         Step m_currentStep;
+
+        SDL_Surface *m_up, *m_down, *m_right, *m_left;
+
+        bool m_isFirstTime;
 };
 
 #endif
