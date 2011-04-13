@@ -5,9 +5,6 @@
 #include <string>
 
 /* # Pour eviter le probleme des inclusions cycliques : classe A a besoin de la classe B, et la classe B a besoin de la classe A */
-class R1;
-class R2;
-class R3;
 class Race;
 
 class Game
@@ -38,17 +35,17 @@ class Game
 
     private:
 
-        typedef enum RaceNumber
+        enum RaceNumber
         {
             Race1,
             Race2,
             Race3
         };
 
-        typedef struct
+        struct Input
         {
             char key[SDLK_LAST];
-        } Input;
+        };
 
         /* # La boucle principale d'evenement */
         void eventloop();
@@ -57,6 +54,8 @@ class Game
 
         /* # La fonction qui gere les evenements */
         void UpdateEvents(Input* in, bool& continuer);
+
+
 
         /* # La course courante */
         Race *m_currentRace;
