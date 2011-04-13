@@ -7,7 +7,7 @@ class Flaque : public Shape
 {
     public:
 
-        explicit Flaque(Sint32 x, Sint32 y, SDL_Surface *window);
+        explicit Flaque(float x, float y, SDL_Surface *window);
 
 };
 
