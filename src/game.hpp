@@ -33,6 +33,8 @@ class Game
 
         static float getRevSpeed();
 
+        static Uint32 getSpeedFactorIA();
+
     private:
 
         enum RaceNumber
@@ -74,6 +76,9 @@ class Game
 
         /* # Le titre de la fenetre */
         static const std::string m_title;
+
+        /* # Le facteur de vitesse des IAs qui va augmenter à chaque fois qu'on complete les 3 courses */
+        static Uint32 m_speedFactorIA;
 
         RaceNumber m_rNumber;
 };

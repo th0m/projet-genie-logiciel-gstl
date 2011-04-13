@@ -192,5 +192,5 @@ void Race::moveIAs()
 void Race::launchIAsTimer()
 {
    	/* # Instanciation du timer des IAs */
-    m_IATimer = SDL_AddTimer(5, &Race::moveIAs, this);
+    m_IATimer = SDL_AddTimer(16, &Race::moveIAs, this);
 }

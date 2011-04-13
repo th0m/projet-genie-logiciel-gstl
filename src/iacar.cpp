@@ -1,4 +1,5 @@
-#include "IACar.hpp"
+#include "iacar.hpp"
+#include "game.hpp"
 #include <SDL/SDL_Image.h>
 
 IACar::IACar(float x, float y, SDL_Surface *window)
@@ -31,6 +32,8 @@ IACar::~IACar()
 
 void IACar::move()
 {
+    int fact = Game::getSpeedFactorIA();
+
     switch(m_currentStep)
     {
         case FirstStep :
@@ -38,7 +41,7 @@ void IACar::move()
             if(m_x <= m_points[0])
                 m_currentStep = SecondStep, m_img = m_up;
             else
-                m_x--;
+                m_x -= fact;
 
             break;
         }
@@ -48,7 +51,7 @@ void IACar::move()
             if(m_y <= m_points[1])
                 m_currentStep = ThirdStep, m_img = m_right;
             else
-                m_y--;
+                m_y -= fact;
 
             break;
         }
@@ -58,7 +61,7 @@ void IACar::move()
             if(m_x >= m_points[2])
                 m_currentStep = LastStep, m_img = m_down;
             else
-                m_x++;
+                m_x += fact;
 
             break;
         }
@@ -68,7 +71,7 @@ void IACar::move()
             if(m_y >= m_points[3])
                 m_currentStep = FirstStep, m_img = m_left;
             else
-                m_y++;
+                m_y += fact;
 
             break;
         }
