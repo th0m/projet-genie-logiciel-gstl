@@ -15,6 +15,7 @@ const Uint32 Game::m_turboTime = 2000;
 const float Game::m_fwdSpeed = 2;
 const float Game::m_revSpeed = m_fwdSpeed / 2;
 const Uint32 Game::m_nbLap = 2;
+Uint32 Game::m_speedFactorIA = 1;
 const std::string Game::m_title = "Projet Genie Logiciel 3A - GSTL";
 
 Game::Game()
@@ -93,7 +94,7 @@ void Game::UpdateEvents(Input* in, bool& continuer)
     }
 
     /* # Pour des raisons d'occupation CPU */
-    Sleep(1);
+    Sleep(6);
 }
 
 void Game::eventloop()
@@ -144,6 +145,9 @@ void Game::eventloop()
                         break;
 
                         case Race3 :
+                            /* On vient de finir un cycle, on incremente la difficulte des IAs */
+                            Game::m_speedFactorIA *= 2;
+
                             m_currentRace = new R1(m_window);
                             m_rNumber = Race1;
                         break;
@@ -185,6 +189,9 @@ void Game::eventloop()
             m_currentRace->useTurbo();
             in.key[SDLK_SPACE] = 0;
         }
+
+        /* # Occupation CPU */
+        Sleep(1);
     }
 }
 
@@ -201,6 +208,11 @@ Uint32 Game::getNbVerticalSprites()
 Uint32 Game::getShapeSize()
 {
     return m_shapeSize;
+}
+
+Uint32 Game::getSpeedFactorIA()
+{
+    return m_speedFactorIA;
 }
 
 float Game::getFwdSpeed()
