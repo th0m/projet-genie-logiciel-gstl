@@ -28,25 +28,28 @@ class PlayerCar : public Shape
         /* # Fonction accesseur permettant de recupérer le score du joueur */
         Uint32 getScore();
 
-
-        /* # Fonction qui baisse la voiture du vehicule apres une collision */
+        /* # Fonction qui affecte l'etat recuperation de collision a la voiture */
         void setCollisionRecovering();
 
+         /* # Fonction qui affecte l'etat normal a la voiture */
         void setNormalState();
 
+         /* # Fonction qui affecte l'etat flaque a la voiture */
         void setFlaqueState();
 
         /* # Fonction qui retourne le boolean blocked */
-        bool isBlocked(){return m_blocked;};
+        bool isBlocked();
 
         /* # Fonction qui retourne si on roule dans une flaque */
-        bool isFlaque(){return m_flaque;};
+        bool isFlaque();
 
-        bool isTurbo(){return m_turbo;};
+        /* # Fonction qui retourne si on est en mode turbo */
+        bool isTurbo();
 
+        /* # Fonction qui affecte la vitesse en fonction de l'etat actuel */
         void setSpeed();
     private:
-
+        /* # Position actuelle du vehicule */
         enum CurrentPosition
         {
             Up,
@@ -59,34 +62,39 @@ class PlayerCar : public Shape
             SouthEast
         };
 
+        /* # Etat actuel du vehicule */
         enum PlayerCarState
         {
             TurboMode,
             CollisionRecovering,
             FlaqueState,
-            Others
+            Normal
         };
 
+        /* # Fonction qui donne la vitesse actuelle en fonction de l'etat du vehicule */
         float getSpeed();
 
-
-        /* Fonction pour savoir vers où l'on souhaite se déplacer */
+        /* # Fonction pour savoir vers ou on souhaite se deplacer */
         float getWantedX(SDLKey key, float& fwdlatspeed, float& revlatspeed);
         float getWantedY(SDLKey key, float& fwdlatspeed, float& revlatspeed);
 
-        /* # vitesse du véhicule forward : marche avant, reverse : marche arriere*/
+        /* # Vitesse du véhicule forward : marche avant, reverse : marche arriere*/
         float m_fwdspeed, m_revspeed;
 
+        /* # Les differents sprites de la voiture charges en memoire */
         SDL_Surface *m_up, *m_down, *m_right, *m_left, *m_northwest, *m_northeast, *m_southwest, *m_southeast;
 
+        /* # La position courante du vehicule*/
         CurrentPosition m_currentPos;
 
+        /* # Le score courant du joueur */
         Uint32 currentScore;
 
+        /* # L'etat courant du vehicule */
         PlayerCarState m_state;
 
-        /* # boolean indiquant si la voiture est bloquee */
-        bool m_blocked, m_flaque, m_turbo;
+        /* # Booleens indiquant si la voiture est bloquee, roule dans une flaque */
+        bool m_blocked, m_flaque;
 };
 
 #endif
