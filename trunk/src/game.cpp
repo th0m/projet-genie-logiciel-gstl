@@ -114,7 +114,7 @@ void Game::eventloop()
     bool continuer = true;
     Uint32 tick_interval = 1000 / m_framerate, beforefwd = SDL_GetTicks(),
     beforerev = SDL_GetTicks(), next_time = SDL_GetTicks() + tick_interval, turbo = 0,
-    turbotime = m_turboTime;
+    turbotime = m_turboTime, collision = SDL_GetTicks();
 
     while(continuer)
     {
@@ -129,12 +129,16 @@ void Game::eventloop()
         if(turbo != 0 && SDL_GetTicks() >= turbo + turbotime)
         {
             turbo = 0;
-            m_currentRace->disableTurbo();
+            m_currentRace->getPlayerCar()->setNormalSpeed();
 
             /* # On reaffecte le temps de turbo */
             turbotime = m_turboTime;
         }
-
+        /* # Tant qu'on est bloque on affecte le timer au temps courant */
+        if(m_currentRace->getPlayerCar()->isBlocked())
+        {
+            collision = SDL_GetTicks();
+        }
         /* # Tant qu'on n'enfonce pas la touche pour avancer ou reculer ou les deux on affecte nos tick au temps actuel */
         if(!in.key[SDLK_UP])
             beforefwd = SDL_GetTicks();
@@ -154,7 +158,15 @@ void Game::eventloop()
             /* # On attend une seconde avant de demarrer */
             if(SDL_GetTicks() > (beforefwd + m_time2SpeedMax))
             {
+                if(SDL_GetTicks() < collision+1000)
+                {
+                    m_currentRace->getPlayerCar()->collisionRecovering();
+                }
                 m_currentRace->movePlayerCar(SDLK_UP);
+                if(m_currentRace->getPlayerCar()->isBlocked() && SDL_GetTicks() >= collision+1000)
+                {
+                    m_currentRace->getPlayerCar()->setNormalSpeed();
+                }
 
                 if(m_currentRace->checkCheckPoint() == Race::Finished)
                 {
@@ -206,13 +218,13 @@ void Game::eventloop()
         /* # Si on enfonce la touche droite ou gauche on change la direction de la voiture */
         if(in.key[SDLK_LEFT])
         {
-            m_currentRace->changePlayerCarPosition(SDLK_LEFT);
+            m_currentRace->getPlayerCar()->loadAnotherPosition(SDLK_LEFT);
             in.key[SDLK_LEFT] = 0;
         }
 
         if(in.key[SDLK_RIGHT])
         {
-            m_currentRace->changePlayerCarPosition(SDLK_RIGHT);
+            m_currentRace->getPlayerCar()->loadAnotherPosition(SDLK_RIGHT);
             in.key[SDLK_RIGHT] = 0;
         }
 

@@ -1,5 +1,6 @@
 #include "playercar.hpp"
 #include "game.hpp"
+#include "iacar.hpp"
 
 #include <SDL/SDL_Image.h>
 #include <cmath>
@@ -7,7 +8,7 @@
 
 
 PlayerCar::PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window)
-: Shape(x, y, std::string("playercarg"), window), m_fwdspeed(Game::getFwdSpeed()), m_revspeed(m_fwdspeed / 2), m_state(Others)
+: Shape(x, y, std::string("playercarg"), window), m_fwdspeed(Game::getFwdSpeed()), m_revspeed(m_fwdspeed / 2), m_state(Others), m_blocked(false)
 {
     /* # On veut contrôler completement la destruction de l'objet */
     m_free = false;
@@ -143,9 +144,9 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
     }
 }
 
-void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &flaques)
+void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &flaques, std::list<IACar*> &iacars)
 {
-    bool isOk = true;
+    m_blocked = false;
     bool isFlaque = false;
     float x = m_x, y = m_y;
 
@@ -304,6 +305,19 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
             m_revspeed = Game::getRevSpeed();
     }
 
+    /* # On test si on fonce dans une voiture */
+    for(std::list<IACar*>::iterator it = iacars.begin(); it != iacars.end(); ++it)
+    {
+        limxg = (*it)->getX();
+        limxd = (*it)->getX() + Game::getShapeSize();
+
+        limyh = (*it)->getY();
+        limyb = (*it)->getY() + Game::getShapeSize();
+
+        if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
+            m_blocked=true;
+    }
+
     /* # On test si on veut se deplacer dans une limite */
     for(std::list<Limit*>::iterator it = limits.begin(); it != limits.end();it++)
     {
@@ -315,7 +329,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
 
         if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
         {
-            isOk = false;
+            m_blocked = true;
             /* # Si on veut déplacer la voiture dans une limite on fait le nécessaire pour la coller au bord */
             if( (key == SDLK_UP && m_currentPos == Left) || (key==SDLK_DOWN && m_currentPos == Right) )
             {
@@ -407,7 +421,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
     }
 
     /* # Si on ne fonce pas dans une bordure on bouge le vehicule */
-    if(isOk)
+    if(!m_blocked)
         m_x = x, m_y = y;
 }
 
@@ -415,6 +429,12 @@ void PlayerCar::enableTurboMode()
 {
     m_state = TurboMode;
     m_fwdspeed = getSpeed() * 3;
+}
+
+void PlayerCar::collisionRecovering()
+{
+    m_state = CollisionRecovering;
+    m_fwdspeed = getSpeed() / 2;
 }
 
 float PlayerCar::getSpeed()

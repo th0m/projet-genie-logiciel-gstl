@@ -128,11 +128,6 @@ void Race::load()
     }
 }
 
-void Race::disableTurbo()
-{
-    m_playercar->setNormalSpeed();
-}
-
 bool Race::useTurbo()
 {
     bool isOk = false;
@@ -152,16 +147,10 @@ bool Race::useTurbo()
     return isOk;
 }
 
-void Race::changePlayerCarPosition(SDLKey key)
-{
-    /* # On change de position */
-    m_playercar->loadAnotherPosition(key);
-}
-
 void Race::movePlayerCar(SDLKey key)
 {
     /* # On bouge la voiture */
-    m_playercar->move(key, m_limits, m_flaques);
+    m_playercar->move(key, m_limits, m_flaques, m_iacars);
 }
 
 Race::Lap Race::checkCheckPoint()

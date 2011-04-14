@@ -3,6 +3,8 @@
 
 #include "limit.hpp"
 #include "flaque.hpp"
+#include "iacar.hpp"
+
 #include <list>
 
 
@@ -15,7 +17,7 @@ class PlayerCar : public Shape
         ~PlayerCar();
 
         /* # Fonction qui permet de deplacer le vehicule */
-        void move(SDLKey key, std::list<Limit*> &limit, std::list<Flaque*> &flaques);
+        void move(SDLKey key, std::list<Limit*> &limit, std::list<Flaque*> &flaques, std::list<IACar*> &iacars);
 
         /* # Fonction qui change la position du vehicule */
         void loadAnotherPosition(SDLKey key);
@@ -29,6 +31,11 @@ class PlayerCar : public Shape
         /* # Fonction qui retablit la vitesse de croisiere du vehicule */
         void setNormalSpeed();
 
+        /* # Fonction qui baisse la voiture du vehicule apres une collision */
+        void collisionRecovering();
+
+        /* # Fonction qui retourne le boolean blocked */
+        bool isBlocked(){return m_blocked;};
 
     private:
 
@@ -47,11 +54,11 @@ class PlayerCar : public Shape
         enum PlayerCarState
         {
             TurboMode,
+            CollisionRecovering,
             Others
         };
 
         float getSpeed();
-
 
         /* # vitesse du véhicule forward : marche avant, reverse : marche arriere*/
         float m_fwdspeed, m_revspeed;
@@ -63,6 +70,9 @@ class PlayerCar : public Shape
         Uint32 currentScore;
 
         PlayerCarState m_state;
+
+        /* # boolean indiquant si la voiture est bloquee */
+        bool m_blocked;
 };
 
 #endif
