@@ -8,7 +8,7 @@
 
 
 PlayerCar::PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window)
-: Shape(x, y, std::string("playercarg"), window), m_fwdspeed(Game::getFwdSpeed()), m_revspeed(m_fwdspeed / 2), m_state(Others), m_blocked(false), m_flaque(false)
+: Shape(x, y, std::string("playercarg"), window), m_fwdspeed(Game::getFwdSpeed()), m_revspeed(m_fwdspeed / 2), m_state(Normal), m_blocked(false), m_flaque(false)
 {
     /* # On veut contrôler completement la destruction de l'objet */
     m_free = false;
@@ -56,7 +56,6 @@ PlayerCar::~PlayerCar()
 void PlayerCar::loadAnotherPosition(SDLKey key)
 {
     /* # Ici on est charge de blitter le nouveau sprite de position selon la touche appuyee */
-
     switch(m_currentPos)
     {
         case Left :
@@ -143,15 +142,15 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
         break;
     }
 }
+
 template <typename T> bool isMoveAllowed (Uint32 x, Uint32 y, std::list<T*> &lists)
 {
-     /* # On prepare le terrain pour les coordonnees des limites -> limxg : limite x gauche, limxd : limite x droite, limyh : limite y haut, limyb : limite y bas */
+    /* # On prepare les coordonnees des limites : limxg : limite x gauche, limxd : limite x droite, limyh : limite y haut, limyb : limite y bas */
     float limxg = 0, limxd = 0, limyh = 0, limyb = 0;
+    /* # On prepare les coordonnes du vehicule : vxg : x gauche, vxd : x droite, vyh : y haut, vyb : y bas */
     float vxg = x, vxd = x + Game::getShapeSize(), vyh = y, vyb = y + Game::getShapeSize();
 
-    bool isFlaque = false;
-
-    /* # On test si on est dans une flaque */
+    /* # On test si on est dans une limite le mouvement n'est pas autorisé */
     for(typename std::list<T*>::iterator it = lists.begin(); it != lists.end();it++)
     {
         limxg = (*it)->getX();
@@ -168,7 +167,7 @@ template <typename T> bool isMoveAllowed (Uint32 x, Uint32 y, std::list<T*> &lis
 
 float PlayerCar::getWantedX(SDLKey key, float& fwdlatspeed, float& revlatspeed)
 {
-    /* # Suivant la touche appuyee soit on fait avancer le vehicule (fleche haut) soit on change la position (fleche droite ou gauche) */
+    /* # Suivant la position actuelle notre deplacement s'affichera differement */
     switch(key)
     {
         case SDLK_UP :
@@ -228,7 +227,7 @@ float PlayerCar::getWantedX(SDLKey key, float& fwdlatspeed, float& revlatspeed)
 
 float PlayerCar::getWantedY(SDLKey key, float& fwdlatspeed, float& revlatspeed)
 {
-    /* # Suivant la touche appuyee soit on fait avancer le vehicule (fleche haut) soit on change la position (fleche droite ou gauche) */
+    /* # Suivant la position actuelle notre deplacement s'affichera differement */
     switch(key)
     {
         case SDLK_UP :
@@ -290,14 +289,8 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
     /* # On calcule les vecteurs de deplacement lateraux */
     float fwdlatspeed = sqrt((m_fwdspeed*m_fwdspeed)/2.0), revlatspeed = sqrt((m_revspeed*m_revspeed)/2.0);
 
-    /* # On recupere les precedentes coordonnes de notre vehicule pour notre gestion de collision pvyh : precedent y haut, pvyb : ..., pvxg : precedent x gauche, pvxd : ... */
-    float pvyh = m_y, pvyb = m_y + Game::getShapeSize(), pvxg = m_x, pvxd = m_x + Game::getShapeSize();
-
     /* # On prend les coordonnees souhaitees du vehicule -> vxg : vehicule x gauche, vxd : vehicule x droite, vyh : vehicule y haut, vyb : vehicule y bas */
     float vxg = getWantedX(key,fwdlatspeed,revlatspeed), vxd = vxg + Game::getShapeSize(), vyh = getWantedY(key,fwdlatspeed,revlatspeed), vyb = vyh + Game::getShapeSize();
-
-    /* # On prepare le terrain pour les coordonnees des limites -> limxg : limite x gauche, limxd : limite x droite, limyh : limite y haut, limyb : limite y bas */
-    float limxg = 0, limxd = 0, limyh = 0, limyb = 0;
 
     /* # On test si on roule dans une flaque */
     m_flaque = !isMoveAllowed(vxg,vyh,flaques);
@@ -324,6 +317,12 @@ void PlayerCar::setFlaqueState()
 {
     m_state = FlaqueState;
 }
+
+void PlayerCar::setNormalState()
+{
+    m_state = Normal;
+}
+
 void PlayerCar::setSpeed()
 {
     m_fwdspeed = getSpeed();
@@ -345,7 +344,17 @@ float PlayerCar::getSpeed()
     }
 }
 
-void PlayerCar::setNormalState()
+bool PlayerCar::isBlocked()
 {
-    m_state = Others;
+    return m_blocked;
+}
+
+bool PlayerCar::isFlaque()
+{
+    return m_flaque;
+}
+
+bool PlayerCar::isTurbo()
+{
+    return m_state == TurboMode;
 }
