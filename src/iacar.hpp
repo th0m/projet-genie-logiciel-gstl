@@ -1,6 +1,7 @@
 #ifndef IACAR_HPP
 #define IACAR_HPP
 
+#include <list>
 #include <vector>
 #include "shape.hpp"
 
@@ -24,12 +25,16 @@ class IACar : public Shape
         void setPoints(std::vector<float> &points);
 
         /* # Fonction qui permet de faire evoluer les voitures pseudo-IAs */
-        void move();
+        void move(float playerx, float playery, std::list<IACar*> &ias);
 
         /* # Fonction qui permet de définir la difficulte d'une IA */
         void setDifficulty(Uint8 diff);
 
     private:
+
+        /* # Fonction qui est responsable qui va autoriser ou non l'IA a avance */
+        bool moveAllowed(float x, float y, float playerx, float playery,  std::list<IACar*> &ias);
+
 
         /* # Vecteur des points d'interpolations */
         std::vector<float> m_points;

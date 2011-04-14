@@ -30,10 +30,6 @@ Race::Race(SDL_Surface *window)
 
 Race::~Race()
 {
-    //if(m_IATimer != NULL)
-        /* # On desactive le timer */
-        //SDL_RemoveTimer(m_IATimer);
-
     /* # On desalloue proprement chaque colonnes de notre map */
     for(unsigned int i = 0; i < m_nbLines; ++i)
         delete[] m_map[i];
@@ -153,37 +149,15 @@ void Race::movePlayerCar(SDLKey key)
     m_playercar->move(key, m_limits, m_flaques, m_iacars);
 }
 
-Race::Lap Race::checkCheckPoint()
-{
-    Lap lap = InProgress;
-
-    /* # vérification de chaque Checkpoint */
-    m_c1->checkC1(m_playercar->getX(), m_playercar->getY());
-    m_c2->checkC2(m_playercar->getX(), m_playercar->getY());
-    m_c3->checkC3(m_playercar->getX(), m_playercar->getY());
-    m_csfl->checkCF(m_playercar->getX(), m_playercar->getY());
-
-    /* # validation d'un tour */
-    if(m_c1->isValidated() && m_c2->isValidated() && m_c3->isValidated() && m_csfl->isValidated())
-    {
-        lap = Finished;
-        m_c1->reset();
-        m_c2->reset();
-        m_c3->reset();
-    }
-    m_csfl->reset();
-    return lap;
-}
-
 void Race::moveIAs()
 {
     for(std::list<IACar*>::const_iterator it = m_iacars.begin(); it != m_iacars.end(); it++)
-        (*it)->move();
+        (*it)->move(m_playercar->getX(), m_playercar->getY(), m_iacars);
 }
 
 void Race::initIAs()
 {
-    Uint8 i = 0, j = 0;
+    Uint8 i = 3, j = 0;
     Sint8 mutate = 0;
     std::vector<float> copy(m_pts);
 
@@ -193,7 +167,7 @@ void Race::initIAs()
         (*it)->setPoints(copy);
 
         /* # On fixe une difficulte croissante entres les IAs */
-        (*it)->setDifficulty(i++);
+        (*it)->setDifficulty(i--);
 
         /* # On fait evoluer les points pour chaque IAs */
         for(std::vector<float>::iterator it2 = copy.begin(); it2 != copy.end(); it2++)
@@ -204,14 +178,14 @@ void Race::initIAs()
                 case 1:
                 case 0:
                 {
-                    mutate = - Game::getShapeSize();
+                    mutate = Game::getShapeSize();
                     break;
                 }
 
                 case 2:
                 case 3:
                 {
-                    mutate = Game::getShapeSize();
+                    mutate = -Game::getShapeSize();
                     break;
                 }
 
@@ -222,4 +196,74 @@ void Race::initIAs()
             (*it2) += mutate;
         }
     }
+}
+
+PlayerCar* Race::getPlayerCar()
+{
+    return m_playercar;
+}
+
+Race::Lap Race::checkCheckPoint()
+{
+    Lap lap = InProgress;
+
+    float x = m_playercar->getX();
+    float y = m_playercar->getY();
+
+    /* # vérification de chaque Checkpoint */
+    m_c1->checkC1(x, y);
+    m_c2->checkC2(x, y);
+    m_c3->checkC3(x, y);
+    m_csfl->checkCF(x, y);
+
+    /* # validation d'un tour */
+    if(m_c1->isValidated() && m_c2->isValidated() && m_c3->isValidated() && m_csfl->isValidated())
+    {
+        lap = Finished;
+        m_c1->reset();
+        m_c2->reset();
+        m_c3->reset();
+    }
+
+    m_csfl->reset();
+    return lap;
+}
+
+void Race::checkCheckPointIA()
+{
+    int i = 0;
+
+    for(std::map<IACar*, std::pair<int, int> >::iterator it = m_ranking.begin(); it != m_ranking.end(); it++)
+    {
+        i = m_csfl->checkCFIA(it->first->getX(), it->first->getY());
+
+        if(i == 2 && it->second.second != 1)
+        {
+            it->second.first++;
+            it->second.second = 1;
+        }
+
+        if(i == 1)
+            it->second.second = 0;
+    }
+}
+
+void Race::initNbLapCompetitors()
+{
+    for(std::map<IACar*, std::pair<int, int> >::iterator it = m_ranking.begin(); it != m_ranking.end(); it++)
+    {
+        it->second.first = -1;
+        it->second.second = 0;
+    }
+}
+
+bool Race::checkSuccessRace()
+{
+    int nbCompetitors = 0;
+
+    for (std::map<IACar*, std::pair<int,int> >::iterator it = m_ranking.begin(); it != m_ranking.end(); it++)
+        if(it->second.first >= 2)
+            nbCompetitors++;
+
+    return (nbCompetitors < 2) ? true : false;
 }

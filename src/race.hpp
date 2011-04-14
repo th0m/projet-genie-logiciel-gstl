@@ -3,6 +3,7 @@
 
 #include <SDL/SDL.h>
 #include <list>
+#include <map>
 
 #include "game.hpp"
 #include "shape.hpp"
@@ -44,8 +45,17 @@ class Race
         /* # Verification des 3 checkpoints*/
         Lap checkCheckPoint();
 
+        /* # Verification fin de tours de chaque IA*/
+        void checkCheckPointIA();
+
+        /* # initialisation du nombre de tours de chaque adversaires */
+        void initNbLapCompetitors();
+
+        /* # verification fin de tour */
+        bool checkSuccessRace();
+
         /* # Getter qui recupere la voiture du joueur */
-        PlayerCar *getPlayerCar(){return m_playercar;};
+        PlayerCar *getPlayerCar();
 
 
     protected:
@@ -83,6 +93,8 @@ class Race
         /* # Les points de base du mouvement des IAs */
         std::vector<float> m_pts;
 
+        /* # Le classement */
+        std::map<IACar*, std::pair<int, int> > m_ranking;
 };
 
 #endif

@@ -49,10 +49,10 @@ void R3::load()
 {
     Race::load();
 
-    m_pts.push_back(120);
-    m_pts.push_back(160);
-    m_pts.push_back(440);
-    m_pts.push_back(240);
+    m_pts.push_back(80);
+    m_pts.push_back(80);
+    m_pts.push_back(480);
+    m_pts.push_back(320);
 
     initIAs();
 }

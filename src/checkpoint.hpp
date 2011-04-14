@@ -1,6 +1,9 @@
 #ifndef CHECKPOINT_HPP
 #define CHECKPOINT_HPP
 
+#include <list>
+#include "iacar.hpp"
+
 class Checkpoint
 {
     public:
@@ -10,21 +13,24 @@ class Checkpoint
             int x, y;
         };
 
-        explicit Checkpoint(int x1, int y1, int x2, int y2);
+        explicit Checkpoint(float x1, float y1, float x2, float y2);
 
         bool isValidated() const;
 
-        void check(int x, int y);
+        void check(float x, float y);
 
-        void checkC1(int x, int y);
+        void checkC1(float x, float y);
 
-        void checkC2(int x, int y);
+        void checkC2(float x, float y);
 
-        void checkC3(int x, int y);
+        void checkC3(float x, float y);
 
-        void checkCF(int x, int y);
+        void checkCF(float x, float y);
+
+        int checkCFIA(float x, float y);
 
         void reset();
+
 
     private:
 

@@ -59,10 +59,10 @@ void R1::load()
     Race::load();
 
     /* # On fixe nos points originel */
-    m_pts.push_back(120);
-    m_pts.push_back(160);
-    m_pts.push_back(440);
-    m_pts.push_back(240);
+    m_pts.push_back(40);
+    m_pts.push_back(80);
+    m_pts.push_back(520);
+    m_pts.push_back(320);
 
     initIAs();
 }

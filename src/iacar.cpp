@@ -1,5 +1,6 @@
 #include "iacar.hpp"
 #include "game.hpp"
+
 #include <SDL/SDL_Image.h>
 
 IACar::IACar(float x, float y, SDL_Surface *window)
@@ -30,52 +31,84 @@ IACar::~IACar()
     SDL_FreeSurface(m_left);
 }
 
-void IACar::move()
+void IACar::move(float playerx, float playery, std::list<IACar*> &ias)
 {
     float fact = Game::getSpeedFactorIA();
+    float x = m_x, y = m_y;
 
     switch(m_currentStep)
     {
         case FirstStep :
         {
-            if(m_x <= m_points[0])
+            if(x <= m_points[0])
                 m_currentStep = SecondStep, m_img = m_up;
             else
-                m_x -= fact + (m_difficulty * 0.2);
+                x -= fact + (m_difficulty * Game::getDifficultyIAPercentage());
 
             break;
         }
 
         case SecondStep :
         {
-            if(m_y <= m_points[1])
+            if(y <= m_points[1])
                 m_currentStep = ThirdStep, m_img = m_right;
             else
-                m_y -= fact + (m_difficulty * 0.2);
+                y -= fact + (m_difficulty * Game::getDifficultyIAPercentage());
 
             break;
         }
 
         case ThirdStep :
         {
-            if(m_x >= m_points[2])
+            if(x >= m_points[2])
                 m_currentStep = LastStep, m_img = m_down;
             else
-                m_x += fact + (m_difficulty * 0.2);
+                x += fact + (m_difficulty * Game::getDifficultyIAPercentage());
 
             break;
         }
 
         case LastStep :
         {
-            if(m_y >= m_points[3])
+            if(y >= m_points[3])
                 m_currentStep = FirstStep, m_img = m_left;
             else
-                m_y += fact + (m_difficulty * 0.2);
+                y += fact + (m_difficulty * Game::getDifficultyIAPercentage());
 
             break;
         }
     }
+
+    if(moveAllowed(x, y, playerx, playery, ias))
+        m_x = x, m_y = y;
+}
+
+bool IACar::moveAllowed(float x, float y, float playerx, float playery, std::list<IACar*> &ias)
+{
+    bool isAllowed = true;
+
+     /* # On prend les coordonnees souhaitees du vehicule -> vxg : vehicule x gauche, vxd : vehicule x droite, vyh : vehicule y haut, vyb : vehicule y bas */
+    float vxg = x, vxd = x + Game::getShapeSize(), vyh = y, vyb = y + Game::getShapeSize();
+
+    /* # On prepare le terrain pour les coordonnees des limites -> limxg : limite x gauche, limxd : limite x droite, limyh : limite y haut, limyb : limite y bas */
+    float limxg = playerx, limxd = playerx + Game::getShapeSize(), limyh = playery, limyb = playery + Game::getShapeSize();
+
+    /* # On check si l'IA ne va pas foncer dans notre vehicule */
+    if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
+        isAllowed = false;
+
+    /* # On check si les IAs ne vont pas s'entre foncer dedans, bien faire attention à exclure notre IA des tests, sinon on risque d'etre en collision avec *nous-même* */
+    for(std::list<IACar*>::iterator it = ias.begin(); isAllowed == true && (*it) != this && it != ias.end(); it++)
+    {
+        limxg = (*it)->getX(), limxd = (*it)->getX() + Game::getShapeSize(), limyh = (*it)->getY(), limyb = (*it)->getY() + Game::getShapeSize();
+        if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
+        {
+            isAllowed = false;
+            break;
+        }
+    }
+
+    return isAllowed;
 }
 
 void IACar::setPoints(std::vector<float> &points)
