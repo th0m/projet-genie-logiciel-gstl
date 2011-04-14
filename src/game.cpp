@@ -16,7 +16,7 @@ const Uint32 Game::m_time2SpeedMax = 1000;
 const float Game::m_fwdSpeed = 2;
 const float Game::m_revSpeed = m_fwdSpeed / 2;
 const Uint32 Game::m_nbLap = 2;
-Uint32 Game::m_speedFactorIA = 1;
+float Game::m_speedFactorIA = 1;
 const std::string Game::m_title = "Projet Genie Logiciel 3A - GSTL";
 const Uint32 Game::m_framerate = 60;
 
@@ -126,7 +126,7 @@ void Game::eventloop()
         m_currentRace->moveIAs();
 
         /* # Si le turbo est terminé on retablit la vitesse de croisiere */
-        if(SDL_GetTicks() >= turbo + turbotime)
+        if(turbo != 0 && SDL_GetTicks() >= turbo + turbotime)
         {
             turbo = 0;
             m_currentRace->disableTurbo();
@@ -137,18 +137,17 @@ void Game::eventloop()
 
         /* # Tant qu'on n'enfonce pas la touche pour avancer ou reculer ou les deux on affecte nos tick au temps actuel */
         if(!in.key[SDLK_UP])
-        {
             beforefwd = SDL_GetTicks();
-        }
+
         if(!in.key[SDLK_DOWN])
-        {
             beforerev = SDL_GetTicks();
-        }
+
         if(in.key[SDLK_UP] && in.key[SDLK_DOWN])
         {
             beforefwd = SDL_GetTicks();
             beforerev = SDL_GetTicks();
         }
+
         /* # Si on appuie sur la touche pour avancer sans appuyer sur celle pour reculer on va pouvoir avancer */
         if(in.key[SDLK_UP] && !in.key[SDLK_DOWN])
         {
@@ -182,7 +181,7 @@ void Game::eventloop()
 
                             case Race3 :
                                 /* # On vient de finir un cycle, on incremente la difficulte des IAs */
-                                Game::m_speedFactorIA *= 2;
+                                m_speedFactorIA += m_speedFactorIA * (20.0 / 100);
 
                                 m_currentRace = new R1(m_window);
                                 m_rNumber = Race1;

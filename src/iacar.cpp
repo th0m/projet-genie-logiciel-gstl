@@ -32,7 +32,7 @@ IACar::~IACar()
 
 void IACar::move()
 {
-    int fact = Game::getSpeedFactorIA();
+    float fact = Game::getSpeedFactorIA();
 
     switch(m_currentStep)
     {

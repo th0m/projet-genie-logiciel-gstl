@@ -95,7 +95,7 @@ class Game
         static const std::string m_title;
 
         /* # Le facteur de vitesse des IAs qui va augmenter à chaque fois qu'on complete les 3 courses */
-        static Uint32 m_speedFactorIA;
+        static float m_speedFactorIA;
 
         /* # Membre qui permet de connaitre laquelle des trois courses est chargées */
         RaceNumber m_rNumber;
