@@ -60,7 +60,7 @@ Race::~Race()
     delete m_csfl;
 }
 
-void Race::refresh()
+void Race::actualize()
 {
     /* # On efface l'ecran avant de ré-afficher les shapes */
     SDL_FillRect(m_window, NULL, SDL_MapRGB(m_window->format, 0xff, 0xff, 0xff));
@@ -179,4 +179,47 @@ void Race::moveIAs()
 {
     for(std::list<IACar*>::const_iterator it = m_iacars.begin(); it != m_iacars.end(); it++)
         (*it)->move();
+}
+
+void Race::initIAs()
+{
+    Uint8 i = 0, j = 0;
+    Sint8 mutate = 0;
+    std::vector<float> copy(m_pts);
+
+    for(std::list<IACar*>::iterator it = m_iacars.begin(); it != m_iacars.end(); it++, j = 0)
+    {
+        /* # On definit les trajectoires pour toutes les IAs */
+        (*it)->setPoints(copy);
+
+        /* # On fixe une difficulte croissante entres les IAs */
+        (*it)->setDifficulty(i++);
+
+        /* # On fait evoluer les points pour chaque IAs */
+        for(std::vector<float>::iterator it2 = copy.begin(); it2 != copy.end(); it2++)
+        {
+            /* # On fait muter les coordonnes de façon differente s'il s'agit d'une coordonne x, y */
+            switch(j++)
+            {
+                case 1:
+                case 0:
+                {
+                    mutate = - Game::getShapeSize();
+                    break;
+                }
+
+                case 2:
+                case 3:
+                {
+                    mutate = Game::getShapeSize();
+                    break;
+                }
+
+                default:
+                break;
+            }
+
+            (*it2) += mutate;
+        }
+    }
 }

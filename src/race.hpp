@@ -30,7 +30,7 @@ class Race
         virtual void load();
 
         /* # Fonction qui actualise la course */
-        void refresh();
+        void actualize();
 
         /* # Fonction qui gere les turbos, qui nous previent si tous les turbos ont ete consomme ou non */
         bool useTurbo();
@@ -49,6 +49,10 @@ class Race
 
 
     protected:
+
+         /* # Fonction qui va réaliser des fonctions d'initialisation sur les IAs */
+         void initIAs();
+
         /* # La fenetre du jeu */
         SDL_Surface *m_window;
 
@@ -75,6 +79,9 @@ class Race
 
         /* # Les checkpoints que l'on a besoin de placer sur la map dont la ligne d'arrivee */
         Checkpoint *m_c1, *m_c2, *m_c3, *m_csfl;
+
+        /* # Les points de base du mouvement des IAs */
+        std::vector<float> m_pts;
 
 };
 

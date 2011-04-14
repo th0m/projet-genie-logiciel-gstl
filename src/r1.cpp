@@ -28,12 +28,14 @@ R1::R1(SDL_Surface *window)
         m_map[i][(m_nbRows / 2) - 1] = Shape::STARTINGFINISHLINE;
 
     /* # Deux flaques */
-    m_map[m_nbLines / 2 + 2][(m_nbRows/2)-3] = Shape::FLAQUE;
-    m_map[m_nbLines / 2 + 2][(m_nbRows/2)-4] = Shape::FLAQUE;
+    m_map[m_nbLines / 2 + 2][(m_nbRows / 2) - 3] = Shape::FLAQUE;
+    m_map[m_nbLines / 2 + 2][(m_nbRows / 2) - 4] = Shape::FLAQUE;
 
     /* # Le bolide du joueur */
     m_map[m_nbLines / 2 + 1][(m_nbRows/2)] = Shape::PLAYERCAR;
-    m_map[m_nbLines / 2 + 1][(m_nbRows/2 +1)] = Shape::IACAR;
+    m_map[m_nbLines / 2 + 1][(m_nbRows/2 + 1)] = Shape::IACAR;
+    m_map[m_nbLines / 2 + 1][(m_nbRows/2 + 2)] = Shape::IACAR;
+    m_map[m_nbLines / 2 + 1][(m_nbRows/2 + 3)] = Shape::IACAR;
 
     /* # attention ;
         m_c1 : premier checkpoint recontré
@@ -56,12 +58,11 @@ void R1::load()
 {
     Race::load();
 
-    std::vector<float> pts;
-    pts.push_back(80);
-    pts.push_back(80);
-    pts.push_back(520);
-    pts.push_back(320);
+    /* # On fixe nos points originel */
+    m_pts.push_back(120);
+    m_pts.push_back(160);
+    m_pts.push_back(440);
+    m_pts.push_back(240);
 
-    for(std::list<IACar*>::iterator it = m_iacars.begin(); it != m_iacars.end(); it++)
-        (*it)->setPoints(pts);
+    initIAs();
 }
