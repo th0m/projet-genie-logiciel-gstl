@@ -3,9 +3,8 @@
 #include "r2.hpp"
 #include "r3.hpp"
 
-#include <SDL/SDL_image.h>
+#include <SDL/SDL_Image.h>
 #include <stdexcept>
-#include <Windows.h>
 
 /* On initialise les variables statiques constantes */
 const Uint32 Game::m_width = 600;
@@ -19,6 +18,7 @@ const Uint32 Game::m_nbLap = 2;
 float Game::m_speedFactorIA = 1;
 const std::string Game::m_title = "Projet Genie Logiciel 3A - GSTL";
 const Uint32 Game::m_framerate = 60;
+const float Game::m_difficultyIApercentage = 0.30;
 
 Uint32 Game::time_left(Uint32 &next_time)
 {
@@ -33,7 +33,7 @@ Uint32 Game::time_left(Uint32 &next_time)
 
 Game::Game()
 : m_currentRace(NULL), m_isOk(true), m_window(NULL), m_ico(NULL),
-  m_rNumber(Race1)
+  m_rNumber(Race1), m_score(0)
 {
     /* # Chargement des composants vidéos de la librairie */
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
@@ -116,6 +116,8 @@ void Game::eventloop()
     beforerev = SDL_GetTicks(), next_time = SDL_GetTicks() + tick_interval, turbo = 0,
     turbotime = m_turboTime, collision = SDL_GetTicks();
 
+    m_currentRace->initNbLapCompetitors();
+
     while(continuer)
     {
         /* # On met a jour le tableau des touches enfoncees */
@@ -179,10 +181,19 @@ void Game::eventloop()
                         nbLap = 0;
                         beforefwd = SDL_GetTicks();
 
+                        if(m_currentRace->checkSuccessRace() == true)
+                            printf("U WIN BASTARD#@!\n");
+                        else
+                            printf("U LOOZ MOFO#@!\n");
+
+                        fflush(stdout);
+
                         delete m_currentRace;
+                        m_currentRace->initNbLapCompetitors();
 
                         /* # On oublie pas de rebloquer les IAs pour la prochaine course */
                         launchIAs = false;
+                        m_score += 2;
 
                         switch(m_rNumber)
                         {
@@ -293,4 +304,9 @@ Uint32 Game::getTurboTime()
 void Game::cleanScreen()
 {
     SDL_FillRect(m_window, NULL, SDL_MapRGB(m_window->format, 0xff, 0xff, 0xff));
+}
+
+float Game::getDifficultyIAPercentage()
+{
+    return m_difficultyIApercentage;
 }

@@ -35,6 +35,8 @@ class Game
 
         static Uint32 getSpeedFactorIA();
 
+        static float getDifficultyIAPercentage();
+
     private:
 
         enum RaceNumber
@@ -57,6 +59,7 @@ class Game
 
         /* # La fonction qui gere les evenements */
         void UpdateEvents(Input* in, bool& continuer);
+
 
         /* # Fonction qui donne le temps a sleep avant le prochaine rafraichissement */
         Uint32 time_left(Uint32 &next_time);
@@ -91,6 +94,9 @@ class Game
         /* # Vitesses marche avant et marche arriere */
         static const float m_fwdSpeed, m_revSpeed;
 
+        /* # Le pourcentage d'augmentation de la vitesse des IAs en fonction de leurs difficultés */
+        static const float m_difficultyIApercentage;
+
         /* # Le titre de la fenetre */
         static const std::string m_title;
 
@@ -99,6 +105,9 @@ class Game
 
         /* # Membre qui permet de connaitre laquelle des trois courses est chargées */
         RaceNumber m_rNumber;
+
+        /* # Le score du joueur */
+        Uint32 m_score;
 };
 
 #endif
