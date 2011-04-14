@@ -414,7 +414,7 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
 void PlayerCar::enableTurboMode()
 {
     m_state = TurboMode;
-    m_fwdspeed = getSpeed() * 2;
+    m_fwdspeed = getSpeed() * 3;
 }
 
 float PlayerCar::getSpeed()
@@ -424,5 +424,6 @@ float PlayerCar::getSpeed()
 
 void PlayerCar::setNormalSpeed()
 {
+    m_state = Others;
     m_fwdspeed = Game::getFwdSpeed();
 }
