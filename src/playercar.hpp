@@ -23,20 +23,28 @@ class PlayerCar : public Shape
         void loadAnotherPosition(SDLKey key);
 
         /* # Fonction qui permet d'activer le mode turbo */
-        void enableTurboMode();
+        void setTurboMode();
 
         /* # Fonction accesseur permettant de recupérer le score du joueur */
         Uint32 getScore();
 
-        /* # Fonction qui retablit la vitesse de croisiere du vehicule */
-        void setNormalSpeed();
 
         /* # Fonction qui baisse la voiture du vehicule apres une collision */
-        void collisionRecovering();
+        void setCollisionRecovering();
+
+        void setNormalState();
+
+        void setFlaqueState();
 
         /* # Fonction qui retourne le boolean blocked */
         bool isBlocked(){return m_blocked;};
 
+        /* # Fonction qui retourne si on roule dans une flaque */
+        bool isFlaque(){return m_flaque;};
+
+        bool isTurbo(){return m_turbo;};
+
+        void setSpeed();
     private:
 
         enum CurrentPosition
@@ -55,10 +63,16 @@ class PlayerCar : public Shape
         {
             TurboMode,
             CollisionRecovering,
+            FlaqueState,
             Others
         };
 
         float getSpeed();
+
+
+        /* Fonction pour savoir vers où l'on souhaite se déplacer */
+        float getWantedX(SDLKey key, float& fwdlatspeed, float& revlatspeed);
+        float getWantedY(SDLKey key, float& fwdlatspeed, float& revlatspeed);
 
         /* # vitesse du véhicule forward : marche avant, reverse : marche arriere*/
         float m_fwdspeed, m_revspeed;
@@ -72,7 +86,7 @@ class PlayerCar : public Shape
         PlayerCarState m_state;
 
         /* # boolean indiquant si la voiture est bloquee */
-        bool m_blocked;
+        bool m_blocked, m_flaque, m_turbo;
 };
 
 #endif

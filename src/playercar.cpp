@@ -8,7 +8,7 @@
 
 
 PlayerCar::PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window)
-: Shape(x, y, std::string("playercarg"), window), m_fwdspeed(Game::getFwdSpeed()), m_revspeed(m_fwdspeed / 2), m_state(Others), m_blocked(false)
+: Shape(x, y, std::string("playercarg"), window), m_fwdspeed(Game::getFwdSpeed()), m_revspeed(m_fwdspeed / 2), m_state(Others), m_blocked(false), m_flaque(false)
 {
     /* # On veut contrôler completement la destruction de l'objet */
     m_free = false;
@@ -143,16 +143,31 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
         break;
     }
 }
-
-void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &flaques, std::list<IACar*> &iacars)
+template <typename T> bool isMoveAllowed (Uint32 x, Uint32 y, std::list<T*> &lists)
 {
-    m_blocked = false;
+     /* # On prepare le terrain pour les coordonnees des limites -> limxg : limite x gauche, limxd : limite x droite, limyh : limite y haut, limyb : limite y bas */
+    float limxg = 0, limxd = 0, limyh = 0, limyb = 0;
+    float vxg = x, vxd = x + Game::getShapeSize(), vyh = y, vyb = y + Game::getShapeSize();
+
     bool isFlaque = false;
-    float x = m_x, y = m_y;
 
-    /* # Composantes x et y pour conserver la vitesse en diagonale */
-    float fwdlatspeed = sqrt((m_fwdspeed*m_fwdspeed)/2.0), revlatspeed = sqrt((m_revspeed*m_revspeed)/2.0);
+    /* # On test si on est dans une flaque */
+    for(typename std::list<T*>::iterator it = lists.begin(); it != lists.end();it++)
+    {
+        limxg = (*it)->getX();
+        limxd = (*it)->getX() + Game::getShapeSize();
 
+        limyh = (*it)->getY();
+        limyb = (*it)->getY() + Game::getShapeSize();
+
+        if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
+            return false;
+    }
+    return true;
+}
+
+float PlayerCar::getWantedX(SDLKey key, float& fwdlatspeed, float& revlatspeed)
+{
     /* # Suivant la touche appuyee soit on fait avancer le vehicule (fleche haut) soit on change la position (fleche droite ou gauche) */
     switch(key)
     {
@@ -161,39 +176,21 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
             switch(m_currentPos)
             {
                 case Left :
-                    x -= m_fwdspeed;
+                    return m_x - m_fwdspeed;
                 break;
 
                 case Right :
-                    x += m_fwdspeed;
+                    return m_x + m_fwdspeed;
                 break;
 
-                case Up :
-                    y -= m_fwdspeed;
-                break;
-
-                case Down :
-                    y += m_fwdspeed;
-                break;
-
-                case NorthWest :
-                    x -= fwdlatspeed;
-                    y -= fwdlatspeed;
+                case NorthWest:
+                case SouthWest:
+                    return m_x - fwdlatspeed;
                 break;
 
                 case NorthEast :
-                    x += fwdlatspeed;
-                    y -= fwdlatspeed;
-                break;
-
                 case SouthEast :
-                    x += fwdlatspeed;
-                    y += fwdlatspeed;
-                break;
-
-                case SouthWest :
-                    x -= fwdlatspeed;
-                    y += fwdlatspeed;
+                    return m_x + fwdlatspeed;
                 break;
             }
             break;
@@ -204,246 +201,151 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
             switch(m_currentPos)
             {
                 case Left :
-                    x += m_revspeed;
+                    return m_x + m_revspeed;
                 break;
 
                 case Right :
-                    x -= m_revspeed;
-                break;
-
-                case Up :
-                    y += m_revspeed;
-                break;
-
-                case Down :
-                    y -= m_revspeed;
+                    return m_x - m_revspeed;
                 break;
 
                 case NorthWest :
-                    x += revlatspeed;
-                    y += revlatspeed;
-                break;
-
-                case NorthEast :
-                    x -= revlatspeed;
-                    y += revlatspeed;
+                case SouthWest :
+                    return m_x + revlatspeed;
                 break;
 
                 case SouthEast :
-                    x -= revlatspeed;
-                    y -= revlatspeed;
-                break;
-
-                case SouthWest :
-                    x += revlatspeed;
-                    y -= revlatspeed;
+                case NorthEast :
+                    return m_x - revlatspeed;
                 break;
             }
             break;
         }
-
         default :
         break;
-
     }
+    return m_x;
+}
 
-    /* # On initialise diffx et diffy pour nos comparaisons pour coller au bord*/
-    float diffx, diffy;
-
-    /* # En fonction de la direction et du sens dans lequel on roule on affecte les diffx et diffy correspondants */
-    if(key == SDLK_UP)
+float PlayerCar::getWantedY(SDLKey key, float& fwdlatspeed, float& revlatspeed)
+{
+    /* # Suivant la touche appuyee soit on fait avancer le vehicule (fleche haut) soit on change la position (fleche droite ou gauche) */
+    switch(key)
     {
-        if(m_currentPos == Left || m_currentPos == Right || m_currentPos == Up || m_currentPos == Down)
-            diffx = m_fwdspeed, diffy = m_fwdspeed;
-        else if (m_currentPos == NorthEast || m_currentPos == NorthWest || m_currentPos == SouthEast || m_currentPos == SouthWest)
-            diffx = fwdlatspeed, diffy = fwdlatspeed;
-    }
+        case SDLK_UP :
+        {
+            switch(m_currentPos)
+            {
+                case Up :
+                    return m_y - m_fwdspeed;
+                break;
 
-    else if(key == SDLK_DOWN)
-    {
-        if(m_currentPos == Left || m_currentPos == Right || m_currentPos == Up || m_currentPos == Down)
-            diffx = m_revspeed, diffy = m_revspeed;
-        else if (m_currentPos == NorthEast || m_currentPos == NorthWest || m_currentPos == SouthEast || m_currentPos == SouthWest)
-            diffx = revlatspeed, diffy = revlatspeed;
+                case Down :
+                    return m_y + m_fwdspeed;
+                break;
+
+                case NorthWest :
+                case NorthEast :
+                    return m_y - fwdlatspeed;
+                break;
+
+                case SouthWest :
+                case SouthEast :
+                    return m_y + fwdlatspeed;
+                break;
+            }
+            break;
+        }
+        case SDLK_DOWN :
+        {
+            switch(m_currentPos)
+            {
+                case Up :
+                    return m_y + m_revspeed;
+                break;
+
+                case Down :
+                    return m_y - m_revspeed;
+                break;
+
+                case NorthWest :
+                case NorthEast :
+                    return m_y + revlatspeed;
+                break;
+
+                case SouthEast :
+                case SouthWest :
+                    return m_y - revlatspeed;
+                break;
+            }
+            break;
+        }
+        default :
+        break;
     }
+    return m_y;
+}
+
+void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &flaques, std::list<IACar*> &iacars)
+{
+    /* # On calcule les vecteurs de deplacement lateraux */
+    float fwdlatspeed = sqrt((m_fwdspeed*m_fwdspeed)/2.0), revlatspeed = sqrt((m_revspeed*m_revspeed)/2.0);
 
     /* # On recupere les precedentes coordonnes de notre vehicule pour notre gestion de collision pvyh : precedent y haut, pvyb : ..., pvxg : precedent x gauche, pvxd : ... */
     float pvyh = m_y, pvyb = m_y + Game::getShapeSize(), pvxg = m_x, pvxd = m_x + Game::getShapeSize();
 
     /* # On prend les coordonnees souhaitees du vehicule -> vxg : vehicule x gauche, vxd : vehicule x droite, vyh : vehicule y haut, vyb : vehicule y bas */
-    float vxg = x, vxd = x + Game::getShapeSize(), vyh = y, vyb = y + Game::getShapeSize();
+    float vxg = getWantedX(key,fwdlatspeed,revlatspeed), vxd = vxg + Game::getShapeSize(), vyh = getWantedY(key,fwdlatspeed,revlatspeed), vyb = vyh + Game::getShapeSize();
 
     /* # On prepare le terrain pour les coordonnees des limites -> limxg : limite x gauche, limxd : limite x droite, limyh : limite y haut, limyb : limite y bas */
     float limxg = 0, limxd = 0, limyh = 0, limyb = 0;
 
-    /* # On test si on est dans une flaque */
-    for(std::list<Flaque*>::iterator it = flaques.begin(); it != flaques.end();it++)
-    {
-        limxg = (*it)->getX();
-        limxd = (*it)->getX() + Game::getShapeSize();
+    /* # On test si on roule dans une flaque */
+    m_flaque = !isMoveAllowed(vxg,vyh,flaques);
 
-        limyh = (*it)->getY();
-        limyb = (*it)->getY() + Game::getShapeSize();
-
-        if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
-            isFlaque=true;
-    }
-
-    /* # Si on est dans une flaque on ralentit la voiture */
-    if(isFlaque)
-    {
-        if(key == SDLK_UP)
-            m_fwdspeed = getSpeed()/2;
-        if(key == SDLK_DOWN)
-            m_revspeed = Game::getRevSpeed()/2;
-    }
-    else
-    {
-        if(key == SDLK_UP)
-            m_fwdspeed = getSpeed();
-        if(key == SDLK_DOWN)
-            m_revspeed = Game::getRevSpeed();
-    }
-
-    /* # On test si on fonce dans une voiture */
-    for(std::list<IACar*>::iterator it = iacars.begin(); it != iacars.end(); ++it)
-    {
-        limxg = (*it)->getX();
-        limxd = (*it)->getX() + Game::getShapeSize();
-
-        limyh = (*it)->getY();
-        limyb = (*it)->getY() + Game::getShapeSize();
-
-        if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
-            m_blocked=true;
-    }
-
-    /* # On test si on veut se deplacer dans une limite */
-    for(std::list<Limit*>::iterator it = limits.begin(); it != limits.end();it++)
-    {
-        limxg = (*it)->getX();
-        limxd = (*it)->getX() + Game::getShapeSize();
-
-        limyh = (*it)->getY();
-        limyb = (*it)->getY() + Game::getShapeSize();
-
-        if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
-        {
-            m_blocked = true;
-            /* # Si on veut déplacer la voiture dans une limite on fait le nécessaire pour la coller au bord */
-            if( (key == SDLK_UP && m_currentPos == Left) || (key==SDLK_DOWN && m_currentPos == Right) )
-            {
-                diffx = fabs(pvxg - limxd);
-                if( (key == SDLK_UP && diffx < m_fwdspeed) || (key == SDLK_DOWN && diffx < m_revspeed) )
-                {
-                    m_x -= diffx;
-                }
-            }
-            else if( (key == SDLK_UP && m_currentPos == Right) || (key == SDLK_DOWN && m_currentPos == Left) )
-            {
-                diffx = fabs(pvxd - limxg);
-                if( (key == SDLK_UP && diffx < m_fwdspeed) || (key == SDLK_DOWN && diffx < m_revspeed) )
-                {
-                    m_x += diffx;
-                }
-            }
-            else if( (key == SDLK_UP && m_currentPos == Up) || (key == SDLK_DOWN && m_currentPos == Down) )
-            {
-                diffy = fabs(pvyh - limyb);
-                if( (key == SDLK_UP && diffy < m_fwdspeed) || (key == SDLK_DOWN && diffy < m_revspeed) )
-                {
-                    m_y -= diffy;
-                }
-
-            }
-            else if( (key == SDLK_UP && m_currentPos == Down) || (key == SDLK_DOWN && m_currentPos == Up) )
-            {
-                diffy = fabs(pvyb - limyh);
-                if( (key == SDLK_UP && diffy < m_fwdspeed) || (key == SDLK_DOWN && diffy < m_revspeed) )
-                {
-                    m_y += diffy;
-                }
-            }
-            else if( (key == SDLK_UP && m_currentPos == NorthEast) || (key == SDLK_DOWN && m_currentPos == SouthWest) )
-            {
-                diffx = fabs(pvxd - limxg);
-                diffy = fabs(pvyh - limyb);
-                if( (key == SDLK_UP && diffx < fwdlatspeed) || (key == SDLK_DOWN && diffx < revlatspeed) )
-                {
-                    m_x += diffx;
-                }
-                if( (key == SDLK_UP && diffy < fwdlatspeed) || (key == SDLK_DOWN && diffy < revlatspeed) )
-                {
-                    m_y -= diffy;
-                }
-            }
-            else if( (key == SDLK_UP && m_currentPos == SouthEast) || (key == SDLK_DOWN && m_currentPos == NorthWest) )
-            {
-                diffx = fabs(pvxd - limxg);
-                diffy = fabs(pvyb - limyh);
-                if( (key == SDLK_UP && diffx < fwdlatspeed) || (key == SDLK_DOWN && diffx < revlatspeed) )
-                {
-                    m_x += diffx;
-                }
-                if( (key == SDLK_UP && diffy < fwdlatspeed) || (key == SDLK_DOWN && diffy < revlatspeed) )
-                {
-                    m_y += diffy;
-                }
-            }
-            else if( (key == SDLK_UP && m_currentPos == NorthWest) || (key == SDLK_DOWN && m_currentPos == SouthEast) )
-            {
-                diffx = fabs(pvxg - limxd);
-                diffy = fabs(pvyh - limyb);
-                if( (key == SDLK_UP && diffx < fwdlatspeed) || (key == SDLK_DOWN && diffx < revlatspeed) )
-                {
-                    m_x -= diffx;
-                }
-                if( (key == SDLK_UP && diffy < fwdlatspeed) || (key == SDLK_DOWN && diffy < revlatspeed) )
-                {
-                    m_y -= diffy;
-                }
-            }
-            else if( (key == SDLK_UP && m_currentPos == SouthWest) || (key == SDLK_DOWN && m_currentPos == NorthEast) )
-            {
-                diffx = fabs(pvxg - limxd);
-                diffy = fabs(pvyb - limyh);
-                if( (key == SDLK_UP && diffx < fwdlatspeed) || (key == SDLK_DOWN && diffx < revlatspeed) )
-                {
-                    m_x -= diffx;
-                }
-                if( (key == SDLK_UP && diffy < fwdlatspeed) || (key == SDLK_DOWN && diffy < revlatspeed) )
-                {
-                    m_y += diffy;
-                }
-            }
-            return;
-        }
-    }
+    /* # On test si on fonce dans une ia ou une limite */
+    m_blocked = !(isMoveAllowed(vxg,vyh,iacars) && isMoveAllowed(vxg,vyh,limits));
 
     /* # Si on ne fonce pas dans une bordure on bouge le vehicule */
     if(!m_blocked)
-        m_x = x, m_y = y;
+        m_x = vxg, m_y = vyh;
 }
 
-void PlayerCar::enableTurboMode()
+void PlayerCar::setTurboMode()
 {
     m_state = TurboMode;
-    m_fwdspeed = getSpeed() * 3;
 }
 
-void PlayerCar::collisionRecovering()
+void PlayerCar::setCollisionRecovering()
 {
     m_state = CollisionRecovering;
-    m_fwdspeed = getSpeed() / 2;
+}
+
+void PlayerCar::setFlaqueState()
+{
+    m_state = FlaqueState;
+}
+void PlayerCar::setSpeed()
+{
+    m_fwdspeed = getSpeed();
 }
 
 float PlayerCar::getSpeed()
 {
-    return (m_state == TurboMode) ? Game::getFwdSpeed() * 2 : Game::getFwdSpeed();
+    if(m_state == TurboMode)
+    {
+        return Game::getFwdSpeed() * 3;
+    }
+    else if(m_state == FlaqueState || m_state == CollisionRecovering)
+    {
+        return Game::getFwdSpeed() / 2;
+    }
+    else
+    {
+        return Game::getFwdSpeed();
+    }
 }
 
-void PlayerCar::setNormalSpeed()
+void PlayerCar::setNormalState()
 {
     m_state = Others;
-    m_fwdspeed = Game::getFwdSpeed();
 }

@@ -136,7 +136,7 @@ bool Race::useTurbo()
         if((*it)->getType() == "turbo" && !(*it)->isHidden())
         {
             (*it)->hide();
-            m_playercar->enableTurboMode();
+            m_playercar->setTurboMode();
             isOk = true;
             break;
         }
