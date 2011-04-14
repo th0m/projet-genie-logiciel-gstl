@@ -111,7 +111,7 @@ void Game::eventloop()
 {
     int nbLap = 0;
     Input in = {0};
-    bool continuer = true;
+    bool continuer = true, launchIAs = false;
     Uint32 tick_interval = 1000 / m_framerate, beforefwd = SDL_GetTicks(),
     beforerev = SDL_GetTicks(), next_time = SDL_GetTicks() + tick_interval, turbo = 0,
     turbotime = m_turboTime, collision = SDL_GetTicks();
@@ -122,8 +122,10 @@ void Game::eventloop()
         UpdateEvents(&in, continuer);
 
         /* # On rafraichit l'affichage et on deplace l'IA */
-        m_currentRace->refresh();
-        m_currentRace->moveIAs();
+        m_currentRace->actualize();
+
+        if(launchIAs)
+            m_currentRace->moveIAs();
 
         /* # Si le turbo est terminé on retablit la vitesse de croisiere */
         if(turbo != 0 && SDL_GetTicks() >= turbo + turbotime)
@@ -134,11 +136,11 @@ void Game::eventloop()
             /* # On reaffecte le temps de turbo */
             turbotime = m_turboTime;
         }
+
         /* # Tant qu'on est bloque on affecte le timer au temps courant */
         if(m_currentRace->getPlayerCar()->isBlocked())
-        {
             collision = SDL_GetTicks();
-        }
+
         /* # Tant qu'on n'enfonce pas la touche pour avancer ou reculer ou les deux on affecte nos tick au temps actuel */
         if(!in.key[SDLK_UP])
             beforefwd = SDL_GetTicks();
@@ -158,15 +160,15 @@ void Game::eventloop()
             /* # On attend une seconde avant de demarrer */
             if(SDL_GetTicks() > (beforefwd + m_time2SpeedMax))
             {
-                if(SDL_GetTicks() < collision+1000)
-                {
+                launchIAs = true;
+
+                if(SDL_GetTicks() < collision + m_time2SpeedMax)
                     m_currentRace->getPlayerCar()->collisionRecovering();
-                }
+
                 m_currentRace->movePlayerCar(SDLK_UP);
-                if(m_currentRace->getPlayerCar()->isBlocked() && SDL_GetTicks() >= collision+1000)
-                {
+
+                if(m_currentRace->getPlayerCar()->isBlocked() && SDL_GetTicks() >= collision + m_time2SpeedMax)
                     m_currentRace->getPlayerCar()->setNormalSpeed();
-                }
 
                 if(m_currentRace->checkCheckPoint() == Race::Finished)
                 {
@@ -178,6 +180,9 @@ void Game::eventloop()
                         beforefwd = SDL_GetTicks();
 
                         delete m_currentRace;
+
+                        /* # On oublie pas de rebloquer les IAs pour la prochaine course */
+                        launchIAs = false;
 
                         switch(m_rNumber)
                         {
@@ -249,8 +254,6 @@ void Game::eventloop()
         next_time += tick_interval;
     }
 }
-
-
 
 Uint32 Game::getNbHorizontalSprites()
 {

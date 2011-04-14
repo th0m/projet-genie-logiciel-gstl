@@ -3,7 +3,7 @@
 #include <SDL/SDL_Image.h>
 
 IACar::IACar(float x, float y, SDL_Surface *window)
-: Shape(x, y, std::string("iacarg"), window), m_currentStep(FirstStep)
+: Shape(x, y, std::string("iacarg"), window), m_currentStep(FirstStep), m_difficulty(0)
 {
     /* # On veut controler completement la destruction de l'objet */
     m_free = false;
@@ -41,7 +41,7 @@ void IACar::move()
             if(m_x <= m_points[0])
                 m_currentStep = SecondStep, m_img = m_up;
             else
-                m_x -= fact;
+                m_x -= fact + (m_difficulty * 0.2);
 
             break;
         }
@@ -51,7 +51,7 @@ void IACar::move()
             if(m_y <= m_points[1])
                 m_currentStep = ThirdStep, m_img = m_right;
             else
-                m_y -= fact;
+                m_y -= fact + (m_difficulty * 0.2);
 
             break;
         }
@@ -61,7 +61,7 @@ void IACar::move()
             if(m_x >= m_points[2])
                 m_currentStep = LastStep, m_img = m_down;
             else
-                m_x += fact;
+                m_x += fact + (m_difficulty * 0.2);
 
             break;
         }
@@ -71,7 +71,7 @@ void IACar::move()
             if(m_y >= m_points[3])
                 m_currentStep = FirstStep, m_img = m_left;
             else
-                m_y += fact;
+                m_y += fact + (m_difficulty * 0.2);
 
             break;
         }
@@ -81,4 +81,9 @@ void IACar::move()
 void IACar::setPoints(std::vector<float> &points)
 {
     m_points = points;
+}
+
+void IACar::setDifficulty(Uint8 diff)
+{
+    m_difficulty = diff;
 }

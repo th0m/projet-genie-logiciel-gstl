@@ -26,6 +26,9 @@ class IACar : public Shape
         /* # Fonction qui permet de faire evoluer les voitures pseudo-IAs */
         void move();
 
+        /* # Fonction qui permet de définir la difficulte d'une IA */
+        void setDifficulty(Uint8 diff);
+
     private:
 
         /* # Vecteur des points d'interpolations */
@@ -33,6 +36,9 @@ class IACar : public Shape
 
         /* # Le mouvement s'oppère en 4 étapes, cet attribut indique le courant */
         Step m_currentStep;
+
+        /* # Difficulte de l'IA */
+        Uint8 m_difficulty;
 
         /* # Les différentes surfaces de la voiture */
         SDL_Surface *m_up, *m_down, *m_right, *m_left;
