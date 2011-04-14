@@ -102,7 +102,9 @@ void Race::load()
                 ptr = Shape::getInstance(Shape::SAND, x, y, m_window);
                 m_surfaces.push_back(ptr);
 
-                m_iacars.push_back(static_cast<IACar*>(Shape::getInstance(Shape::IACAR, x, y, m_window)));
+                ptr = Shape::getInstance(Shape::IACAR, x, y, m_window);
+                m_iacars.push_back(static_cast<IACar*>(ptr));
+                m_ranking.insert(std::pair<IACar*, std::pair<int, int> >(static_cast<IACar*>(ptr), std::pair<int, int>(-1, 0)));
             }
             else
             {
