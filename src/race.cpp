@@ -155,6 +155,8 @@ void Race::moveIAs()
 {
     for(std::list<IACar*>::const_iterator it = m_iacars.begin(); it != m_iacars.end(); it++)
         (*it)->move(m_playercar->getX(), m_playercar->getY(), m_iacars);
+
+    checkCheckPointIA();
 }
 
 void Race::initIAs()
