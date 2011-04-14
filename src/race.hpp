@@ -32,8 +32,11 @@ class Race
         /* # Fonction qui actualise la course */
         void refresh();
 
-        /* # Fonction qui gere les turbos */
-        void useTurbo();
+        /* # Fonction qui gere les turbos, qui nous previent si tous les turbos ont ete consomme ou non */
+        bool useTurbo();
+
+        /* # Fonction qui va desactiver le turbo sur la voiture du joueur */
+        void disableTurbo();
 
         /* # Fonction qui est capable de faire bouger la voiture du joueur */
         void movePlayerCar(SDLKey key);
@@ -46,6 +49,7 @@ class Race
 
         /* # Verification des 3 checkpoints*/
         Lap checkCheckPoint();
+
 
     protected:
         /* # La fenetre du jeu */

@@ -26,6 +26,10 @@ class PlayerCar : public Shape
         /* # Fonction accesseur permettant de recupérer le score du joueur */
         Uint32 getScore();
 
+        /* # Fonction qui retablit la vitesse de croisiere du vehicule */
+        void setNormalSpeed();
+
+
     private:
 
         enum CurrentPosition
@@ -48,13 +52,6 @@ class PlayerCar : public Shape
 
         float getSpeed();
 
-        void setNormalSpeed();
-
-        void destroyTimer();
-
-        static Uint32 callback(Uint32 interval, void* param);
-
-
 
         /* # vitesse du véhicule forward : marche avant, reverse : marche arriere*/
         float m_fwdspeed, m_revspeed;
@@ -62,8 +59,6 @@ class PlayerCar : public Shape
         SDL_Surface *m_up, *m_down, *m_right, *m_left, *m_northwest, *m_northeast, *m_southwest, *m_southeast;
 
         CurrentPosition m_currentPos;
-
-        SDL_TimerID m_timer;
 
         Uint32 currentScore;
 

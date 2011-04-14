@@ -128,8 +128,15 @@ void Race::load()
     }
 }
 
-void Race::useTurbo()
+void Race::disableTurbo()
 {
+    m_playercar->setNormalSpeed();
+}
+
+bool Race::useTurbo()
+{
+    bool isOk = false;
+
     /* # On parcourt l'ensemble des surfaces a la recherche du turbo a cacher */
     for(std::list<Shape*>::iterator it = m_surfaces.begin(); it != m_surfaces.end(); it++)
     {
@@ -137,9 +144,12 @@ void Race::useTurbo()
         {
             (*it)->hide();
             m_playercar->enableTurboMode();
+            isOk = true;
             break;
         }
     }
+
+    return isOk;
 }
 
 void Race::changePlayerCarPosition(SDLKey key)

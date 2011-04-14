@@ -52,6 +52,7 @@ class Game
         /* # La boucle principale d'evenement */
         void eventloop();
 
+        /* # Fonction qui permet de nettoyer l'écran principal */
         void cleanScreen();
 
         /* # La fonction qui gere les evenements */
@@ -70,7 +71,22 @@ class Game
         SDL_Surface *m_window, *m_ico;
 
         /* # La largeur et la hauteur de notre fenetre */
-        static const Uint32 m_width, m_height, m_shapeSize, m_turboTime, m_nbLap, m_framerate;
+        static const Uint32 m_width, m_height;
+
+        /* # La taille en pixel d'une shape */
+        static const Uint32 m_shapeSize;
+
+        /* # La durée en milliseconde d'un turbo */
+        static const Uint32 m_turboTime;
+
+        /* # Le nombre de tour à effectuer pour valider une course */
+        static const Uint32 m_nbLap;
+
+        /* # Le nombre de raffraichissement par minute */
+        static const Uint32 m_framerate;
+
+        /* # La durée en milliseconde qu'il faut rester appuyer sur les gaz pour attendre la vitesse de croisiere */
+        static const Uint32 m_time2SpeedMax;
 
         /* # Vitesses marche avant et marche arriere */
         static const float m_fwdSpeed, m_revSpeed;
@@ -81,6 +97,7 @@ class Game
         /* # Le facteur de vitesse des IAs qui va augmenter à chaque fois qu'on complete les 3 courses */
         static Uint32 m_speedFactorIA;
 
+        /* # Membre qui permet de connaitre laquelle des trois courses est chargées */
         RaceNumber m_rNumber;
 };
 

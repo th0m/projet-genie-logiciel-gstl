@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 Checkpoint::Checkpoint(int x1, int y1, int x2, int y2)
-: m_pixelParSeconde(Game::getFwdSpeed() * 2)
+: m_pixelParSeconde(Game::getFwdSpeed() * 4)
 {
     m_pointBegin.x = x1;
     m_pointBegin.y = y1;
