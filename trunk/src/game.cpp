@@ -12,6 +12,7 @@ const Uint32 Game::m_width = 600;
 const Uint32 Game::m_height = 400;
 const Uint32 Game::m_shapeSize = 40;
 const Uint32 Game::m_turboTime = 2000;
+const Uint32 Game::m_time2SpeedMax = 1000;
 const float Game::m_fwdSpeed = 2;
 const float Game::m_revSpeed = m_fwdSpeed / 2;
 const Uint32 Game::m_nbLap = 2;
@@ -111,18 +112,30 @@ void Game::eventloop()
     int nbLap = 0;
     Input in = {0};
     bool continuer = true;
-    Uint32 tick_interval = 1000/m_framerate, beforefwd = SDL_GetTicks(), beforerev = SDL_GetTicks(), next_time = SDL_GetTicks() + tick_interval;
+    Uint32 tick_interval = 1000 / m_framerate, beforefwd = SDL_GetTicks(),
+    beforerev = SDL_GetTicks(), next_time = SDL_GetTicks() + tick_interval, turbo = 0,
+    turbotime = m_turboTime;
 
     while(continuer)
     {
-        /* On met a jour le tableau des touches enfoncees */
-        UpdateEvents(&in,continuer);
+        /* # On met a jour le tableau des touches enfoncees */
+        UpdateEvents(&in, continuer);
 
-        /* On rafraichit l'affichage et on deplace l'IA */
+        /* # On rafraichit l'affichage et on deplace l'IA */
         m_currentRace->refresh();
         m_currentRace->moveIAs();
 
-        /* Tant qu'on n'enfonce pas la touche pour avancer ou reculer ou les deux on affecte nos tick au temps actuel */
+        /* # Si le turbo est terminé on retablit la vitesse de croisiere */
+        if(SDL_GetTicks() >= turbo + turbotime)
+        {
+            turbo = 0;
+            m_currentRace->disableTurbo();
+
+            /* # On reaffecte le temps de turbo */
+            turbotime = m_turboTime;
+        }
+
+        /* # Tant qu'on n'enfonce pas la touche pour avancer ou reculer ou les deux on affecte nos tick au temps actuel */
         if(!in.key[SDLK_UP])
         {
             beforefwd = SDL_GetTicks();
@@ -136,11 +149,11 @@ void Game::eventloop()
             beforefwd = SDL_GetTicks();
             beforerev = SDL_GetTicks();
         }
-        /* Si on appuie sur la touche pour avancer sans appuyer sur celle pour reculer on va pouvoir avancer */
+        /* # Si on appuie sur la touche pour avancer sans appuyer sur celle pour reculer on va pouvoir avancer */
         if(in.key[SDLK_UP] && !in.key[SDLK_DOWN])
         {
-            /* On attend une seconde avant de demarrer */
-            if(SDL_GetTicks() > (beforefwd+1000))
+            /* # On attend une seconde avant de demarrer */
+            if(SDL_GetTicks() > (beforefwd + m_time2SpeedMax))
             {
                 m_currentRace->movePlayerCar(SDLK_UP);
 
@@ -168,7 +181,7 @@ void Game::eventloop()
                             break;
 
                             case Race3 :
-                                /* On vient de finir un cycle, on incremente la difficulte des IAs */
+                                /* # On vient de finir un cycle, on incremente la difficulte des IAs */
                                 Game::m_speedFactorIA *= 2;
 
                                 m_currentRace = new R1(m_window);
@@ -182,14 +195,16 @@ void Game::eventloop()
                 }
             }
         }
-        /* Si on appuie sur la touche pour reculer sans appuyer sur celle pour avancer on va pouvoir reculer */
+
+        /* # Si on appuie sur la touche pour reculer sans appuyer sur celle pour avancer on va pouvoir reculer */
         if(in.key[SDLK_DOWN] && !in.key[SDLK_UP])
         {
             /* On attend une seconde avant de demarrer */
-            if(SDL_GetTicks() > (beforerev+1000))
+            if(SDL_GetTicks() > (beforerev + m_time2SpeedMax))
                 m_currentRace->movePlayerCar(SDLK_DOWN);
         }
-        /* Si on enfonce la touche droite ou gauche on change la direction de la voiture */
+
+        /* # Si on enfonce la touche droite ou gauche on change la direction de la voiture */
         if(in.key[SDLK_LEFT])
         {
             m_currentRace->changePlayerCarPosition(SDLK_LEFT);
@@ -201,14 +216,24 @@ void Game::eventloop()
             m_currentRace->changePlayerCarPosition(SDLK_RIGHT);
             in.key[SDLK_RIGHT] = 0;
         }
-        /* Si on appuie sur espace ca pousse ! */
+
+        /* # Si on appuie sur espace ca pousse ! */
         if(in.key[SDLK_SPACE])
         {
-            m_currentRace->useTurbo();
+            /* # Si il reste des turbos en stock */
+            if(m_currentRace->useTurbo())
+            {
+                /* # Si on a deja un turbo d'active on incremente le temps de turbo */
+                if(turbo != 0)
+                    turbotime += Game::m_turboTime;
+                else
+                    turbo = SDL_GetTicks();
+            }
+
             in.key[SDLK_SPACE] = 0;
         }
 
-        /* On fait un delay (ie un sleep) avec le temps qu'il nous reste avant le prochain rafraichissement pour avoir un framerate fixe */
+        /* # On fait un delay (ie un sleep) avec le temps qu'il nous reste avant le prochain rafraichissement pour avoir un framerate fixe */
         SDL_Delay(time_left(next_time));
         next_time += tick_interval;
     }

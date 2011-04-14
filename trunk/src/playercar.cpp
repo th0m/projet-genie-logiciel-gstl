@@ -7,8 +7,7 @@
 
 
 PlayerCar::PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window)
-: Shape(x, y, std::string("playercarg"), window), m_fwdspeed(Game::getFwdSpeed()), m_revspeed(m_fwdspeed / 2), m_timer(0),
-  m_state(Others)
+: Shape(x, y, std::string("playercarg"), window), m_fwdspeed(Game::getFwdSpeed()), m_revspeed(m_fwdspeed / 2), m_state(Others)
 {
     /* # On veut contrôler completement la destruction de l'objet */
     m_free = false;
@@ -415,7 +414,6 @@ void PlayerCar::move(SDLKey key, std::list<Limit*> &limits, std::list<Flaque*> &
 void PlayerCar::enableTurboMode()
 {
     m_state = TurboMode;
-    m_timer = SDL_AddTimer(Game::getTurboTime(), &PlayerCar::callback, this);
     m_fwdspeed = getSpeed() * 2;
 }
 
@@ -427,23 +425,4 @@ float PlayerCar::getSpeed()
 void PlayerCar::setNormalSpeed()
 {
     m_fwdspeed = Game::getFwdSpeed();
-}
-
-Uint32 PlayerCar::callback(Uint32 interval, void* param)
-{
-    PlayerCar* inst = (PlayerCar*)param;
-    inst->setNormalSpeed();
-    inst->destroyTimer();
-}
-
-void PlayerCar::destroyTimer()
-{
-    if(m_state == TurboMode)
-        m_state = Others;
-
-    if(m_timer != 0)
-    {
-        SDL_RemoveTimer(m_timer);
-        m_timer = 0;
-    }
 }
