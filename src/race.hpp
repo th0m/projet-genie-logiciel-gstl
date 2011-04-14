@@ -35,20 +35,17 @@ class Race
         /* # Fonction qui gere les turbos, qui nous previent si tous les turbos ont ete consomme ou non */
         bool useTurbo();
 
-        /* # Fonction qui va desactiver le turbo sur la voiture du joueur */
-        void disableTurbo();
-
         /* # Fonction qui est capable de faire bouger la voiture du joueur */
         void movePlayerCar(SDLKey key);
-
-        /* # Fonction qui change la position de la voiture du joueur */
-        void changePlayerCarPosition(SDLKey key);
 
         /* # Fonction qui s'occupe du deplacement de l'IA */
         void moveIAs();
 
         /* # Verification des 3 checkpoints*/
         Lap checkCheckPoint();
+
+        /* # Getter qui recupere la voiture du joueur */
+        PlayerCar *getPlayerCar(){return m_playercar;};
 
 
     protected:
