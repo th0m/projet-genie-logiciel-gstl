@@ -129,12 +129,29 @@ void Game::eventloop()
         if(launchIAs)
             m_currentRace->moveIAs();
 
+        if(SDL_GetTicks() >= collision + 1000 || SDL_GetTicks() >= turbo + turbotime || !m_currentRace->getPlayerCar()->isFlaque())
+        {
+            m_currentRace->getPlayerCar()->setNormalState();
+        }
+        if(SDL_GetTicks() < collision + 1000)
+        {
+            m_currentRace->getPlayerCar()->setCollisionRecovering();
+        }
+        if(SDL_GetTicks() < turbo + turbotime)
+        {
+            m_currentRace->getPlayerCar()->setTurboMode();
+        }
+        if(m_currentRace->getPlayerCar()->isFlaque())
+        {
+            m_currentRace->getPlayerCar()->setFlaqueState();
+        }
+
+        m_currentRace->getPlayerCar()->setSpeed();
+
         /* # Si le turbo est terminé on retablit la vitesse de croisiere */
         if(turbo != 0 && SDL_GetTicks() >= turbo + turbotime)
         {
             turbo = 0;
-            m_currentRace->getPlayerCar()->setNormalSpeed();
-
             /* # On reaffecte le temps de turbo */
             turbotime = m_turboTime;
         }
@@ -164,13 +181,13 @@ void Game::eventloop()
             {
                 launchIAs = true;
 
-                if(SDL_GetTicks() < collision + m_time2SpeedMax)
-                    m_currentRace->getPlayerCar()->collisionRecovering();
+                /*if(SDL_GetTicks() < collision + m_time2SpeedMax)
+                    m_currentRace->getPlayerCar()->setCollisionRecovering();*/
 
                 m_currentRace->movePlayerCar(SDLK_UP);
 
-                if(m_currentRace->getPlayerCar()->isBlocked() && SDL_GetTicks() >= collision + m_time2SpeedMax)
-                    m_currentRace->getPlayerCar()->setNormalSpeed();
+                /*if(m_currentRace->getPlayerCar()->isBlocked() && SDL_GetTicks() >= collision + m_time2SpeedMax)
+                    m_currentRace->getPlayerCar()->setNormalSpeed();*/
 
                 if(m_currentRace->checkCheckPoint() == Race::Finished)
                 {
@@ -243,13 +260,13 @@ void Game::eventloop()
             m_currentRace->getPlayerCar()->loadAnotherPosition(SDLK_RIGHT);
             in.key[SDLK_RIGHT] = 0;
         }
-
         /* # Si on appuie sur espace ca pousse ! */
         if(in.key[SDLK_SPACE])
         {
             /* # Si il reste des turbos en stock */
             if(m_currentRace->useTurbo())
             {
+                m_currentRace->getPlayerCar()->setTurboMode();
                 /* # Si on a deja un turbo d'active on incremente le temps de turbo */
                 if(turbo != 0)
                     turbotime += Game::m_turboTime;
