@@ -2,9 +2,11 @@
 #include "r1.hpp"
 #include "r2.hpp"
 #include "r3.hpp"
+#include "score.hpp"
 
 #include <SDL/SDL_Image.h>
 #include <stdexcept>
+#include <iostream>
 
 /* On initialise les variables statiques constantes */
 const Uint32 Game::m_width = 600;
@@ -336,5 +338,15 @@ float Game::getDifficultyIAPercentage()
 
 void Game::handleScore()
 {
-    printf("u loooooz -> score = %d\n", m_score);
+    Score score;
+    std::string pseudo;
+
+    std::cout << "u loooooz -> score = " << m_score << std::endl;
+
+    score.ajoutScore(pseudo, m_score);
+    //std::set<std::pair<unsigned int, std::string> > prems = score.premiers();
+
+    std::cout << "Here the best player/score:" << std::endl;
+    //for(std::set<std::pair<unsigned int, std::string> >::iterator it = prems.begin(); it != prems.end(); it++)
+    //    std::cout << it->second << " -> " << it->first << std::endl;
 }
