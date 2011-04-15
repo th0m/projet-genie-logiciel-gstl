@@ -43,11 +43,11 @@ R1::R1(SDL_Surface *window)
         m_c3 : troisieme checkpoint recontré
         l'ordre sert par la suite pour la validation du tour
     */
-    m_c1 = new Checkpoint(0, 180, 160, 180);
-    m_c2 = new Checkpoint(350, 0, 350, 200);
-    m_c3 = new Checkpoint(440, 180, 600, 180);
+    m_c1 = new Checkpoint(0, 210, 260, 210);
+    m_c2 = new Checkpoint(320, 0, 320, 210);
+    m_c3 = new Checkpoint(300, 210, 600, 210);
 
-    m_csfl = new Checkpoint(280, 240, 280, 400);
+    m_csfl = new Checkpoint(320, 210, 320, 400);
 }
 
 R1::~R1()
