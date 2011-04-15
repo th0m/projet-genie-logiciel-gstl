@@ -2,7 +2,7 @@
 #include "game.hpp"
 #include "iacar.hpp"
 
-#include <SDL/SDL_Image.h>
+#include <SDL/SDL_image.h>
 #include <cmath>
 #include <list>
 

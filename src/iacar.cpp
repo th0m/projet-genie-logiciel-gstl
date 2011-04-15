@@ -1,7 +1,7 @@
 #include "iacar.hpp"
 #include "game.hpp"
 
-#include <SDL/SDL_Image.h>
+#include <SDL/SDL_image.h>
 
 IACar::IACar(float x, float y, SDL_Surface *window)
 : Shape(x, y, std::string("iacarg"), window), m_currentStep(FirstStep), m_difficulty(0)
