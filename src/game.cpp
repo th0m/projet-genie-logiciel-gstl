@@ -130,32 +130,30 @@ void Game::eventloop()
             m_currentRace->moveIAs();
 
         if(SDL_GetTicks() >= collision + m_time2SpeedMax || SDL_GetTicks() >= turbo + turbotime || !m_currentRace->getPlayerCar()->isFlaque())
-        {
             m_currentRace->getPlayerCar()->setNormalState();
-        }
+
         if(turbo != 0 && SDL_GetTicks() >= turbo + turbotime)
         {
             turbo = 0;
             turbotime = m_turboTime;
         }
+
         if(SDL_GetTicks() < turbo + turbotime && turbo != 0)
-        {
             m_currentRace->getPlayerCar()->setTurboMode();
-        }
+
         if(SDL_GetTicks() < collision + m_time2SpeedMax)
         {
             if(m_currentRace->getPlayerCar()->isTurbo())
-            {
                 turbo = 0, turbotime = m_turboTime;
-            }
+
             m_currentRace->getPlayerCar()->setCollisionRecovering();
         }
+
         if(m_currentRace->getPlayerCar()->isFlaque())
         {
             if(m_currentRace->getPlayerCar()->isTurbo())
-            {
                 turbo = 0, turbotime = m_turboTime;
-            }
+
             m_currentRace->getPlayerCar()->setFlaqueState();
         }
 
@@ -197,19 +195,23 @@ void Game::eventloop()
                         nbLap = 0;
                         beforefwd = SDL_GetTicks();
 
-                        if(m_currentRace->checkSuccessRace() == true)
-                            printf("U WIN BASTARD#@!\n");
-                        else
-                            printf("U LOOZ MOFO#@!\n");
+                        /* # Pour perdre il faut avoir une place differente de la 1ère & de la seconde */
+                        int rank = m_currentRace->checkSuccessRace();
+                        if(rank != 1 && rank != 2)
+                        {
+                            handleScore();
+                            continuer = false;
+                            break;
+                        }
 
-                        fflush(stdout);
+                        /* # On sait qu'on à le droit de passer à la course suivante, donc si on a ete premier on gagne 3 pts, sinon 2 */
+                        m_score += (rank == 1) ? 3 : 2;
 
                         delete m_currentRace;
                         m_currentRace->initNbLapCompetitors();
 
                         /* # On oublie pas de rebloquer les IAs pour la prochaine course */
                         launchIAs = false;
-                        m_score += 2;
 
                         /* # On remet a zero les timers de turbo */
                         turbo = 0;
@@ -330,4 +332,9 @@ void Game::cleanScreen()
 float Game::getDifficultyIAPercentage()
 {
     return m_difficultyIApercentage;
+}
+
+void Game::handleScore()
+{
+    printf("u loooooz -> score = %d\n", m_score);
 }

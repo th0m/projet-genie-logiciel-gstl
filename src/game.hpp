@@ -60,6 +60,8 @@ class Game
         /* # La fonction qui gere les evenements */
         void UpdateEvents(Input* in, bool& continuer);
 
+        /* # Fonction qui va gérer l'ajout des scores */
+        void handleScore();
 
         /* # Fonction qui donne le temps a sleep avant le prochaine rafraichissement */
         Uint32 time_left(Uint32 &next_time);
