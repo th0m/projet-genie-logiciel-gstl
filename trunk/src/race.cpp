@@ -262,7 +262,7 @@ void Race::initNbLapCompetitors()
     }
 }
 
-bool Race::checkSuccessRace()
+int Race::checkSuccessRace()
 {
     int nbCompetitors = 0;
 
@@ -270,5 +270,5 @@ bool Race::checkSuccessRace()
         if(it->second.first >= 2)
             nbCompetitors++;
 
-    return (nbCompetitors < 2) ? true : false;
+    return nbCompetitors + 1;
 }

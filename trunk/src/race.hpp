@@ -51,8 +51,8 @@ class Race
         /* # initialisation du nombre de tours de chaque adversaires */
         void initNbLapCompetitors();
 
-        /* # verification fin de tour */
-        bool checkSuccessRace();
+        /* # verification fin de tour, renvoi la place du joueur */
+        int checkSuccessRace();
 
         /* # Getter qui recupere la voiture du joueur */
         PlayerCar *getPlayerCar();
