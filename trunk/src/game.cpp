@@ -9,7 +9,7 @@
 /* On initialise les variables statiques constantes */
 const Uint32 Game::m_width = 600;
 const Uint32 Game::m_height = 400;
-const Uint32 Game::m_shapeSize = 40;
+const Uint32 Game::m_shapeSize = 20;
 const Uint32 Game::m_turboTime = 2000;
 const Uint32 Game::m_time2SpeedMax = 1000;
 const float Game::m_fwdSpeed = 2;
