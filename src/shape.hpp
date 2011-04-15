@@ -30,9 +30,6 @@ class Shape
         /* # Fonction qui permet de cacher une forme */
         void hide();
 
-        /* # Fonction qui revele une shape */
-        void unhide();
-
         /* # Fonction qui repositionne la forme selon ses coordonnées */
         void actualize();
 
@@ -62,6 +59,8 @@ class Shape
         /* # Notre sprite, et la fenetre */
         SDL_Surface *m_img, *m_window;
 
+        /* # Boolean qui permet de savoir si la classe mère doit détruire elle même l'image, ou si c'est à la classe fille de s'en charger */
+        /* Utilise dans les classes IACar / PlayerCar qui utilise plusieurs shapes */
         bool m_free;
 };
 

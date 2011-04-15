@@ -33,7 +33,7 @@ IACar::~IACar()
 
 void IACar::move(float playerx, float playery, std::list<IACar*> &ias)
 {
-    float fact = Game::getSpeedFactorIA();
+    float fact = Game::getSpeedIA();
     float x = m_x, y = m_y;
 
     switch(m_currentStep)

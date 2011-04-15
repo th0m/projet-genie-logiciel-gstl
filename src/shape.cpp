@@ -138,15 +138,6 @@ void Shape::hide()
     m_isHidden = true;
 }
 
-void Shape::unhide()
-{
-    if(m_isHidden == false)
-        return;
-
-    /* # On replace notre sprite */
-    actualize();
-}
-
 float Shape::getX() const
 {
     return m_x;

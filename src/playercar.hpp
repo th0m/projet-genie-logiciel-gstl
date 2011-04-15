@@ -48,7 +48,9 @@ class PlayerCar : public Shape
 
         /* # Fonction qui affecte la vitesse en fonction de l'etat actuel */
         void setSpeed();
+
     private:
+
         /* # Position actuelle du vehicule */
         enum CurrentPosition
         {
@@ -76,7 +78,10 @@ class PlayerCar : public Shape
 
         /* # Fonction pour savoir vers ou on souhaite se deplacer */
         float getWantedX(SDLKey key, float& fwdlatspeed, float& revlatspeed);
+
+        /* # Fonction pour savoir vers ou on souhaite se deplacer */
         float getWantedY(SDLKey key, float& fwdlatspeed, float& revlatspeed);
+
 
         /* # Vitesse du véhicule forward : marche avant, reverse : marche arriere*/
         float m_fwdspeed, m_revspeed;
