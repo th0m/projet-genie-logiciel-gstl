@@ -197,7 +197,7 @@ void Race::initIAs()
                 break;
             }
 
-            (*it2) += mutate;
+            (*it2) += mutate * 3;
         }
     }
 }

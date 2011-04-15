@@ -20,7 +20,7 @@ R1::R1(SDL_Surface *window)
     m_map[m_nbLines - 1][0] = m_map[m_nbLines - 1][m_nbRows - 1] = Shape::WHITE;
 
     /* # Et maintenant les limites internes ! */
-    for(unsigned int i = (m_nbRows / 2) - 3; i < m_nbRows - 4; ++i)
+    for(unsigned int i = (m_nbRows / 2) - 3; i < m_nbRows - 8; ++i)
         m_map[m_nbLines / 2][i] = Shape::LIMIT;
 
     /* # La ligne d'arrivée/de départ */
@@ -59,10 +59,10 @@ void R1::load()
     Race::load();
 
     /* # On fixe nos points originel */
-    m_pts.push_back(40);
-    m_pts.push_back(80);
-    m_pts.push_back(520);
-    m_pts.push_back(320);
+    m_pts.push_back(60);
+    m_pts.push_back(60);
+    m_pts.push_back(560);
+    m_pts.push_back(340);
 
     initIAs();
 }

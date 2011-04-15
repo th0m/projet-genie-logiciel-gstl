@@ -20,7 +20,7 @@ R2::R2(SDL_Surface *window)
     m_map[m_nbLines - 1][0] = m_map[m_nbLines - 1][m_nbRows - 1] = Shape::WHITE;
 
     /* # Et maintenant les limites internes ; on enleve un bord pour reconnaitre la seconde course ! */
-    for(unsigned int i = (m_nbRows / 2) - 3 + 1; i < m_nbRows - 4; ++i)
+    for(unsigned int i = (m_nbRows / 2) - 3 + 2; i < m_nbRows - 8 ; ++i)
         m_map[m_nbLines / 2][i] = Shape::LIMIT;
 
     /* # La ligne d'arrivée/de départ */
@@ -50,9 +50,9 @@ void R2::load()
     Race::load();
 
     m_pts.push_back(80);
-    m_pts.push_back(80);
-    m_pts.push_back(520);
-    m_pts.push_back(320);
+    m_pts.push_back(60);
+    m_pts.push_back(560);
+    m_pts.push_back(340);
 
     initIAs();
 }

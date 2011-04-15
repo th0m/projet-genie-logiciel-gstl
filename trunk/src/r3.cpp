@@ -20,7 +20,7 @@ R3::R3(SDL_Surface *window)
     m_map[m_nbLines - 1][0] = m_map[m_nbLines - 1][m_nbRows - 1] = Shape::WHITE;
 
     /* # Et maintenant les limites internes ! ; petit changement pour differencier la course 3 */
-    for(unsigned int i = (m_nbRows / 2) - 3 + 1; i < m_nbRows - 5; ++i)
+    for(unsigned int i = (m_nbRows / 2) - 3 + 1; i < m_nbRows - 10; ++i)
         m_map[m_nbLines / 2][i] = Shape::LIMIT;
 
     /* # La ligne d'arrivée/de départ */
@@ -50,9 +50,9 @@ void R3::load()
     Race::load();
 
     m_pts.push_back(80);
-    m_pts.push_back(80);
-    m_pts.push_back(480);
-    m_pts.push_back(320);
+    m_pts.push_back(60);
+    m_pts.push_back(520);
+    m_pts.push_back(340);
 
     initIAs();
 }
