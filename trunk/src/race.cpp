@@ -220,6 +220,7 @@ Race::Lap Race::checkCheckPoint()
     m_c3->checkC3(x, y);
     m_csfl->checkCF(x, y);
 
+
     /* # validation d'un tour */
     if(m_c1->isValidated() && m_c2->isValidated() && m_c3->isValidated() && m_csfl->isValidated())
     {
