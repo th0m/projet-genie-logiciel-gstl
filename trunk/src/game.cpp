@@ -4,7 +4,7 @@
 #include "r3.hpp"
 #include "score.hpp"
 
-#include <SDL/SDL_Image.h>
+#include <SDL/SDL_image.h>
 #include <stdexcept>
 #include <iostream>
 
