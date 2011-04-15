@@ -43,7 +43,11 @@ void IACar::move(float playerx, float playery, std::list<IACar*> &ias)
             if(x <= m_points[0])
                 m_currentStep = SecondStep, m_img = m_up;
             else
+            {
                 x -= fact + (m_difficulty * Game::getDifficultyIAPercentage());
+                if(x < m_points[0])
+                    x = m_points[0];
+            }
 
             break;
         }
@@ -53,7 +57,11 @@ void IACar::move(float playerx, float playery, std::list<IACar*> &ias)
             if(y <= m_points[1])
                 m_currentStep = ThirdStep, m_img = m_right;
             else
+            {
                 y -= fact + (m_difficulty * Game::getDifficultyIAPercentage());
+                if(y < m_points[1])
+                    y = m_points[1];
+            }
 
             break;
         }
@@ -63,7 +71,11 @@ void IACar::move(float playerx, float playery, std::list<IACar*> &ias)
             if(x >= m_points[2])
                 m_currentStep = LastStep, m_img = m_down;
             else
+            {
                 x += fact + (m_difficulty * Game::getDifficultyIAPercentage());
+                if(x > m_points[2])
+                    x = m_points[2];
+            }
 
             break;
         }
@@ -73,7 +85,11 @@ void IACar::move(float playerx, float playery, std::list<IACar*> &ias)
             if(y >= m_points[3])
                 m_currentStep = FirstStep, m_img = m_left;
             else
+            {
                 y += fact + (m_difficulty * Game::getDifficultyIAPercentage());
+                if(y > m_points[3])
+                    y = m_points[3];
+            }
 
             break;
         }
