@@ -63,6 +63,7 @@ class Race
          /* # Fonction qui va réaliser des fonctions d'initialisation sur les IAs */
          void initIAs();
 
+
         /* # La fenetre du jeu */
         SDL_Surface *m_window;
 

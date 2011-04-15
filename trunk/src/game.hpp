@@ -27,14 +27,13 @@ class Game
         /* # Fonction qui permet de récuperer la taille d'un sprite */
         static Uint32 getShapeSize();
 
-        static Uint32 getTurboTime();
-
+        /* # Fonction accesseur permettant de connaitre la vitesse de croisière en marche avant */
         static float getFwdSpeed();
 
-        static float getRevSpeed();
+        /* # Permet de connaitre la vitesse des IAs */
+        static Uint32 getSpeedIA();
 
-        static Uint32 getSpeedFactorIA();
-
+        /* # Permet de savoir le pourcentage de difficulte qu'une IA doit avoir par rapport à une autre */
         static float getDifficultyIAPercentage();
 
     private:
@@ -62,6 +61,7 @@ class Game
 
         /* # Fonction qui va gérer l'ajout des scores */
         void handleScore();
+
 
         /* # Fonction qui donne le temps a sleep avant le prochaine rafraichissement */
         Uint32 time_left(Uint32 &next_time);
@@ -103,7 +103,7 @@ class Game
         static const std::string m_title;
 
         /* # Le facteur de vitesse des IAs qui va augmenter à chaque fois qu'on complete les 3 courses */
-        static float m_speedFactorIA;
+        static float m_speedIA;
 
         /* # Membre qui permet de connaitre laquelle des trois courses est chargées */
         RaceNumber m_rNumber;

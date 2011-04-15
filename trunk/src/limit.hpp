@@ -8,7 +8,6 @@ class Limit : public Shape
     public:
 
         explicit Limit(float x, float y, SDL_Surface *window);
-
 };
 
 #endif

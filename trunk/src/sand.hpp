@@ -8,7 +8,6 @@ class Sand : public Shape
     public:
 
         explicit Sand(float x, float y, SDL_Surface *window);
-
 };
 
 #endif

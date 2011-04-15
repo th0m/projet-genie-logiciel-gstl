@@ -17,7 +17,7 @@ const Uint32 Game::m_time2SpeedMax = 1000;
 const float Game::m_fwdSpeed = 2;
 const float Game::m_revSpeed = m_fwdSpeed / 2;
 const Uint32 Game::m_nbLap = 2;
-float Game::m_speedFactorIA = 1;
+float Game::m_speedIA = 1;
 const std::string Game::m_title = "Projet Genie Logiciel 3A - GSTL";
 const Uint32 Game::m_framerate = 60;
 const float Game::m_difficultyIApercentage = 0.30;
@@ -232,8 +232,8 @@ void Game::eventloop()
                             break;
 
                             case Race3 :
-                                /* # On vient de finir un cycle, on incremente la difficulte des IAs */
-                                m_speedFactorIA += m_speedFactorIA * (20.0 / 100);
+                                /* # On vient de finir un cycle, on incremente la difficulte des IAs de 20% */
+                                m_speedIA += m_speedIA * 0.2;
 
                                 m_currentRace = new R1(m_window);
                                 m_rNumber = Race1;
@@ -306,24 +306,14 @@ Uint32 Game::getShapeSize()
     return m_shapeSize;
 }
 
-Uint32 Game::getSpeedFactorIA()
+Uint32 Game::getSpeedIA()
 {
-    return m_speedFactorIA;
+    return m_speedIA;
 }
 
 float Game::getFwdSpeed()
 {
     return m_fwdSpeed;
-}
-
-float Game::getRevSpeed()
-{
-    return m_revSpeed;
-}
-
-Uint32 Game::getTurboTime()
-{
-    return m_turboTime;
 }
 
 void Game::cleanScreen()
