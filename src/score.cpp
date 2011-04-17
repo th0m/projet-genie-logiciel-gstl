@@ -14,7 +14,7 @@ Score::Score()
         while(!scs.eof())
         {
             scs >> s >> a;
-            scores.insert(std::make_pair(s, a));
+            m_scores.insert(std::make_pair(s, a));
         }
         scs.close();
     }
@@ -22,14 +22,17 @@ Score::Score()
 
 Score::~Score()
 {
+    if(m_scores.size() == 0)
+        return;
+
 	std::ofstream scss("scores.txt", std::ios::out);
 
 	if(scss)
 	{
-	    for(std::set<std::pair<unsigned int, std::string>, Sort >::iterator it = scores.begin(); it != scores.end(); it++)
+	    for(std::set<std::pair<unsigned int, std::string>, Sort >::iterator it = m_scores.begin(); it != m_scores.end(); it++)
 	    {
             scss << it->first << " " << it-> second;
-            if(++it != scores.end()) /* # c'est pas le dernier element, on place un carriage return */
+            if(++it != m_scores.end()) /* # c'est pas le dernier element, on place un carriage return */
                 scss << std::endl;
             it--; /* # On replace l'iterator comme il faut */
 	    }
@@ -39,7 +42,7 @@ Score::~Score()
 
 void Score::ajoutScore(std::string s, unsigned int sc)
 {
-    scores.insert(std::make_pair(sc, s));
+    m_scores.insert(std::make_pair(sc, s));
 }
 
 std::set<std::pair<unsigned int, std::string>, Sort > Score::premiers()
@@ -47,7 +50,7 @@ std::set<std::pair<unsigned int, std::string>, Sort > Score::premiers()
     std::set<std::pair<unsigned int, std::string>, Sort > ret;
     unsigned int i = 0;
 
-    for(std::set<std::pair<unsigned int, std::string> >::iterator it = scores.begin(); it != scores.end() && i < 5; it++, i++)
+    for(std::set<std::pair<unsigned int, std::string> >::iterator it = m_scores.begin(); it != m_scores.end() && i < 5; it++, i++)
         ret.insert(std::make_pair(it->first, it->second));
 
 	return ret;
