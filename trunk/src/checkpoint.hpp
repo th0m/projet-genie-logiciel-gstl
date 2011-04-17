@@ -10,7 +10,7 @@ class Checkpoint
 
         /* Structure d'un point */
         struct Point{
-            int x, y;
+            float x, y;
         };
 
         explicit Checkpoint(float x1, float y1, float x2, float y2);
