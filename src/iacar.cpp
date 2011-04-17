@@ -113,11 +113,6 @@ bool IACar::moveAllowed(float x, float y, float playerx, float playery, std::lis
     if(vxg < limxd && vxd > limxg && vyh < limyb && vyb > limyh)
         isAllowed = false;
 
-    if(!isAllowed)
-    {
-        printf("IA Car vxg %f vxd %f vyh %f vyb %f\n",vxg,vxd,vyh,vyb);
-        fflush(stdout);
-    }
     /* # On check si les IAs ne vont pas s'entre foncer dedans, bien faire attention à exclure notre IA des tests, sinon on risque d'etre en collision avec *nous-même* */
     for(std::list<IACar*>::iterator it = ias.begin(); isAllowed == true && (*it) != this && it != ias.end(); it++)
     {
