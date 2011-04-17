@@ -5,16 +5,15 @@
 
 Score::Score()
 {
-    std::string a="";
-    unsigned int s=0;
+    std::string a;
+    unsigned int s;
     std::ifstream scs("scores.txt", std::ios::out);
 
     if(scs)
     {
         while(!scs.eof())
         {
-            scs >> s;
-            scs >> a;//on lit chaque score
+            scs >> s >> a;
             scores.insert(std::make_pair(s, a));
         }
         scs.close();
@@ -23,31 +22,19 @@ Score::Score()
 
 Score::~Score()
 {
-    std::set<std::pair<unsigned int, std::string> >::iterator it;
-	bool boolean;
-	std::ifstream scss ("scores.txt", std::ios::out);
-	scss >> boolean;
+	std::ofstream scss("scores.txt", std::ios::out);
 
-	if(scss || scores.size() != 0 )
+	if(scss)
 	{
-		std::ofstream scs ("scores.txt", std::ios::out /*| std::ios::trunc*/); // ouverture du répertoire en écriture
-		if(scs)
-		{
-			if(boolean) //vide
-			{
-				it = scores.begin();
-				scs << it->first << " " << it->second;
-				for(it = ++scores.begin(); it != scores.end(); it++)
-                    scs << std::endl << it->first << " " << it->second;
-			}
-			else
-				for(it = ++scores.begin(); it != scores.end(); it++)
-                    scs << std::endl << it->first << " " << it->second;
-
-			scs.close();
-		}
+	    for(std::set<std::pair<unsigned int, std::string>, Sort >::iterator it = scores.begin(); it != scores.end(); it++)
+	    {
+            scss << it->first << " " << it-> second;
+            if(++it != scores.end()) /* # c'est pas le dernier element, on place un carriage return */
+                scss << std::endl;
+            it--; /* # On replace l'iterator comme il faut */
+	    }
+	    scss.close();
 	}
-	scss.close();
 }
 
 void Score::ajoutScore(std::string s, unsigned int sc)
@@ -55,31 +42,13 @@ void Score::ajoutScore(std::string s, unsigned int sc)
     scores.insert(std::make_pair(sc, s));
 }
 
-std::set<std::pair<unsigned int, std::string> >& Score::premiers()
+std::set<std::pair<unsigned int, std::string>, Sort > Score::premiers()
 {
-    std::set<std::pair<unsigned int, std::string> >::iterator it;
-	bool boolean;
-	std::ifstream scss ("scores.txt", std::ios::out);
-	scss >> boolean;
+    std::set<std::pair<unsigned int, std::string>, Sort > ret;
+    unsigned int i = 0;
 
-	if(scss || scores.size()!=0 )
-	{
-		std::ofstream scs ("scores.txt", std::ios::out); // ouverture du répertoire en écriture
-		if(scs)
-		{
-			if(boolean) //vide
-			{
-				it = scores.begin();
-				scs << it->first << " " << it->second;
-				for(it = ++scores.begin(); it != scores.end(); it++)
-                    scs << std::endl << it->first << " " << it->second;
-			}
-			else
-				for(it = ++scores.begin(); it != scores.end(); it++)
-                    scs << std::endl << it->first << " " << it->second;
+    for(std::set<std::pair<unsigned int, std::string> >::iterator it = scores.begin(); it != scores.end() && i < 5; it++, i++)
+        ret.insert(std::make_pair(it->first, it->second));
 
-			scs.close();
-		}
-	}
-	scss.close();
+	return ret;
 }

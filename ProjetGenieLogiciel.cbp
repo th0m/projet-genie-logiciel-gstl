@@ -55,6 +55,8 @@
 		<Unit filename="src\score.hpp" />
 		<Unit filename="src\shape.cpp" />
 		<Unit filename="src\shape.hpp" />
+		<Unit filename="src\sort.cpp" />
+		<Unit filename="src\sort.hpp" />
 		<Unit filename="src\startingfinishline.cpp" />
 		<Unit filename="src\startingfinishline.hpp" />
 		<Unit filename="src\turbo.cpp" />
