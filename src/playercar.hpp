@@ -12,7 +12,7 @@ class PlayerCar : public Shape
 {
     public:
 
-        explicit PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window);
+        explicit PlayerCar(float x, float y, SDL_Surface *window);
 
         ~PlayerCar();
 
@@ -81,7 +81,6 @@ class PlayerCar : public Shape
 
         /* # Fonction pour savoir vers ou on souhaite se deplacer */
         float getWantedY(SDLKey key, float& fwdlatspeed, float& revlatspeed);
-
 
         /* # Vitesse du véhicule forward : marche avant, reverse : marche arriere*/
         float m_fwdspeed, m_revspeed;

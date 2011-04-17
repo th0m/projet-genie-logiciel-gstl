@@ -7,7 +7,7 @@
 #include <list>
 
 
-PlayerCar::PlayerCar(Sint32 x, Sint32 y, SDL_Surface *window)
+PlayerCar::PlayerCar(float x, float y, SDL_Surface *window)
 : Shape(x, y, std::string("playercarg"), window), m_fwdspeed(Game::getFwdSpeed()), m_revspeed(m_fwdspeed / 2), m_state(Normal), m_blocked(false), m_flaque(false)
 {
     /* # On veut contrôler completement la destruction de l'objet */

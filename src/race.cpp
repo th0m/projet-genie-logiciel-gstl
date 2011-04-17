@@ -14,7 +14,7 @@ Race::Race(SDL_Surface *window)
     for(unsigned int j = 0; j < m_nbLines; ++j)
         m_map[j] = new Uint8[m_nbRows];
 
-    /* # On sait d'or et deja que la première ligne est reserve à afficher les turbos, nous avons du blanc au depart */
+    /* # On sait d'ores et deja que la première ligne est reserve à afficher les turbos, nous avons du blanc au depart */
     for(; i < m_nbRows - 3; ++i)
         m_map[0][i] = Shape::WHITE;
 

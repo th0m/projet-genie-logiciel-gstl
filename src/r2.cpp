@@ -27,7 +27,15 @@ R2::R2(SDL_Surface *window)
     for(unsigned int i = m_nbLines / 2 + 1; i < m_nbLines - 1; ++i)
         m_map[i][(m_nbRows / 2) - 1] = Shape::STARTINGFINISHLINE;
 
-    /* # Le bolide du joueur */
+    /* # Premiere flaque */
+    for(unsigned int i = m_nbLines / 2 - 3; i < m_nbLines / 2 - 1 ; ++i)
+    {
+        m_map[i][(m_nbRows / 2) + 3] = Shape::FLAQUE;
+        m_map[i][(m_nbRows / 2) + 4] = Shape::FLAQUE;
+    }
+
+
+    /* # Le bolide du joueur et les bolides des IA*/
     m_map[m_nbLines / 2 + 1][(m_nbRows / 2)] = Shape::PLAYERCAR;
     m_map[m_nbLines / 2 + 1][(m_nbRows / 2) + 1] = Shape::IACAR;
     m_map[m_nbLines / 2 + 1][(m_nbRows / 2) + 2] = Shape::IACAR;
