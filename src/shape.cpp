@@ -42,10 +42,6 @@ Shape::Shape(float x, float y, std::string type, SDL_Surface *window)
 
 Shape::~Shape()
 {
-    SDL_Rect rec = { m_x, m_y };
-
-    rec.h = rec.w = m_img->h;
-
     if(m_free)
         /* # On decharge proprement l'image */
         SDL_FreeSurface(m_img);
