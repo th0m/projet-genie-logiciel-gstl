@@ -22,7 +22,7 @@ class Score
     private:
 
         /* # Conteneur qui va gérer les scores */
-        std::set<std::pair<unsigned int, std::string>, Sort> scores;
+        std::set<std::pair<unsigned int, std::string>, Sort> m_scores;
 
 };
 
