@@ -344,6 +344,4 @@ void Game::handleScore()
 
     for(std::set<std::pair<unsigned int, std::string> >::iterator it = prems.begin(); it != prems.end(); it++)
         std::cout << it->second << " -> " << it->first << std::endl;
-
-    getchar();
 }
