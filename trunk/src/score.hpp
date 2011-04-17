@@ -3,6 +3,7 @@
 
 #include <set>
 #include <string>
+#include "sort.hpp"
 
 class Score
 {
@@ -16,13 +17,13 @@ class Score
         void ajoutScore(std::string s, unsigned int sc);
 
         /* # Fonction qui permet de récupérer le top5 */
-        std::set<std::pair<unsigned int, std::string> >& premiers();
+        std::set<std::pair<unsigned int, std::string>, Sort > premiers();
 
     private:
 
         /* # Conteneur qui va gérer les scores */
-        std::set<std::pair<unsigned int, std::string> > scores;
+        std::set<std::pair<unsigned int, std::string>, Sort> scores;
+
 };
 
 #endif
-

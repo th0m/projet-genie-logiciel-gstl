@@ -334,12 +334,14 @@ void Game::handleScore()
     std::cout << "Tu viens de perdre, voici ton score : " << m_score << std::endl;
     std::cout << "Entre ton pseudo a present : ";
 
-    std::cin >> pseudo;
+    std::getline(std::cin, pseudo);
+
 
     score.ajoutScore(pseudo, m_score);
-    std::set<std::pair<unsigned int, std::string> > prems = score.premiers();
+    std::set<std::pair<unsigned int, std::string>, Sort > prems = score.premiers();
 
-    std::cout << "Voici le classement des 5 meilleures joueurs :" << std::endl;
+    std::cout << "Voici le classement des 5 meilleures joueurs (du meilleur au plus mauvais) :" << std::endl;
+
     for(std::set<std::pair<unsigned int, std::string> >::iterator it = prems.begin(); it != prems.end(); it++)
         std::cout << it->second << " -> " << it->first << std::endl;
 
