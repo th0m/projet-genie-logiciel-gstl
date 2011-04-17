@@ -208,8 +208,6 @@ void Game::eventloop()
 
                         /* # On sait qu'on à le droit de passer à la course suivante, donc si on a ete premier on gagne 3 pts, sinon 2 */
                         m_score += (rank == 1) ? 3 : 2;
-
-                        delete m_currentRace;
                         m_currentRace->initNbLapCompetitors();
 
                         /* # On oublie pas de rebloquer les IAs pour la prochaine course */
@@ -218,6 +216,8 @@ void Game::eventloop()
                         /* # On remet a zero les timers de turbo */
                         turbo = 0;
                         turbotime = m_turboTime;
+
+                        delete m_currentRace;
 
                         switch(m_rNumber)
                         {
