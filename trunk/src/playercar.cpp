@@ -143,7 +143,7 @@ void PlayerCar::loadAnotherPosition(SDLKey key)
     }
 }
 
-template <typename T> bool isMoveAllowed (Uint32 x, Uint32 y, std::list<T*> &lists)
+template <typename T> bool isMoveAllowed (float x, float y, std::list<T*> &lists)
 {
     /* # On prepare les coordonnees des limites : limxg : limite x gauche, limxd : limite x droite, limyh : limite y haut, limyb : limite y bas */
     float limxg = 0, limxd = 0, limyh = 0, limyb = 0;
