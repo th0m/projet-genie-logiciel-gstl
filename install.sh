@@ -9,3 +9,4 @@ sudo apt-get install libsdl1.2-dev libsdl-image1.2-dev subversion
 mkdir -p /tmp/ProjetGenieLogiciel_GSTL
 cd /tmp/ProjetGenieLogiciel_GSTL
 svn checkout http://projet-genie-logiciel-gstl.googlecode.com/svn/trunk/ projet-genie-logiciel-gstl-read-only
+g++ *.cpp -lSDL -lSDL_image -o ../bin/Release ProjetGSTL
