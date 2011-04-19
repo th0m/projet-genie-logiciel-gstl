@@ -4,9 +4,6 @@
  * \author GSTL
  * \version 0.1
  * \date 19 avril 2011
- *
- * Classe qui va permettre de gÈrer l'affichage graphique via des formes differentes.
- *
  */
 
 #ifndef SHAPE_HPP
@@ -15,6 +12,10 @@
 #include <SDL/SDL.h>
 #include <string>
 
+/**
+ * \class Shape
+ * \brief Classe qui va permettre de g√©rer l'affichage graphique via des formes diff√©rentes.
+*/
 class Shape
 {
     public:
@@ -38,10 +39,10 @@ class Shape
 
         /**
          * \fn explicit Shape(float x, float y, std::string type, SDL_Surface *window)
-         * \brief Constructeur de la classe, avec initialisation de sa position gr‚ce ‡ x et y, de son type et passage d'un pointeur sur la fenetre du jeux (afin de s'y blitter).
+         * \brief Constructeur de la classe, avec initialisation de sa position gr√¢ce √† x et y, de son type et passage d'un pointeur sur la fenetre du jeux (afin de s'y blitter).
          *
-         * \param x CoordonnÈe x du placement de la forme.
-         * \param y CoordonnÈe y du placement de la forme.
+         * \param x Coordonn√©e x du placement de la forme.
+         * \param y Coordonn√©e y du placement de la forme.
          * \param type Type de la forme.
          * \param window Pointeur sur la fenetre principale.
          */
@@ -69,7 +70,7 @@ class Shape
 
         /**
          * \fn void actualize()
-         * \brief Fonction qui repositionne la forme selon ses coordonnÈes.
+         * \brief Fonction qui repositionne la forme selon ses coordonn√©es.
          */
         void actualize();
 
@@ -102,7 +103,8 @@ class Shape
          * \brief Factory design pattern - fonction d'instanciation.
          *
          * \param type Type de la forme
-         * \param x CoordonnÈe x du placement de la forme.
+         * \param x Coordonn√©e en abscisse de la forme.
+         * \param y Coordonn√©e en ordonn√©e de la forme.
          * \param window Pointeur sur la fenetre principale.
          *
          * \return Pointeur sur l'instance de la forme generee.
@@ -115,11 +117,15 @@ class Shape
 
         bool m_isHidden; /*!< Le sprite est-il visible ? */
 
-        float m_x, m_y; /*!< CoordonnÈes de la forme */
+        float m_x; /*!< Coordonn√©e en abscisse de la forme */
 
-        SDL_Surface *m_img, *m_window; /*!< Notre sprite, et la fenetre */
+        float m_y; /*!< Coordonn√©e en ordonn√©e de la forme */
 
-        bool m_free; /*!< Booleen qui permet de savoir si la classe mËre doit dÈtruire elle mÍme l'image.*/
+        SDL_Surface *m_img; /*!< Le sprite */
+
+        SDL_Surface *m_window; /*!< La fen√™tre */
+
+        bool m_free; /*!< Booleen qui permet de savoir si la classe m√®re doit d√©truire elle m√™me l'image.*/
 };
 
 #endif

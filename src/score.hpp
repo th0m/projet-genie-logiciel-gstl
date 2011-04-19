@@ -4,9 +4,6 @@
  * \author GSTL
  * \version 0.1
  * \date 19 avril 2011
- *
- * Classe qui gËre les scores du jeux, serialisation / deserialisation.
- *
  */
 
 #ifndef SCORE_HPP
@@ -16,6 +13,10 @@
 #include <string>
 #include "sort.hpp"
 
+/**
+ * \class Score
+ * \brief Classe qui g√®re les scores du jeu, s√©rialisation / d√©s√©rialisation.
+*/
 class Score
 {
     public:
@@ -43,9 +44,9 @@ class Score
 
         /**
          * \fn std::set<std::pair<unsigned int, std::string>, Sort > premiers()
-         * \brief Fonction qui permet de rÈcupÈrer le top10.
+         * \brief Fonction qui permet de r√©cup√©rer le top10.
          *
-         * \return Un conteneur qui contient les meilleures joueurs avec les scores associÈs.
+         * \return Un conteneur qui contient les meilleures joueurs avec les scores associ√©s.
          */
         std::set<std::pair<unsigned int, std::string>, Sort > premiers();
 
