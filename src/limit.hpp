@@ -20,7 +20,7 @@ class Limit : public Shape
 
         /**
          * \fn explicit Limit(float x, float y, SDL_Surface *window)
-         * \brief Constructeur de la classe, avec initialisation de sa position grâce à x et y et passage d'un pointeur sur la fenetre du jeux (afin de s'y blitter).
+         * \brief Constructeur de la classe, avec initialisation de sa position grâce à x et y et passage d'un pointeur sur la fenetre du jeu (afin de s'y blitter).
          *
          * \param x Coordonnée x du placement de la shape.
          * \param y Coordonnée y du placement de la shape.
