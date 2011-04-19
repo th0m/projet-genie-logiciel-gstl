@@ -23,12 +23,13 @@ class Checkpoint
          * \struct Point
          * \brief desc
          *
-         * breve
-         * desc
+         *  Un point est une extremité d'un checkpoint.
+         *  Chaque point a ses coordonnées x et y.
+         *
          */
         struct Point{
-            float x; /*!< desc */
-            float y; /*!< desc */
+            float x; /*!< Abscisse */
+            float y; /*!< Ordonnee */
         };
 
 
@@ -36,14 +37,14 @@ class Checkpoint
          * \enum CompetitorPosition
          * \brief desc
          *
-         * breve
-         * desc
+         * position d'un adversaire
+         *
          */
         enum CompetitorPosition
         {
-            BeforeFinishLine, /*!< desc */
-            AfterFinishLine, /*!< desc */
-            Others /*!< desc */
+            BeforeFinishLine, /*!< juste avant le checkpoint de fin de tour (finish line) */
+            AfterFinishLine, /*!< juste après le checkpoint de fin de tour (finish line) */
+            Others /*!< ailleurs sur la carte */
         };
 
         /**
@@ -59,75 +60,67 @@ class Checkpoint
 
         /**
          * \fn bool isValidated() const
-         * \brief Fonction permettant de savoir si un .
+         * \brief Fonction permettant de savoir si un checkpoint est validé.
          *
-         * \return Renvoit un booleen qui va nous renseigner si le checkpoint à ete valide ou non.
+         * \return Renvoit un booleen qui va nous renseigner si le checkpoint à ete validé ou non.
          */
         bool isValidated() const;
 
         /**
-         * \fn void check(float x, float y)
-         * \brief Fonction permettant de savoir si un .
-         *
-         * \param x desc
-         * \param y desc
-         * \return desc
-         */
-         void check(float x, float y);
-
-        /**
          * \fn void checkC1(float x, float y)
-         * \brief Fonction permettant de savoir si un .
+         * \brief Fonction permettant de savoir si le checkpoint 1 est validé.
          *
-         * \param x desc
-         * \param y desc
-         * \return desc
+         * \param x absisse de la shape de la voiture du joueur
+         * \param y ordonnée de la shape de la voiture du joueur
+         * \return renvoi true si le joueur est actuellement sur le checkpoint 1
          */
          void checkC1(float x, float y);
 
         /**
-         * \fn void checkC2(float x, float y)
-         * \brief Fonction permettant de savoir si un .
+         * \fn void checkC1(float x, float y)
+         * \brief Fonction permettant de savoir si le checkpoint 2 est validé.
          *
-         * \param x desc
-         * \param y desc
-         * \return desc
+         * \param x absisse de la shape de la voiture du joueur
+         * \param y ordonnée de la shape de la voiture du joueur
+         * \return renvoi true si le joueur est actuellement sur le checkpoint 2
          */
         void checkC2(float x, float y);
 
         /**
-         * \fn void checkC3(float x, float y)
-         * \brief Fonction permettant de savoir si un .
+         * \fn void checkC1(float x, float y)
+         * \brief Fonction permettant de savoir si le checkpoint 3 est validé.
          *
-         * \param x desc
-         * \param y desc
-         * \return desc
+         * \param x absisse de la shape de la voiture du joueur
+         * \param y ordonnée de la shape de la voiture du joueur
+         * \return renvoi true si le joueur est actuellement sur le checkpoint 3
          */
         void checkC3(float x, float y);
 
         /**
-         * \fn void checkCF(float x, float y)
-         * \brief Fonction permettant de savoir si un .
+         * \fn void checkC1(float x, float y)
+         * \brief Fonction permettant de savoir si le checkpoint de fin est validé.
          *
-         * \param x desc
-         * \param y desc
-         * \return desc
+         * \param x absisse de la shape de la voiture du joueur
+         * \param y ordonnée de la shape de la voiture du joueur
+         * \return renvoi true si le joueur est actuellement sur le checkpoint de fin
          */
         void checkCF(float x, float y);
 
         /**
          * \fn CompetitorPosition checkCFIA(float x, float y)
-         * \brief desc
+         * \brief Renvoi la position de l'adversaire (IA) relativement au checkpoint de fin de tour.
          *
-         * \param x desc
-         * \param y desc
-         * \return desc
+         * \param x absisse de la shape de la voiture de l'adversaire
+         * \param y ordonnée de la shape de la voiture de l'adversaire
+         * \return BeforeFinishLine si l'adversaire est juste avant le checkpoint de fin de tour (finish line)
+         *         AfterFinishLine si l'adversaire est juste après le checkpoint de fin de tour (finish line)
+         *         Others si l'adversaire est ailleurs sur la carte
          */
         CompetitorPosition checkCFIA(float x, float y);
 
         /**
          * \fn void reset()
-         * \brief Fonction permettant de savoir si un .
+         * \brief Fonction remet au false tous les checkpoint pour dire qu'ils ne sont pas validés.
          */
         void reset();
 
@@ -138,7 +131,7 @@ class Checkpoint
 
         Point m_pointBegin, m_pointEnd; /*!< Les coordonnées de nos deux points */
 
-        int m_pixelParSeconde; /*!< hmmm TODO */
+        int m_pixelParRaffraichissement; /*!< nombre de pixels que le joueur peut parcourrir au maximum entre 2 raffraichissements */
 };
 
 #endif
