@@ -40,9 +40,9 @@ R3::R3(SDL_Surface *window)
     m_map[m_nbLines / 2 + 1][(m_nbRows / 2) + 3] = Shape::IACAR;
 
     /* # Réutilisation des checkpoints de la course numéro 1 étant donne que les courses ne changent que *tres* peu */
-    m_c1 = new Checkpoint(0, 210, 260, 210);
+    m_c1 = new Checkpoint(0, 210, 300, 210);
     m_c2 = new Checkpoint(320, 0, 320, 210);
-    m_c3 = new Checkpoint(300, 210, 600, 210);
+    m_c3 = new Checkpoint(340, 210, 600, 210);
 
     m_csfl = new Checkpoint(320, 210, 320, 400);
 }
