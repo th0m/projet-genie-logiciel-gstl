@@ -4,9 +4,6 @@
  * \author GSTL
  * \version 0.1
  * \date 19 avril 2011
- *
- * Classe qui va permettre de gÈrer la course 3 du jeux.
- *
  */
 
 #ifndef R3_HPP
@@ -14,13 +11,17 @@
 
 #include "race.hpp"
 
+/**
+ * \class R3
+ * \brief Classe qui va permettre de g√©rer la course 3 du jeu.
+*/
 class R3 : public Race
 {
     public:
 
         /**
          * \fn explicit R3(SDL_Surface *window)
-         * \brief Constructeur de la classe, avec initialisation de sa position gr‚ce ‡ x et y et passage d'un pointeur sur la fenetre du jeux (afin de s'y blitter).
+         * \brief Constructeur de la classe, avec initialisation de sa position gr√¢ce √† x et y et passage d'un pointeur sur la fenetre du jeux (afin de s'y blitter).
          *
          * \param window Pointeur sur la fenetre principal.
          */
@@ -34,7 +35,7 @@ class R3 : public Race
 
         /**
          * \fn void load()
-         * \brief Fonction qui va charger la course ‡ l'ecran, initialiser les IAs et leurs trajectoires etc.
+         * \brief Fonction qui va charger la course √† l'ecran, initialiser les IAs et leurs trajectoires etc.
          */
         void load();
 };

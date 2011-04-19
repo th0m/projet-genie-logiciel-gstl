@@ -4,9 +4,6 @@
  * \author GSTL
  * \version 0.1
  * \date 19 avril 2011
- *
- * Classe qui va permettre de gérer génériquement les courses.
- *
  */
 
 #ifndef RACE_HPP
@@ -24,6 +21,10 @@
 #include "iacar.hpp"
 #include "flaque.hpp"
 
+/**
+ * \class Race
+ * \brief Classe qui va permettre de gÃ©rer gÃ©nÃ©riquement les courses.
+*/
 class Race
 {
     public:
@@ -75,7 +76,7 @@ class Race
          * \fn void movePlayerCar(SDLKey key)
          * \brief Fonction qui est capable de faire bouger la voiture du joueur
          *
-         * \param key Touche de direction qui a été frappée par l'utilisateur.
+         * \param key Touche de direction qui a Ã©tÃ© frappÃ©e par l'utilisateur.
          */
         void movePlayerCar(SDLKey key);
 
@@ -126,7 +127,7 @@ class Race
 
         /**
          * \fn void initIAs()
-         * \brief Fonction qui va réaliser des fonctions d'initialisation sur les IAs.
+         * \brief Fonction qui va rÃ©aliser des fonctions d'initialisation sur les IAs.
          */
         void initIAs();
 
@@ -134,7 +135,9 @@ class Race
 
         PlayerCar *m_playercar; /*!< La voiture du joueur */
 
-        Uint32 m_nbRows, m_nbLines; /*!< Le nombre de lignes et de colonnes de la fenetre */
+        Uint32 m_nbRows; /*!< Le nombre de colonnes de la fenetre */
+
+        Uint32 m_nbLines; /*!< Le nombre de lignes de la fenetre */
 
         Uint8 **m_map; /*!< Le contenu visuel du niveau */
 
@@ -146,7 +149,13 @@ class Race
 
         std::list<Flaque*> m_flaques; /*!< Un conteneur qui stock l'ensemble des flaques */
 
-        Checkpoint *m_c1, *m_c2, *m_c3, *m_csfl; /*!< Les checkpoints que l'on a besoin de placer sur la map dont la ligne d'arrivee */
+        Checkpoint *m_c1; /*!< Premier checkpoint */
+
+        Checkpoint *m_c2; /*!< Second checkpoint */
+
+        Checkpoint *m_c3; /*!< TroisiÃ¨me checkpoint */
+
+        Checkpoint *m_csfl; /*!< Checkpoint de la ligne d'arrivÃ©e */
 
         std::vector<float> m_pts; /*!< Les points de base du mouvement des IAs */
 

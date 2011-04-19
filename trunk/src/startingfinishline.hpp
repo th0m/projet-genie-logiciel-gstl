@@ -4,9 +4,6 @@
  * \author GSTL
  * \version 0.1
  * \date 19 avril 2011
- *
- * Classe qui va permettre de gÈrer l'affichage de la ligne d'arrivÈ/dÈpart.
- *
  */
 
 #ifndef STARTINGFINISHLINE_HPP
@@ -14,16 +11,20 @@
 
 #include "shape.hpp"
 
+/**
+ * \class StartingFinishLine
+ * \brief Classe qui va permettre de g√©rer l'affichage de la ligne d'arriv√©e / d√©part.
+*/
 class StartingFinishLine : public Shape
 {
     public:
 
         /**
          * \fn explicit StartingFinishLine(float x, float y, SDL_Surface *window)
-         * \brief Constructeur de la classe, avec initialisation de sa position gr‚ce ‡ x et y et passage d'un pointeur sur la fenetre du jeux (afin de s'y blitter).
+         * \brief Constructeur de la classe, avec initialisation de sa position gr√¢ce √† x et y et passage d'un pointeur sur la fenetre du jeux (afin de s'y blitter).
          *
-         * \param x CoordonnÈe x du placement de la shape.
-         * \param y CoordonnÈe y du placement de la shape.
+         * \param x Coordonn√©e x du placement de la shape.
+         * \param y Coordonn√©e y du placement de la shape.
          * \param window Pointeur sur la fenetre principal.
          */
         explicit StartingFinishLine(float x, float y, SDL_Surface *window);
