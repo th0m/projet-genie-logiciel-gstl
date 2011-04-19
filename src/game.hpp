@@ -1,3 +1,14 @@
+/**
+ * \file game.hpp
+ * \brief Gestion du jeux.
+ * \author GSTL
+ * \version 0.1
+ * \date 19 avril 2011
+ *
+ * Classe qui va permettre de gérer l'ensemble du jeux, l'enchainement entres les courses, les victoires etc.
+ *
+ */
+
 #ifndef GAME_HPP
 #define GAME_HPP
 
@@ -11,105 +22,163 @@ class Game
 {
     public:
 
+        /**
+         * \fn explicit Game()
+         * \brief Constructeur de la classe, instanciation de la fenetre etc.
+         */
         explicit Game();
 
+        /**
+         * \fn ~Game()
+         * \brief Destructeur de la classe, destruction de l'ensemble des ressources allouees.
+         */
         ~Game();
 
-        /* # Fonction qui démarre le jeu */
+        /**
+         * \fn void start()
+         * \brief Fonction qui démarre le jeu.
+         */
         void start();
 
-        /* # Fonction qui permet de récuperer le nombre de sprite à disposer sur l'horizontale */
+
+        /**
+         * \fn static Uint32 getNbHorizontalSprites()
+         * \brief Fonction qui permet de récuperer le nombre de sprite à disposer sur l'horizontale.
+         *
+         * \return Le nombre de shape par ligne.
+         */
         static Uint32 getNbHorizontalSprites();
 
-        /* # Fonction qui permet de récuperer le nombre de sprite à disposer sur la verticale */
+        /**
+         * \fn static Uint32 getNbVerticalSprites()
+         * \brief Fonction qui permet de récuperer le nombre de sprite à disposer sur la verticale.
+         *
+         * \return Le nombre de shape par colonne.
+         */
         static Uint32 getNbVerticalSprites();
 
-        /* # Fonction qui permet de récuperer la taille d'un sprite */
+        /**
+         * \fn static Uint32 getShapeSize()
+         * \brief Fonction qui permet de récuperer la taille d'un sprite.
+         *
+         * \return La taille en pixel d'une shape (NB: une shape est carrée).
+         */
         static Uint32 getShapeSize();
 
-        /* # Fonction accesseur permettant de connaitre la vitesse de croisière en marche avant */
+        /**
+         * \fn static float getFwdSpeed()
+         * \brief Fonction accesseur permettant de connaitre la vitesse de croisière en marche avant.
+         *
+         * \return La vitesse en marche avant de la voiture (NB: n'est rien d'autre qu'un nombre de pixel).
+         */
         static float getFwdSpeed();
 
-        /* # Permet de connaitre la vitesse des IAs */
+        /**
+         * \fn static Uint32 getSpeedIA()
+         * \brief Permet de connaitre la vitesse des IAs.
+         *
+         * \return La vitesse des IAs (NB: n'est rien d'autre qu'un nombre de pixel).
+         */
         static Uint32 getSpeedIA();
 
-        /* # Permet de savoir le pourcentage de difficulte qu'une IA doit avoir par rapport à une autre */
+        /**
+         * \fn static float getDifficultyIAPercentage()
+         * \brief Permet de savoir le pourcentage de difficulte qu'une IA doit avoir par rapport à une autre.
+         *
+         * \return La vitesse des IAs (NB: n'est rien d'autre qu'un nombre de pixel).
+         */
         static float getDifficultyIAPercentage();
 
     private:
 
+        /**
+         * \enum RaceNumber
+         * \brief Indique la course que l'on est en train de jouer.
+         *
+         */
         enum RaceNumber
         {
-            Race1,
-            Race2,
-            Race3
+            Race1, /*!< Course numéro 1 */
+            Race2, /*!< Course numéro 2 */
+            Race3 /*!< Course numéro 3 */
         };
 
+        /**
+         * \struct Input
+         * \brief Tableau representant l'etat des touches du clavier à un instant t.
+         *
+         */
         struct Input
         {
             char key[SDLK_LAST];
         };
 
-        /* # La boucle principale d'evenement */
+        /**
+         * \fn void eventloop()
+         * \brief La boucle principale d'evenement.
+         */
         void eventloop();
 
-        /* # Fonction qui permet de nettoyer l'écran principal */
+        /**
+         * \fn void cleanScreen()
+         * \brief Fonction qui permet de nettoyer l'écran principal.
+         */
         void cleanScreen();
 
-        /* # La fonction qui gere les evenements */
-        void UpdateEvents(Input* in, bool& continuer);
+        /**
+         * \fn void updateEvents(Input* in, bool& continuer)
+         * \brief Fonction qui permet de mettre à jour les evenements.
+         *
+         * \param in Le tableau de l'état de toutes les touches du clavier.
+         * \param continuer Un booleen qui va nous servir à savoir si nous devons quitter ou pas l'application.
+         */
+        void updateEvents(Input* in, bool& continuer);
 
-        /* # Fonction qui va gérer l'ajout des scores */
+        /**
+         * \fn void handleScore()
+         * \brief Fonction qui va gérer l'ajout des scores.
+         */
         void handleScore();
 
-
-        /* # Fonction qui donne le temps a sleep avant le prochaine rafraichissement */
+        /**
+         * \fn void time_left(Uint32 &next_time)
+         * \brief Fonction qui donne le temps a sleep avant le prochaine rafraichissement.
+         *
+         * \param next_time Le prochain raffraichissement.
+         */
         Uint32 time_left(Uint32 &next_time);
 
-        /* # La course courante */
-        Race *m_currentRace;
 
-        /* # Sommes-nous toujours dans la boucle d'evenement ? */
-        bool m_isOk;
 
-        /* # Pointeur sur notre fenetre de jeu */
-        SDL_Surface *m_window, *m_ico;
+        Race *m_currentRace; /*!< Pointeur vers la course que l'on est en train de jouer */
 
-        /* # La largeur et la hauteur de notre fenetre */
-        static const Uint32 m_width, m_height;
+        bool m_isOk; /*!< Sommes-nous toujours dans la boucle d'evenement ? */
 
-        /* # La taille en pixel d'une shape */
-        static const Uint32 m_shapeSize;
+        SDL_Surface *m_window, *m_ico; /*!< Pointeur sur la surfa ce jeux, et sur l'icone */
 
-        /* # La durée en milliseconde d'un turbo */
-        static const Uint32 m_turboTime;
+        static const Uint32 m_width, m_height; /*!< Largeur et hauteur de la fenetre graphique */
 
-        /* # Le nombre de tour à effectuer pour valider une course */
-        static const Uint32 m_nbLap;
+        static const Uint32 m_shapeSize; /*!< La taille en pixel d'une shape */
 
-        /* # Le nombre de raffraichissement par minute */
-        static const Uint32 m_framerate;
+        static const Uint32 m_turboTime; /*!< La durée en millisecondes d'un turbo */
 
-        /* # La durée en milliseconde qu'il faut rester appuyer sur les gaz pour attendre la vitesse de croisiere */
-        static const Uint32 m_time2SpeedMax;
+        static const Uint32 m_nbLap; /*!< Le nombre de tour à effectuer pour valider une course */
 
-        /* # Vitesses marche avant et marche arriere */
-        static const float m_fwdSpeed, m_revSpeed;
+        static const Uint32 m_framerate; /*!< Le nombre de raffraichissement par minute */
 
-        /* # Le pourcentage d'augmentation de la vitesse des IAs en fonction de leurs difficultés */
-        static const float m_difficultyIApercentage;
+        static const Uint32 m_time2SpeedMax; /*!< La durée en milliseconde qu'il faut rester appuyer sur les gaz pour attendre la vitesse de croisiere */
 
-        /* # Le titre de la fenetre */
-        static const std::string m_title;
+        static const float m_fwdSpeed, m_revSpeed; /*!< Vitesses marche avant et marche arriere  */
 
-        /* # Le facteur de vitesse des IAs qui va augmenter à chaque fois qu'on complete les 3 courses */
-        static float m_speedIA;
+        static const float m_difficultyIApercentage; /*!< Le pourcentage d'augmentation de la vitesse des IAs en fonction de leurs difficultés */
 
-        /* # Membre qui permet de connaitre laquelle des trois courses est chargées */
-        RaceNumber m_rNumber;
+        static const std::string m_title; /*!< Le titre de la fenetre */
 
-        /* # Le score du joueur */
-        Uint32 m_score;
+        static float m_speedIA; /*!< Le facteur de vitesse des IAs qui va augmenter à chaque fois qu'on complete les 3 courses */
+
+        RaceNumber m_rNumber; /*!< Membre qui permet de connaitre laquelle des trois courses est chargées */
+
+        Uint32 m_score; /*!< Le score du joueur */
 };
 
 #endif
