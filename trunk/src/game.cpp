@@ -83,7 +83,7 @@ void Game::start()
     eventloop();
 }
 
-void Game::UpdateEvents(Input* in, bool& continuer)
+void Game::updateEvents(Input* in, bool& continuer)
 {
     SDL_Event event;
 
@@ -123,7 +123,7 @@ void Game::eventloop()
     while(continuer)
     {
         /* # On met a jour le tableau des touches enfoncees */
-        UpdateEvents(&in, continuer);
+        updateEvents(&in, continuer);
 
         /* # On rafraichit l'affichage et on deplace l'IA */
         m_currentRace->actualize();
