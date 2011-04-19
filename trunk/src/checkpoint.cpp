@@ -74,7 +74,7 @@ void Checkpoint::checkCF(float lex, float ley)
 }
 
 
-int Checkpoint::checkCFIA(float x, float y)
+Checkpoint::CompetitorPosition Checkpoint::checkCFIA(float x, float y)
 {
     /* # on prend les coordonnées du centre de la voiture */
     x += 20;
@@ -82,12 +82,12 @@ int Checkpoint::checkCFIA(float x, float y)
 
     /* # l'advresaire a passer le checkpoint */
     if(m_pointBegin.x > x && x > m_pointBegin.x - m_pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
-        return 2;
+        return AfterFinishLine;
     /* # l'advresaire est avant le checkpoint */
     if(m_pointBegin.x < x && x < m_pointBegin.x + m_pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
-        return 1;
+        return BeforeFinishLine;
     /* # l'advresaire est ailleurs sur le circuit */
     else
-        return 0;
+        return Others;
 }
 

@@ -242,13 +242,13 @@ void Race::checkCheckPointIA()
     {
         i = m_csfl->checkCFIA(it->first->getX(), it->first->getY());
 
-        if(i == 2 && it->second.second != 1)
+        if(i == Checkpoint::AfterFinishLine && it->second.second != 1)
         {
             it->second.first++;
             it->second.second = 1;
         }
 
-        if(i == 1)
+        if(i == Checkpoint::BeforeFinishLine)
             it->second.second = 0;
     }
 }

@@ -13,6 +13,13 @@ class Checkpoint
             float x, y;
         };
 
+        typedef enum CompetitorPosition
+        {
+            BeforeFinishLine,
+            AfterFinishLine,
+            Others
+        };
+
         explicit Checkpoint(float x1, float y1, float x2, float y2);
 
         bool isValidated() const;
@@ -27,9 +34,10 @@ class Checkpoint
 
         void checkCF(float x, float y);
 
-        int checkCFIA(float x, float y);
+        CompetitorPosition checkCFIA(float x, float y);
 
         void reset();
+
 
 
     private:
