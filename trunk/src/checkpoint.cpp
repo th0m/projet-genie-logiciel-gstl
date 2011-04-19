@@ -6,7 +6,7 @@
 #include "shape.hpp"
 
 Checkpoint::Checkpoint(float x1, float y1, float x2, float y2)
-: m_pixelParSeconde(Game::getFwdSpeed() * 4)
+: m_pixelParRaffraichissement(Game::getFwdSpeed() * 4)
 {
     m_pointBegin.x = x1;
     m_pointBegin.y = y1;
@@ -31,9 +31,9 @@ void Checkpoint::checkC1(float lex, float ley)
     float x = lex + 20, y = ley + 20;
 
     /* # le checkpoint est horizontal */
-    if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y > y && y > m_pointBegin.y - m_pixelParSeconde)
+    if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y > y && y > m_pointBegin.y - m_pixelParRaffraichissement)
         m_isValidated = true;
-    if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y < y && y < m_pointBegin.y + m_pixelParSeconde)
+    if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y < y && y < m_pointBegin.y + m_pixelParRaffraichissement)
         m_isValidated = false;
 }
 
@@ -43,9 +43,9 @@ void Checkpoint::checkC2(float lex, float ley)
     float x = lex + 20, y = ley + 20;
 
     /* # le checkpoint est vertical */
-    if(m_pointBegin.x < x && x < m_pointBegin.x + m_pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
+    if(m_pointBegin.x < x && x < m_pointBegin.x + m_pixelParRaffraichissement && m_pointBegin.y < y && y < m_pointEnd.y)
         m_isValidated = true;
-    if(m_pointBegin.x > x && x > m_pointBegin.x - m_pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
+    if(m_pointBegin.x > x && x > m_pointBegin.x - m_pixelParRaffraichissement && m_pointBegin.y < y && y < m_pointEnd.y)
         m_isValidated = false;
 }
 
@@ -55,9 +55,9 @@ void Checkpoint::checkC3(float lex, float ley)
     float x = lex + 20, y = ley + 20;
 
     /* # le checkpoint est horizontal */
-    if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y > y && y > m_pointBegin.y - m_pixelParSeconde)
+    if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y > y && y > m_pointBegin.y - m_pixelParRaffraichissement)
         m_isValidated = false;
-    if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y < y && y < m_pointBegin.y + m_pixelParSeconde)
+    if(m_pointBegin.x < x && x < m_pointEnd.x && m_pointBegin.y < y && y < m_pointBegin.y + m_pixelParRaffraichissement)
         m_isValidated = true;
 }
 
@@ -67,9 +67,9 @@ void Checkpoint::checkCF(float lex, float ley)
     float x = lex + 20, y = ley + 20;
 
     /* # le checpoint est vertical */
-    if(m_pointBegin.x > x && x > m_pointBegin.x - m_pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
+    if(m_pointBegin.x > x && x > m_pointBegin.x - m_pixelParRaffraichissement && m_pointBegin.y < y && y < m_pointEnd.y)
         m_isValidated = true;
-    if(m_pointBegin.x < x && x < m_pointBegin.x + m_pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
+    if(m_pointBegin.x < x && x < m_pointBegin.x + m_pixelParRaffraichissement && m_pointBegin.y < y && y < m_pointEnd.y)
         m_isValidated = false;
 }
 
@@ -81,10 +81,10 @@ Checkpoint::CompetitorPosition Checkpoint::checkCFIA(float x, float y)
     y += 20;
 
     /* # l'advresaire a passer le checkpoint */
-    if(m_pointBegin.x > x && x > m_pointBegin.x - m_pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
+    if(m_pointBegin.x > x && x > m_pointBegin.x - m_pixelParRaffraichissement && m_pointBegin.y < y && y < m_pointEnd.y)
         return AfterFinishLine;
     /* # l'advresaire est avant le checkpoint */
-    if(m_pointBegin.x < x && x < m_pointBegin.x + m_pixelParSeconde && m_pointBegin.y < y && y < m_pointEnd.y)
+    if(m_pointBegin.x < x && x < m_pointBegin.x + m_pixelParRaffraichissement && m_pointBegin.y < y && y < m_pointEnd.y)
         return BeforeFinishLine;
     /* # l'advresaire est ailleurs sur le circuit */
     else
