@@ -1,5 +1,5 @@
 /**
- * \file checkpoint.h
+ * \file checkpoint.hpp
  * \brief Gestion des checkpoints.
  * \author GSTL
  * \version 0.1
