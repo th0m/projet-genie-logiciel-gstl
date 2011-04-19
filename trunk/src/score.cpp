@@ -50,7 +50,7 @@ std::set<std::pair<unsigned int, std::string>, Sort > Score::premiers()
     std::set<std::pair<unsigned int, std::string>, Sort > ret;
     unsigned int i = 0;
 
-    for(std::set<std::pair<unsigned int, std::string> >::iterator it = m_scores.begin(); it != m_scores.end() && i < 5; it++, i++)
+    for(std::set<std::pair<unsigned int, std::string> >::iterator it = m_scores.begin(); it != m_scores.end() && i < 10; it++, i++)
         ret.insert(std::make_pair(it->first, it->second));
 
 	return ret;
