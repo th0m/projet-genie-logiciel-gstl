@@ -1,3 +1,14 @@
+/**
+ * \file race.hpp
+ * \brief Gestion des courses.
+ * \author GSTL
+ * \version 0.1
+ * \date 19 avril 2011
+ *
+ * Classe qui va permettre de gérer génériquement les courses.
+ *
+ */
+
 #ifndef RACE_HPP
 #define RACE_HPP
 
@@ -16,86 +27,130 @@
 class Race
 {
     public:
-
-        typedef enum Lap
+        /**
+         * \enum Lap
+         * \brief Indique l'etat du tour.
+         *
+         */
+        enum Lap
         {
-            Finished,
-            InProgress
+            Finished, /*!< Tour termine */
+            InProgress /*!< Tour en cours */
         };
-
+        /**
+         * \fn explicit Race(SDL_Surface *window)
+         * \brief Constructeur de la classe, passage d'un pointeur sur la fenetre du jeu (afin de s'y blitter).
+         *
+         * \param window Pointeur sur la fenetre principal.
+         */
         explicit Race(SDL_Surface *window);
 
+        /**
+         * \fn virtual ~Race()
+         * \brief Destructeur de la classe, destruction de l'ensemble des ressources allouees.
+         */
         virtual ~Race();
 
-        /* # Fonction qui va charge le contenu graphique du niveau */
+        /**
+         * \fn void load()
+         * \brief Fonction qui va charger le contenu graphique du niveau
+         */
         virtual void load();
 
-        /* # Fonction qui actualise la course */
+        /**
+         * \fn void actualize()
+         * \brief Fonction qui actualise la course.
+         */
         void actualize();
 
-        /* # Fonction qui gere les turbos, qui nous previent si tous les turbos ont ete consomme ou non */
+        /**
+         * \fn bool useTurbo()
+         * \brief Fonction qui gere les turbos, qui nous previent si tous les turbos ont ete consommes ou non.
+         *
+         * \return Un booleen qui definit si on a encore des turbos a consommer
+         */
         bool useTurbo();
 
-        /* # Fonction qui est capable de faire bouger la voiture du joueur */
+        /**
+         * \fn void movePlayerCar(SDLKey key)
+         * \brief Fonction qui est capable de faire bouger la voiture du joueur
+         *
+         * \param key Touche de direction qui a été frappée par l'utilisateur.
+         */
         void movePlayerCar(SDLKey key);
 
-        /* # Fonction qui s'occupe du deplacement de l'IA */
+        /**
+         * \fn void moveIAs()
+         * \brief Fonction qui s'occupe du deplacement de l'IA.
+         */
         void moveIAs();
 
-        /* # Verification des 3 checkpoints*/
+        /**
+         * \fn Lap checkCheckPoint()
+         * \brief Verification des 3 checkpoints
+         *
+         * \return Un element de l'enum Lap indiquant l'etat du tour.
+         */
         Lap checkCheckPoint();
 
-        /* # Verification fin de tours de chaque IA*/
+        /**
+         * \fn void checkCheckPointIA()
+         * \brief Verification fin de tours de chaque IA.
+         */
         void checkCheckPointIA();
 
-        /* # initialisation du nombre de tours de chaque adversaires */
+        /**
+         * \fn void initNbLapCompetitors()
+         * \brief Initialisation du nombre de tours de chaque adversaire.
+         */
         void initNbLapCompetitors();
 
-        /* # verification fin de tour, renvoi la place du joueur */
+        /**
+         * \fn int checkSuccessRace()
+         * \brief Verification de fin de tour.
+         *
+         * \return La place du joueur.
+         */
         int checkSuccessRace();
 
-        /* # Getter qui recupere la voiture du joueur */
+        /**
+         * \fn PlayerCar *getPlayerCar()
+         * \brief Getter qui recupere la voiture du joueur.
+         *
+         * \return La voiture du joueur.
+         */
         PlayerCar *getPlayerCar();
 
 
     protected:
 
-         /* # Fonction qui va réaliser des fonctions d'initialisation sur les IAs */
-         void initIAs();
+        /**
+         * \fn void initIAs()
+         * \brief Fonction qui va réaliser des fonctions d'initialisation sur les IAs.
+         */
+        void initIAs();
 
+        SDL_Surface *m_window; /*!< La fenetre du jeu */
 
-        /* # La fenetre du jeu */
-        SDL_Surface *m_window;
+        PlayerCar *m_playercar; /*!< La voiture du joueur */
 
-        /* # La voiture du joueur */
-        PlayerCar *m_playercar;
+        Uint32 m_nbRows, m_nbLines; /*!< Le nombre de lignes et de colonnes de la fenetre */
 
-        /* # Le nombre de ligne et de colonne de la fenetre */
-        Uint32 m_nbRows, m_nbLines;
+        Uint8 **m_map; /*!< Le contenu visuel du niveau */
 
-        /* # Le contenu visuel du niveau */
-        Uint8 **m_map;
+        std::list<IACar*> m_iacars; /*!< Les voitures des IAs */
 
-        /* # Les voitures des IAs */
-        std::list<IACar*> m_iacars;
+        std::list<Shape*> m_surfaces; /*!< Un conteneur qui stock l'ensemble des formes presentes sur l'ecran */
 
-        /* # Un conteneur qui stock l'ensemble des formes presentes sur l'ecran */
-        std::list<Shape*> m_surfaces;
+        std::list<Limit*> m_limits; /*!< Un conteneur qui stock l'ensemble des limites verticales et horizontales */
 
-        /* # Un conteneur qui stock l'ensemble des limites verticales et horizontales */
-        std::list<Limit*> m_limits;
+        std::list<Flaque*> m_flaques; /*!< Un conteneur qui stock l'ensemble des flaques */
 
-        /* # Un conteneur qui stock l'ensemble des flaques */
-        std::list<Flaque*> m_flaques;
+        Checkpoint *m_c1, *m_c2, *m_c3, *m_csfl; /*!< Les checkpoints que l'on a besoin de placer sur la map dont la ligne d'arrivee */
 
-        /* # Les checkpoints que l'on a besoin de placer sur la map dont la ligne d'arrivee */
-        Checkpoint *m_c1, *m_c2, *m_c3, *m_csfl;
+        std::vector<float> m_pts; /*!< Les points de base du mouvement des IAs */
 
-        /* # Les points de base du mouvement des IAs */
-        std::vector<float> m_pts;
-
-        /* # Le classement */
-        std::map<IACar*, std::pair<int, int> > m_ranking;
+        std::map<IACar*, std::pair<int, int> > m_ranking; /*!< Le classement */
 };
 
 #endif

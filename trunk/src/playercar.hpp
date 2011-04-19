@@ -157,9 +157,9 @@ class PlayerCar : public Shape
          * \brief Fonction pour savoir vers ou on souhaite se deplacer.
          *
          * \param key Touche de direction qui a été frappé par l'utilisateur.
-         * \param fwdlatspeed TODO.
-         * \param revlatspeed TODO.
-         * \return TODO.
+         * \param fwdlatspeed Projection sur x et y du deplacement en diagonale en marche avant.
+         * \param revlatspeed Projection sur x et y du deplacement en diagonale en marche arriere.
+         * \return Abscisse visee apres deplacement.
          */
         float getWantedX(SDLKey key, float& fwdlatspeed, float& revlatspeed);
 
@@ -168,9 +168,9 @@ class PlayerCar : public Shape
          * \brief Fonction pour savoir vers ou on souhaite se deplacer.
          *
          * \param key Touche de direction qui a été frappé par l'utilisateur.
-         * \param fwdlatspeed TODO.
-         * \param revlatspeed TODO.
-         * \return TODO.
+         * \param fwdlatspeed Projection sur x et y du deplacement en diagonale en marche avant.
+         * \param revlatspeed Projection sur x et y du deplacement en diagonale en marche arriere.
+         * \return Ordonnee visee apres deplacement
          */
         float getWantedY(SDLKey key, float& fwdlatspeed, float& revlatspeed);
 
